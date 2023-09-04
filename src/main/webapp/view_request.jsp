@@ -1,13 +1,12 @@
-<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="in.fssa.leavepulse.model.Request"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Edit Role</title>
+<title> View Request </title>
 <style>
-
 	*{
 	  margin: 0;
 	  padding: 0;
@@ -18,14 +17,14 @@
 	  display: flex;
 	  align-items: center;
 	  justify-content: center;
-	  min-height: 80vh;
+	  min-height: 100vh;
 	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
 	.container{
 	  max-width: 800px;
 	  background: #fff;
-	  width: 500px;
+	  width: 800px;
 	  padding: 25px 40px 10px 40px;
 	  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 	}
@@ -45,6 +44,7 @@
 	  margin: 0 20px;
 	  position: relative;
 	}
+	
 	.input-data input {
 	  display: block;
 	  width: 100%;
@@ -59,6 +59,7 @@
 	  font-size: 14px;
 	  color: #3498db;
 	}
+	
 	.input-data label{
 	  position: absolute;
 	  pointer-events: none;
@@ -132,40 +133,76 @@
 	    font-size: 14px;
 	    color: #3498db;
 	}
-
+	
+	.readonly-label {
+		transform: translateY(-20px);
+	    font-size: 14px;
+	    color: #3498db;
+	}
 </style>
 </head>
-
 <body>
 
-	<% Role role = new Role(); %>
-	<% role = (Role)request.getAttribute("roles"); %>
+	<% Request requests = new Request(); %>
+	<% requests = (Request)request.getAttribute("requests"); %>
+	<% String employee_name = (String)request.getAttribute("employee_name"); %>
+	<% String leave_type = (String)request.getAttribute("leave_type"); %>
 	
 	<div class="container">
 	
-      <div class="text"> Edit Role </div>
+      <div class="text"> View Request </div>
       
-      <form action="update?id=<%= role.getRoleId()%>" method="post">
+      <form>
       
          <div class="form-row">
-         
             <div class="input-data">
-               <input type="text" name="role_name" value = "<%= role.getRoleName()%>" required>
+               <input type="text" name="employee_name" value = "<%= employee_name %>" readonly>
                <div class="underline"></div>
-               <label for="role_name">Role Name</label>
+               <label class="readonly-label" for="employee_name">Employee Name</label>
+            </div>
+            <div class="input-data">
+               <input type="text" name="leave_type" value = "<%= leave_type %>" readonly>
+               <div class="underline"></div>
+               <label class="readonly-label" for="leave_type">Leave Type</label>
             </div>
          </div>
          
-         <div class="form-row submit-btn">
+         <div class="form-row">
             <div class="input-data">
-               <div class="inner"></div>
-               <input type="submit" value="submit">
+               <input type="text" name="start_date" value = "<%= requests.getStartDate() %>" readonly>
+               <div class="underline"></div>
+               <label for="start_date" class="readonly-label">Start Date</label>
+            </div>
+            <div class="input-data">
+               <input type="text" name="end_date" value = "<%= requests.getEndDate() %>" readonly>
+               <div class="underline"></div>
+               <label for="end_date" class="readonly-label">End Date</label>
+            </div>
+         </div>
+         
+         <div class="form-row">
+            <div class="input-data">
+               <input type="text" name="reason" value = "<%= requests.getReason() %>" readonly>
+               <div class="underline"></div>
+               <label class="readonly-label" for="reason">Reason</label>
+            </div>
+            <div class="input-data">
+               <input type="text" name="status" value = "<%= requests.getLeaveStatus() %>" readonly>
+               <div class="underline"></div>
+               <label class="readonly-label" for="status">Status</label>
+            </div>
+         </div>
+         
+         <div class="form-row">
+            <div class="input-data">
+              <input type="text" name="comments" value = "<%= requests.getComments() %>" readonly>
+               <div class="underline"></div>
+               <label for="comments" class="readonly-label">Comments</label>
             </div>
          </div>
          
       </form>
-	      
-   	</div>
-	
+      </div>
+
 </body>
 </html>

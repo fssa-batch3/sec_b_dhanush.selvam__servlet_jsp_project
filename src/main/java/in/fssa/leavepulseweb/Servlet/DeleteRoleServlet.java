@@ -32,11 +32,12 @@ public class DeleteRoleServlet extends HttpServlet {
 		
 		try {
 			roleService.deleteRole(id);
-			out.print("Role deleted successfully");
+			response.sendRedirect(request.getContextPath() + "/roles");
+			
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
+			out.println(e.getMessage());
 		}
-		
 		
 	}
 

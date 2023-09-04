@@ -11,36 +11,30 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
-import in.fssa.leavepulse.model.Role;
-import in.fssa.leavepulse.service.RoleService;
+import in.fssa.leavepulse.service.EmployeeService;
 
 /**
- * Servlet implementation class UpdateRoleServlet
+ * Servlet implementation class DeleteEmployeeServlet
  */
-@WebServlet("/role/update")
-public class UpdateRoleServlet extends HttpServlet {
+@WebServlet("/employee/delete")
+public class DeleteEmployeeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+       
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		int id = Integer.parseInt(request.getParameter("id"));
-		RoleService roleService = new RoleService();
-		Role role = new Role();
-		role.setRoleName(request.getParameter("role_name"));
+		EmployeeService employeeService = new EmployeeService();
 		
 		PrintWriter out = response.getWriter();
 		
 		try {
-			roleService.updateRole(id, role);
-			response.sendRedirect(request.getContextPath() + "/roles");
+			employeeService.deleteEmployee(id);
+			response.sendRedirect(request.getContextPath() + "/employees");
 			
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
 			out.println(e.getMessage());
-		} 
+		}
 		
 	}
 

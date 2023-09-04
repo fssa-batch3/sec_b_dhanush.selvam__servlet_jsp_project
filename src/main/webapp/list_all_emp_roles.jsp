@@ -1,14 +1,12 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="in.fssa.leavepulse.model.EmployeeRole"%>
 <%@page import="java.util.List"%>
-<%@page import="in.fssa.leavepulse.service.RoleService"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title> Roles </title>
+<title> Employee-Role </title>
 <style>
 
 body{
@@ -83,37 +81,34 @@ button:hover {
 </head>
 <body>
 
-	<% List<Role> roleList = (List<Role>) request.getAttribute("rolesList"); %>
-
-	<div class="heading_container"> <h1>Roles List</h1> </div>
-	<div class="add_btn_container">
-		<a href="role/new">
-			<button class = "add">Add Role</button>
-		</a>
-	</div>
-
+	<% List<EmployeeRole> empRoleList = (List<EmployeeRole>)request.getAttribute("empRolesList"); %>
+		
+	<div class="heading_container"> <h1>Employee-Role List</h1> </div>
+	
 	<div class="table">
 		<div class="table-header">
 			<div class="header__item">S.No</div>
-			<div class="header__item">Role Name</div>
-			<div class="header__item">Role ID</div>
+			<div class="header__item">Employee-Role ID</div>
+			<div class="header__item">Employee ID</div>
+			<div class="header__item">Manager ID</div>
+			<div class="header__item">Role</div>
 			<div class="header__item">Edit</div>
-			<div class="header__item">Delete</div>
 		</div>
 		<div class="table-content">
 		<% int i = 1; %>
-		<% for (Role role : roleList) { %>
+		<% for (EmployeeRole empRole : empRoleList) { %>
 			<div class="table-row">
 				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= role.getRoleName() %> </div>
-				<div class="table-data"> <%= role.getRoleId() %> </div>
-				<div class="table-data"> <a href="role/edit?id=<%= role.getRoleId() %>"> <button> Edit </button> </a> </div>
-				<div class="table-data"> <a href="role/delete?id=<%= role.getRoleId() %>"> <button> Delete </button> </a> </div>
+				<div class="table-data"> <%= empRole.getEmpRoleId() %> </div>
+				<div class="table-data"> <%= empRole.getEmployeeId() %> </div>
+				<div class="table-data"> <%= empRole.getManagerId() %> </div>
+				<div class="table-data"> <%= empRole.getRoleId() %> </div>
+				<div class="table-data"> <a href="empRole/edit?id=<%= empRole.getEmpRoleId() %>"> <button> Edit </button> </a> </div>
 			</div>
 			<% i++; %>
 			<% } %>
 		</div>
 	</div>
-
+	
 </body>
 </html>

@@ -1,6 +1,7 @@
 package in.fssa.leavepulseweb.Servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import in.fssa.leavepulse.exception.ServiceException;
+import in.fssa.leavepulse.model.Role;
+import in.fssa.leavepulse.service.RoleService;
 
 /**
  * Servlet implementation class CreateRoleServlet
@@ -22,9 +27,17 @@ public class ListAllRoleServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		RequestDispatcher rd = request.getRequestDispatcher("list_all_roles.jsp");
-		rd.forward(request, response);
+		
+		try {
+			List<Role> roleList = new RoleService().getAllRole();
+			request.setAttribute("rolesList", roleList);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/list_all_roles.jsp");
+			rd.forward(request, response);
+			
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
 
 	}
 

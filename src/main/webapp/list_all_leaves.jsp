@@ -1,20 +1,19 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="in.fssa.leavepulse.model.Leave"%>
 <%@page import="java.util.List"%>
-<%@page import="in.fssa.leavepulse.service.RoleService"%>
+<%@page import="in.fssa.leavepulse.service.LeaveService"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title> Roles </title>
+<title> Leaves </title>
 <style>
 
 body{
   font-family: 'Poppins', sans-serif;
 }
-	
+
 .table_container {
     background: white;
     padding: 20px;
@@ -82,38 +81,37 @@ button:hover {
 </style>
 </head>
 <body>
-
-	<% List<Role> roleList = (List<Role>) request.getAttribute("rolesList"); %>
-
-	<div class="heading_container"> <h1>Roles List</h1> </div>
+	<% List<Leave> leaveList = (List<Leave>)request.getAttribute("leavesList"); %>
+		
+	<div class="heading_container"> <h1>Leave Type List</h1> </div>
 	<div class="add_btn_container">
-		<a href="role/new">
-			<button class = "add">Add Role</button>
+		<a href="leave/new">
+			<button class = "add">Add Leave Type</button>
 		</a>
 	</div>
 
 	<div class="table">
 		<div class="table-header">
 			<div class="header__item">S.No</div>
-			<div class="header__item">Role Name</div>
-			<div class="header__item">Role ID</div>
+			<div class="header__item">Leave Type</div>
+			<div class="header__item">Leave ID</div>
 			<div class="header__item">Edit</div>
 			<div class="header__item">Delete</div>
 		</div>
 		<div class="table-content">
 		<% int i = 1; %>
-		<% for (Role role : roleList) { %>
+		<% for (Leave leave : leaveList) { %>
 			<div class="table-row">
 				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= role.getRoleName() %> </div>
-				<div class="table-data"> <%= role.getRoleId() %> </div>
-				<div class="table-data"> <a href="role/edit?id=<%= role.getRoleId() %>"> <button> Edit </button> </a> </div>
-				<div class="table-data"> <a href="role/delete?id=<%= role.getRoleId() %>"> <button> Delete </button> </a> </div>
+				<div class="table-data"> <%= leave.getLeaveType() %> </div>
+				<div class="table-data"> <%= leave.getLeaveId() %> </div>
+				<div class="table-data"> <a href="leave/edit?id=<%= leave.getLeaveId() %>"> <button> Edit </button> </a> </div>
+				<div class="table-data"> <a href="leave/delete?id=<%= leave.getLeaveId() %>"> <button> Delete </button> </a> </div>
 			</div>
 			<% i++; %>
 			<% } %>
 		</div>
 	</div>
-
+	
 </body>
 </html>

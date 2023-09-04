@@ -1,13 +1,13 @@
-<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="in.fssa.leavepulse.model.EmployeeRole"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Edit Role</title>
+<title> Edit Employee-Role </title>
 <style>
-
+		
 	*{
 	  margin: 0;
 	  padding: 0;
@@ -95,6 +95,27 @@
 	  position: relative;
 	  z-index: 2;
 	}
+	
+	.input-data select {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 17px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.12);
+    appearance: none; /* Removes the default arrow in some browsers */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233498db'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E"); /* Custom arrow icon */
+    background-repeat: no-repeat;
+    background-position: right center;
+	}
+	
+	.input-data select:focus ~ label,
+	.input-data select:valid ~ label {
+	    transform: translateY(-20px);
+	    font-size: 14px;
+	    color: #3498db;
+	}
+	
 	@media (max-width: 700px) {
 	  .container .text{
 	    font-size: 30px;
@@ -132,27 +153,54 @@
 	    font-size: 14px;
 	    color: #3498db;
 	}
-
+	
+	.readonly-label {
+		transform: translateY(-20px);
+	    font-size: 14px;
+	    color: #3498db;
+	}
+	
 </style>
 </head>
-
 <body>
 
-	<% Role role = new Role(); %>
-	<% role = (Role)request.getAttribute("roles"); %>
-	
+	<% EmployeeRole empRole = new EmployeeRole(); %>
+	<% empRole = (EmployeeRole)request.getAttribute("empRoles"); %>
+	<% String role_name = (String)request.getAttribute("role_name"); %>
+
 	<div class="container">
 	
-      <div class="text"> Edit Role </div>
+      <div class="text"> Edit Employee-Role </div>
       
-      <form action="update?id=<%= role.getRoleId()%>" method="post">
+      <form action="update?id=<%= empRole.getEmpRoleId() %>" method="post">
       
          <div class="form-row">
-         
             <div class="input-data">
-               <input type="text" name="role_name" value = "<%= role.getRoleName()%>" required>
+               <input type="text" name="employee_id" value = "<%= empRole.getEmployeeId() %>" readonly>
                <div class="underline"></div>
-               <label for="role_name">Role Name</label>
+               <label class="readonly-label" for="employee_id">Employee ID</label>
+            </div>
+         </div>
+         
+         <div class="form-row">
+            <div class="input-data">
+               <input type="text" name="manager_id" value = "<%= empRole.getManagerId() %>" required>
+               <div class="underline"></div>
+               <label for="manager_id">Manager ID</label>
+            </div>
+         </div>
+         
+         <div class="form-row">
+            <div class="input-data">
+				<select name="role">
+				    <option value="CEO" <%= "CEO".equals(role_name) ? "selected" : "" %>>CEO</option>
+				    <option value="CPO" <%= "CPO".equals(role_name) ? "selected" : "" %>>CPO</option>
+				    <option value="Manager" <%= "Manager".equals(role_name) ? "selected" : "" %>>Manager</option>
+				    <option value="Developer" <%= "Developer".equals(role_name) ? "selected" : "" %>>Developer</option>
+				    <option value="Tester" <%= "Tester".equals(role_name) ? "selected" : "" %>>Tester</option>
+				</select>
+				
+				<label for="role">Role</label>
             </div>
          </div>
          
@@ -166,6 +214,6 @@
       </form>
 	      
    	</div>
-	
+
 </body>
 </html>

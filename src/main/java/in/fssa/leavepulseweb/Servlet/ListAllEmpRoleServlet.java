@@ -11,32 +11,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.fssa.leavepulse.exception.ServiceException;
-import in.fssa.leavepulse.model.Employee;
-import in.fssa.leavepulse.service.EmployeeService;
+import in.fssa.leavepulse.model.EmployeeRole;
+import in.fssa.leavepulse.service.EmployeeRoleService;
 
 /**
- * Servlet implementation class ListAllEmployeeServlet
+ * Servlet implementation class ListAllEmpRoleServlet
  */
-@WebServlet("/employees")
-public class ListAllEmployeeServlet extends HttpServlet {
+@WebServlet("/empRoles")
+public class ListAllEmpRoleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			List<Employee> employeeList = new EmployeeService().getAllEmployee();
-			request.setAttribute("employeesList", employeeList);
+			List<EmployeeRole> empRoleList = new EmployeeRoleService().getAllEmpRole();
+			request.setAttribute("empRolesList", empRoleList);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("/list_all_employees.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/list_all_emp_roles.jsp");
 			rd.forward(request, response);
 			
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
-		
-	}
 
+	}
 }

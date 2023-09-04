@@ -1,13 +1,13 @@
-<%@page import="in.fssa.leavepulse.model.Role"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Edit Role</title>
+<title> Create Request </title>
+</head>
 <style>
-
+		
 	*{
 	  margin: 0;
 	  padding: 0;
@@ -18,14 +18,14 @@
 	  display: flex;
 	  align-items: center;
 	  justify-content: center;
-	  min-height: 80vh;
+	  min-height: 90vh;
 	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
 	.container{
 	  max-width: 800px;
 	  background: #fff;
-	  width: 500px;
+	  width: 800px;
 	  padding: 25px 40px 10px 40px;
 	  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 	}
@@ -45,6 +45,7 @@
 	  margin: 0 20px;
 	  position: relative;
 	}
+	
 	.input-data input {
 	  display: block;
 	  width: 100%;
@@ -59,6 +60,7 @@
 	  font-size: 14px;
 	  color: #3498db;
 	}
+	
 	.input-data label{
 	  position: absolute;
 	  pointer-events: none;
@@ -132,27 +134,62 @@
 	    font-size: 14px;
 	    color: #3498db;
 	}
-
+	
+	.readonly-label {
+		transform: translateY(-20px);
+	    font-size: 14px;
+	    color: #3498db;
+	}
+	
 </style>
-</head>
-
 <body>
 
-	<% Role role = new Role(); %>
-	<% role = (Role)request.getAttribute("roles"); %>
-	
 	<div class="container">
 	
-      <div class="text"> Edit Role </div>
+      <div class="text"> Create Request </div>
       
-      <form action="update?id=<%= role.getRoleId()%>" method="post">
+      <form action="create" method="post">
       
          <div class="form-row">
-         
             <div class="input-data">
-               <input type="text" name="role_name" value = "<%= role.getRoleName()%>" required>
+               <input type="text" name="employee_id" required>
                <div class="underline"></div>
-               <label for="role_name">Role Name</label>
+               <label for="employee_id">Employee ID</label>
+            </div>
+            <div class="input-data">
+               <input type="text" name="manager_id" required>
+               <div class="underline"></div>
+               <label for="manager_id">Manager ID</label>
+            </div>
+         </div>
+         
+         <div class="form-row">
+            <div class="input-data">
+               <select name="leave">
+					<option value="Sick Leave">Sick Leave</option>
+					<option value="Personal Leave">Personal Leave</option>
+					<option value="Medical Leave">Medical Leave</option>
+					<option value="Casual Leave">Casual Leave</option>
+				</select>
+				<label for="leave">Leave Type</label>
+            </div>
+            <div class="input-data">
+               <input type="text" name="reason" required>
+               <div class="underline"></div>
+               <label for="reason">Reason</label>
+            </div>
+         </div>
+         
+         <div class="form-row">
+            <div class="input-data">
+               <input type="date" name="start_date" required>
+               <div class="underline"></div>
+               <label class="readonly-label" for="start_date">Start Date</label>
+            </div>
+            <div class="input-data">
+               <input type="date" name="end_date" required>
+               <div class="underline"></div>
+               <label class="readonly-label" for="end_date">End Date</label>
             </div>
          </div>
          
@@ -162,10 +199,8 @@
                <input type="submit" value="submit">
             </div>
          </div>
-         
       </form>
-	      
-   	</div>
-	
+      </div>
+
 </body>
 </html>

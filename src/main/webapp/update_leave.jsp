@@ -1,11 +1,11 @@
-<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="in.fssa.leavepulse.model.Leave"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Edit Role</title>
+<title>Edit Leave Type</title>
 <style>
 
 	*{
@@ -135,24 +135,23 @@
 
 </style>
 </head>
-
 <body>
 
-	<% Role role = new Role(); %>
-	<% role = (Role)request.getAttribute("roles"); %>
+	<% Leave leave = new Leave(); %>
+	<% leave = (Leave)request.getAttribute("leaves"); %>
 	
 	<div class="container">
 	
-      <div class="text"> Edit Role </div>
+      <div class="text"> Edit Leave </div>
       
-      <form action="update?id=<%= role.getRoleId()%>" method="post">
+      <form action="update?id=<%= leave.getLeaveId() %>" method="post">
       
          <div class="form-row">
          
             <div class="input-data">
-               <input type="text" name="role_name" value = "<%= role.getRoleName()%>" required>
+               <input type="text" name="leave_type" value = "<%= leave.getLeaveType() %>" required>
                <div class="underline"></div>
-               <label for="role_name">Role Name</label>
+               <label for="leave_type">Leave Type</label>
             </div>
          </div>
          
@@ -166,6 +165,6 @@
       </form>
 	      
    	</div>
-	
+
 </body>
 </html>

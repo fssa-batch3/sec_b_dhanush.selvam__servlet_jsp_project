@@ -11,36 +11,35 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
-import in.fssa.leavepulse.model.Role;
-import in.fssa.leavepulse.service.RoleService;
+import in.fssa.leavepulse.model.Leave;
+import in.fssa.leavepulse.service.LeaveService;
 
 /**
- * Servlet implementation class UpdateRoleServlet
+ * Servlet implementation class CreateLeaveServlet
  */
-@WebServlet("/role/update")
-public class UpdateRoleServlet extends HttpServlet {
+@WebServlet("/leave/create")
+public class CreateLeaveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int id = Integer.parseInt(request.getParameter("id"));
-		RoleService roleService = new RoleService();
-		Role role = new Role();
-		role.setRoleName(request.getParameter("role_name"));
+		LeaveService leaveService = new LeaveService();
+		Leave leave = new Leave();
+		leave.setLeaveType(request.getParameter("leave_type"));
 		
 		PrintWriter out = response.getWriter();
 		
-		try {
-			roleService.updateRole(id, role);
-			response.sendRedirect(request.getContextPath() + "/roles");
-			
-		} catch (ServiceException | ValidationException e) {
-			e.printStackTrace();
-			out.println(e.getMessage());
-		} 
+			try {
+				leaveService.createLeave(leave);
+				response.sendRedirect(request.getContextPath() + "/leaves");
+				
+			} catch (ServiceException | ValidationException e) {
+				e.printStackTrace();
+				out.println(e.getMessage());
+			} 
 		
 	}
 

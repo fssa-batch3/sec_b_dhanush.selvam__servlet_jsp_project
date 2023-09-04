@@ -11,36 +11,39 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
-import in.fssa.leavepulse.model.Role;
+import in.fssa.leavepulse.model.EmployeeRole;
+import in.fssa.leavepulse.service.EmployeeRoleService;
 import in.fssa.leavepulse.service.RoleService;
 
 /**
- * Servlet implementation class UpdateRoleServlet
+ * Servlet implementation class UpdateEmpRoleServlet
  */
-@WebServlet("/role/update")
-public class UpdateRoleServlet extends HttpServlet {
+@WebServlet("/empRole/update")
+public class UpdateEmpRoleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int id = Integer.parseInt(request.getParameter("id"));
-		RoleService roleService = new RoleService();
-		Role role = new Role();
-		role.setRoleName(request.getParameter("role_name"));
+		EmployeeRoleService empRoleService = new EmployeeRoleService();
+		EmployeeRole empRole = new EmployeeRole();
+		empRole.setManagerId(Integer.parseInt(request.getParameter("manager_id")));
 		
 		PrintWriter out = response.getWriter();
 		
 		try {
-			roleService.updateRole(id, role);
-			response.sendRedirect(request.getContextPath() + "/roles");
+			int roleId = new RoleService().findRoleByRoleName(request.getParameter("role")).getRoleId();
+			empRole.setRoleId(roleId);
+			empRoleService.updateEmpRole(id, empRole);
+			response.sendRedirect(request.getContextPath() + "/empRoles");
 			
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
-			out.println(e.getMessage());
-		} 
+			out.print(e.getMessage());
+		}
 		
 	}
 

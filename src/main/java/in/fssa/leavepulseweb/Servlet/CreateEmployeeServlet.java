@@ -18,7 +18,7 @@ import in.fssa.leavepulse.service.RoleService;
 /**
  * Servlet implementation class CreateEmployeeServlet
  */
-@WebServlet("/CreateEmployeeServlet")
+@WebServlet("/employee/create")
 public class CreateEmployeeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -41,7 +41,7 @@ public class CreateEmployeeServlet extends HttpServlet {
 		
 		try {
 			int roleId = new RoleService().findRoleByRoleName(request.getParameter("role")).getRoleId();
-			employeeService.createEmployee(employee, roleId, managerId);
+			employeeService.createEmployee(employee, managerId, roleId);
 			response.sendRedirect(request.getContextPath() + "/employees");
 		
 		} catch (ServiceException | ValidationException e) {

@@ -1,16 +1,15 @@
-<%@page import="in.fssa.leavepulse.model.Employee"%>
-<%@page import="in.fssa.leavepulse.service.EmployeeService"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="in.fssa.leavepulse.model.Request"%>
 <%@page import="java.util.List"%>
-<%@page import="in.fssa.leavepulse.service.RoleService"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title> Employees </title>
+<title> Requests </title>
+</head>
 <style>
 
 body{
@@ -82,14 +81,14 @@ button:hover {
 }
 
 </style>
-</head>
 <body>
-	<% List<Employee> employeeList = (List<Employee>)request.getAttribute("employeesList"); %>
-		
-	<div class="heading_container"> <h1>Employees List</h1> </div>
+
+	<% List<Request> requestList = (List<Request>)request.getAttribute("requests"); %>
+	
+	<div class="heading_container"> <h1>Requests List</h1> </div>
 	<div class="add_btn_container">
-		<a href="employee/new">
-			<button class = "add">Add Employee</button>
+		<a href="request/new">
+			<button class = "add">Add Request</button>
 		</a>
 	</div>
 
@@ -97,25 +96,28 @@ button:hover {
 		<div class="table-header">
 			<div class="header__item">S.No</div>
 			<div class="header__item">Name</div>
-			<div class="header__item">Email</div>
-			<div class="header__item">Phone No</div>
-			<div class="header__item">Employee ID</div>
+			<div class="header__item">Leave Type</div>
+			<div class="header__item">Applied Date</div>
+			<div class="header__item">Status</div>
 			<div class="header__item">Edit</div>
-			<div class="header__item">Delete</div>
 			<div class="header__item">View</div>
 		</div>
 		<div class="table-content">
 		<% int i = 1; %>
-		<% for (Employee employee : employeeList) { %>
+		<% for (Request requests : requestList) { %>
 			<div class="table-row">
 				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= employee.getFirst_name() + " " + employee.getLast_name() %> </div>
-				<div class="table-data"> <%= employee.getEmail() %> </div>
-				<div class="table-data"> <%= employee.getPhone_no() %> </div>
-				<div class="table-data"> <%= employee.getEmployee_id() %> </div>
-				<div class="table-data"> <a href="employee/edit?id=<%= employee.getEmployee_id() %>"> <button> Edit </button> </a> </div>
-				<div class="table-data"> <a href="employee/delete?id=<%= employee.getEmployee_id() %>"> <button> Delete </button> </a> </div>
-				<div class="table-data"> <a href="employee/view?id=<%= employee.getEmployee_id() %>"> <button> View </button> </a> </div>
+				<div class="table-data"> <%= requests.getCreatedBy() %> </div>
+				<div class="table-data"> <%= requests.getLeaveId() %> </div>
+				<% String originalDateString = requests.getCreatedAt() + ""; %>
+				<% DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"); %>
+				<% LocalDate localDate = LocalDate.parse(originalDateString, originalFormatter); %>
+				<% DateTimeFormatter desiredFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); %>
+				<% String desiredDateString = localDate.format(desiredFormatter); %>
+				<div class="table-data"> <%= desiredDateString %> </div>
+				<div class="table-data"> <%= requests.getLeaveStatus() %> </div>
+				<div class="table-data"> <a href="request/edit?id=<%= requests.getRequestId() %>"> <button> Edit </button> </a> </div>
+				<div class="table-data"> <a href="request/view?id=<%= requests.getRequestId() %>"> <button> View </button> </a> </div>
 			</div>
 			<% i++; %>
 			<% } %>

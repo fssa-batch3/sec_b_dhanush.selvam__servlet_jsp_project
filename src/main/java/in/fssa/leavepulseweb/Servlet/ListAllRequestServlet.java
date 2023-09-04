@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.fssa.leavepulse.exception.ServiceException;
-import in.fssa.leavepulse.model.Employee;
-import in.fssa.leavepulse.service.EmployeeService;
+import in.fssa.leavepulse.model.Request;
+import in.fssa.leavepulse.service.RequestService;
 
 /**
- * Servlet implementation class ListAllEmployeeServlet
+ * Servlet implementation class ListAllRequestServlet
  */
-@WebServlet("/employees")
-public class ListAllEmployeeServlet extends HttpServlet {
+@WebServlet("/requests")
+public class ListAllRequestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -27,10 +27,10 @@ public class ListAllEmployeeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			List<Employee> employeeList = new EmployeeService().getAllEmployee();
-			request.setAttribute("employeesList", employeeList);
+			List<Request> requestList = new RequestService().getAllRequest();
+			request.setAttribute("requests", requestList);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("/list_all_employees.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/list_all_requests.jsp");
 			rd.forward(request, response);
 			
 		} catch (ServiceException e) {
@@ -38,5 +38,5 @@ public class ListAllEmployeeServlet extends HttpServlet {
 		}
 		
 	}
-
+	
 }

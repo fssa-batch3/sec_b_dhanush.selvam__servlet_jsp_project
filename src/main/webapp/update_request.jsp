@@ -1,13 +1,13 @@
-<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="in.fssa.leavepulse.model.Request"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Edit Role</title>
+<title> Edit Request </title>
 <style>
-
+		
 	*{
 	  margin: 0;
 	  padding: 0;
@@ -95,6 +95,27 @@
 	  position: relative;
 	  z-index: 2;
 	}
+	
+	.input-data select {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 17px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.12);
+    appearance: none; /* Removes the default arrow in some browsers */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233498db'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E"); /* Custom arrow icon */
+    background-repeat: no-repeat;
+    background-position: right center;
+	}
+	
+	.input-data select:focus ~ label,
+	.input-data select:valid ~ label {
+	    transform: translateY(-20px);
+	    font-size: 14px;
+	    color: #3498db;
+	}
+	
 	@media (max-width: 700px) {
 	  .container .text{
 	    font-size: 30px;
@@ -132,40 +153,63 @@
 	    font-size: 14px;
 	    color: #3498db;
 	}
-
+	
+	.readonly-label {
+		transform: translateY(-20px);
+	    font-size: 14px;
+	    color: #3498db;
+	}
+	
 </style>
 </head>
-
 <body>
 
-	<% Role role = new Role(); %>
-	<% role = (Role)request.getAttribute("roles"); %>
-	
+	<% Request requests = new Request(); %>
+	<% requests = (Request)request.getAttribute("requests"); %>
+
 	<div class="container">
 	
-      <div class="text"> Edit Role </div>
+      <div class="text"> Edit Request </div>
       
-      <form action="update?id=<%= role.getRoleId()%>" method="post">
-      
-         <div class="form-row">
-         
+      <form action="update?id=<%= requests.getRequestId() %>" method="post">
+      		
+ 		<div class="form-row">
+          <div class="input-data">
+             <input type="text" name="manager_id" value = "<%= requests.getManagerId() %>" readonly>
+             <div class="underline"></div>
+             <label class="readonly-label" for="manager_id">Manager ID</label>
+          </div>
+       	</div>
+       	
+   		<div class="form-row">
             <div class="input-data">
-               <input type="text" name="role_name" value = "<%= role.getRoleName()%>" required>
-               <div class="underline"></div>
-               <label for="role_name">Role Name</label>
+				<select name="leave_status">
+				    <option value="Pending" <%= "Pending".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Pending</option>
+				    <option value="Accepted" <%= "Accepted".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Accepted</option>
+				    <option value="Rejected" <%= "Rejected".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Rejected</option>
+				</select>
+				
+				<label for="leave_status">Status</label>
             </div>
-         </div>
+       	</div>
+        	
+       	<div class="form-row">
+          <div class="input-data">
+             <input type="text" name="comments" value = "<%= requests.getComments() %>">
+             <div class="underline"></div>
+             <label for="comments">Comments</label>
+          </div>
+       	</div>
          
-         <div class="form-row submit-btn">
-            <div class="input-data">
-               <div class="inner"></div>
-               <input type="submit" value="submit">
-            </div>
-         </div>
+        <div class="form-row submit-btn">
+           <div class="input-data">
+              <div class="inner"></div>
+              <input type="submit" value="submit">
+           </div>
+        </div>
          
       </form>
-	      
-   	</div>
-	
+      </div>
+      
 </body>
 </html>

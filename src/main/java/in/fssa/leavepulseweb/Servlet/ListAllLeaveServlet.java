@@ -11,26 +11,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.fssa.leavepulse.exception.ServiceException;
-import in.fssa.leavepulse.model.Employee;
-import in.fssa.leavepulse.service.EmployeeService;
+import in.fssa.leavepulse.model.Leave;
+import in.fssa.leavepulse.service.LeaveService;
 
 /**
- * Servlet implementation class ListAllEmployeeServlet
+ * Servlet implementation class ListAllLeaveServlet
  */
-@WebServlet("/employees")
-public class ListAllEmployeeServlet extends HttpServlet {
+@WebServlet("/leaves")
+public class ListAllLeaveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			List<Employee> employeeList = new EmployeeService().getAllEmployee();
-			request.setAttribute("employeesList", employeeList);
+			List<Leave> leaveList = new LeaveService().getAllLeave();
+			request.setAttribute("leavesList", leaveList);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("/list_all_employees.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/list_all_leaves.jsp");
 			rd.forward(request, response);
 			
 		} catch (ServiceException e) {

@@ -33,13 +33,10 @@ public class CreateRoleServlet extends HttpServlet {
 				roleService.createRole(role);
 				response.sendRedirect(request.getContextPath() + "/roles");
 				
-			} catch (ServiceException e) {
+			} catch (ServiceException | ValidationException e) {
 				e.printStackTrace();
 				out.println(e.getMessage());
-			} catch (ValidationException e) {
-				e.printStackTrace();
-				out.println(e.getMessage());
-			}
+			} 
 		
 	}
 

@@ -1,12 +1,12 @@
+<%@page import="in.fssa.leavepulse.model.Employee"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title> Create Employee </title>
+<title> View Employee </title>
 <style>
-		
 	*{
 	  margin: 0;
 	  padding: 0;
@@ -134,79 +134,91 @@
 	    color: #3498db;
 	}
 	
+	.readonly-label {
+		transform: translateY(-20px);
+	    font-size: 14px;
+	    color: #3498db;
+	}
 </style>
 </head>
 <body>
 
+	<% Employee employee = new Employee(); %>
+	<% employee = (Employee)request.getAttribute("employees"); %>
+	<% int managerId = (int)request.getAttribute("manager"); %>
+	<% String role_name = (String)request.getAttribute("role_name"); %>
+	
 	<div class="container">
 	
-      <div class="text"> Create Employee </div>
+      <div class="text"> View Employee </div>
       
-      <form action="create" method="post">
+      <form>
       
          <div class="form-row">
             <div class="input-data">
-               <input type="text" name="first_name" required>
+               <input type="text" name="first_name" value = "<%= employee.getFirst_name()%>" readonly>
                <div class="underline"></div>
-               <label for="first_name">First Name</label>
+               <label class="readonly-label" for="first_name">First Name</label>
             </div>
             <div class="input-data">
-               <input type="text" name="last_name" required>
+               <input type="text" name="last_name" value = "<%= employee.getLast_name()%>" readonly>
                <div class="underline"></div>
-               <label for="last_name">Last Name</label>
+               <label class="readonly-label" for="last_name">Last Name</label>
             </div>
          </div>
          
          <div class="form-row">
             <div class="input-data">
-               <input type="text" name="email" required>
+               <input type="text" name="email" value = "<%= employee.getEmail()%>" readonly>
                <div class="underline"></div>
-               <label for="email">Email</label>
+               <label for="email" class="readonly-label">Email</label>
             </div>
             <div class="input-data">
-               <input type="tel" name="phone" required>
+               <input type="tel" name="phone" value = "<%= employee.getPhone_no() %>" readonly>
                <div class="underline"></div>
-               <label for="phone">Phone No</label>
+               <label for="phone" class="readonly-label">Phone No</label>
             </div>
          </div>
          
          <div class="form-row">
             <div class="input-data">
-               <input type="text" name="password" required>
+               <input type="text" name="password" value = "<%= employee.getPassword()%>" readonly>
                <div class="underline"></div>
-               <label for="password">Password</label>
+               <label class="readonly-label" for="password">Password</label>
             </div>
             <div class="input-data">
-               <input type="text" name="address" required>
+               <input type="text" name="address" value = "<%= employee.getAddress()%>" readonly>
                <div class="underline"></div>
-               <label for="address">Address</label>
+               <label class="readonly-label" for="address">Address</label>
             </div>
          </div>
          
          <div class="form-row">
             <div class="input-data">
-               <select name="role">
-					<option value="CEO">CEO</option>
-					<option value="CPO">CPO</option>
-					<option value="Manager">Manager</option>
-					<option value="Developer">Developer</option>
-					<option value="Tester">Tester</option>
-				</select>
-				<label for="role">Role</label>
+              <input type="text" name="role" value = "<%= role_name %>" readonly>
+               <div class="underline"></div>
+               <label for="role" class="readonly-label">Role</label>
             </div>
             <div class="input-data">
-               <input type="text" name="manager_id" required>
+               <input type="text" name="manager_id" value = "<%= managerId %>" readonly>
                <div class="underline"></div>
-               <label for="manager_id">Manager</label>
+               <label for="manager_id" class="readonly-label">Manager</label>
             </div>
          </div>
          
-         <div class="form-row submit-btn">
+         <div class="form-row">
             <div class="input-data">
-               <div class="inner"></div>
-               <input type="submit" value="submit">
+              <input type="text" name="employee_id" value = "<%= employee.getEmployee_id() %>" readonly>
+               <div class="underline"></div>
+               <label for="employee_id" class="readonly-label">Employee ID</label>
+            </div>
+            <div class="input-data">
+               <input type="text" name="hire_date" value = "<%= employee.getHire_date() %>" readonly>
+               <div class="underline"></div>
+               <label for="hire_date" class="readonly-label">Joined Date</label>
             </div>
          </div>
+         
       </form>
       </div>
 
