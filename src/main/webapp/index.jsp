@@ -1,5 +1,12 @@
 <html>
+<head>
+<style>
+	body{
+  		font-family: 'Poppins', sans-serif;
+	}
+</style>
+</head>
 <body>
-<h2>Hello World!</h2>
+<h2>Welcome to LeavePulse</h2>
 </body>
 </html>

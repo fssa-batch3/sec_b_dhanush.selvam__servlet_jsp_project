@@ -22,41 +22,67 @@ body{
     padding: 20px;
     border-radius: 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-}
-
-.table_header_container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center; /* Center the table within the container */
 }
 
 .table {
-	width:100%;
-	border:1px solid #EEEEEE;
+    width: 90%; /* Set the table width to 90% */
+    margin: 0 auto; /* Center the table horizontally */
+    border: 1px solid #EEEEEE;
 }
 
 .table-header {
-	display:flex;
-	width:100%;
-	background:#000;
-	padding: 15px 0px;
-	color: white;
+    display: flex;
+    width: 100%;
+    background: darkslategray;
+    padding: 15px 0px;
+    color: white;
 }
 
 .table-row {
-	display:flex;
-	width:100%;
-	padding: 15px 0px;
-	
-	&:nth-of-type(odd) {
-		background: #EEEEEE;
-	}
+    display: flex;
+    width: 100%;
+    padding: 15px 0px;
+    
+    &:nth-of-type(odd) {
+        background: #EEEEEE;
+    }
 }
 
 .table-data, .header__item {
-	flex: 1 1 20%;
-	text-align:center;
-} 
+    flex: 1 1 20%;
+    text-align: center;
+}
+
+.delete {
+    background-color: #e74c3c; /* Red background color for Delete button */
+    color: #fff; /* Text color */
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.delete:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+.view {
+    background-color: #27ae60; /* Green background color for View button */
+    color: #fff; /* Text color */
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.view:hover {
+    background-color: #219d53; /* Darker green on hover */
+}
 
 button:hover {
     cursor: pointer;
@@ -64,7 +90,9 @@ button:hover {
 
 .heading_container {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
+	margin-top: 50px;
+	padding: 0px 75px;
 }
 
 .add_btn_container {
@@ -76,7 +104,7 @@ button:hover {
 .add {
 	color: white;
     border: none;
-    background: black;
+    background: darkslategray;
     padding: 10px 15px;
     border-radius: 5px;
 }
@@ -84,13 +112,19 @@ button:hover {
 </style>
 </head>
 <body>
+
+	<jsp:include page="/header.jsp"/>
 	<% List<Employee> employeeList = (List<Employee>)request.getAttribute("employeesList"); %>
 		
-	<div class="heading_container"> <h1>Employees List</h1> </div>
-	<div class="add_btn_container">
-		<a href="employee/new">
-			<button class = "add">Add Employee</button>
-		</a>
+	<div class="heading_container"> 
+		<div class="head_container">
+			<h1>Employees List</h1> 
+		</div>
+		<div class="add_btn_container">
+			<a href="employee/new">
+				<button class = "add">Add Employee</button>
+			</a>
+		</div>
 	</div>
 
 	<div class="table">
@@ -100,9 +134,8 @@ button:hover {
 			<div class="header__item">Email</div>
 			<div class="header__item">Phone No</div>
 			<div class="header__item">Employee ID</div>
-			<div class="header__item">Edit</div>
-			<div class="header__item">Delete</div>
 			<div class="header__item">View</div>
+			<div class="header__item">Delete</div>
 		</div>
 		<div class="table-content">
 		<% int i = 1; %>
@@ -113,9 +146,8 @@ button:hover {
 				<div class="table-data"> <%= employee.getEmail() %> </div>
 				<div class="table-data"> <%= employee.getPhone_no() %> </div>
 				<div class="table-data"> <%= employee.getEmployee_id() %> </div>
-				<div class="table-data"> <a href="employee/edit?id=<%= employee.getEmployee_id() %>"> <button> Edit </button> </a> </div>
-				<div class="table-data"> <a href="employee/delete?id=<%= employee.getEmployee_id() %>"> <button> Delete </button> </a> </div>
-				<div class="table-data"> <a href="employee/view?id=<%= employee.getEmployee_id() %>"> <button> View </button> </a> </div>
+				<div class="table-data"> <a href="employee/view?id=<%= employee.getEmployee_id() %>"> <button class="view"> View </button> </a> </div>
+				<div class="table-data"> <a href="employee/delete?id=<%= employee.getEmployee_id() %>"> <button class="delete"> Delete </button> </a> </div>
 			</div>
 			<% i++; %>
 			<% } %>

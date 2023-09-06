@@ -1,3 +1,4 @@
+<%@page import="in.fssa.leavepulse.dto.RequestDTO"%>
 <%@page import="in.fssa.leavepulse.model.Request"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -14,13 +15,16 @@
 	  box-sizing: border-box;
 	}
 	body{
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  min-height: 100vh;
-	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
+	
+	.main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 60vh;
+	}
+	
 	.container{
 	  max-width: 800px;
 	  background: #fff;
@@ -143,65 +147,74 @@
 </head>
 <body>
 
-	<% Request requests = new Request(); %>
-	<% requests = (Request)request.getAttribute("requests"); %>
-	<% String employee_name = (String)request.getAttribute("employee_name"); %>
-	<% String leave_type = (String)request.getAttribute("leave_type"); %>
+	<% RequestDTO requests = new RequestDTO(); %>
+	<% requests = (RequestDTO)request.getAttribute("requests"); %>
 	
-	<div class="container">
+	<jsp:include page="/header.jsp"/>
 	
-      <div class="text"> View Request </div>
-      
-      <form>
-      
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="employee_name" value = "<%= employee_name %>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="employee_name">Employee Name</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="leave_type" value = "<%= leave_type %>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="leave_type">Leave Type</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="start_date" value = "<%= requests.getStartDate() %>" readonly>
-               <div class="underline"></div>
-               <label for="start_date" class="readonly-label">Start Date</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="end_date" value = "<%= requests.getEndDate() %>" readonly>
-               <div class="underline"></div>
-               <label for="end_date" class="readonly-label">End Date</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="reason" value = "<%= requests.getReason() %>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="reason">Reason</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="status" value = "<%= requests.getLeaveStatus() %>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="status">Status</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-              <input type="text" name="comments" value = "<%= requests.getComments() %>" readonly>
-               <div class="underline"></div>
-               <label for="comments" class="readonly-label">Comments</label>
-            </div>
-         </div>
-         
-      </form>
+	<div class="main">
+	
+		<div class="container">
+		
+	      <div class="text"> View Request </div>
+	      
+	      <form>
+	      
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="employee_name" value = "<%= requests.getEmployeeName() %>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="employee_name">Employee Name</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="leave_type" value = "<%= requests.getLeaveType() %>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="leave_type">Leave Type</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	         	<div class="input-data">
+	               <input type="text" name="email" value = "<%= requests.getEmployeeEmail() %>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="email">Email</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="reason" value = "<%= requests.getReason() %>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="reason">Reason</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="start_date" value = "<%= requests.getStartDate() %>" readonly>
+	               <div class="underline"></div>
+	               <label for="start_date" class="readonly-label">Start Date</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="end_date" value = "<%= requests.getEndDate() %>" readonly>
+	               <div class="underline"></div>
+	               <label for="end_date" class="readonly-label">End Date</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	         	<div class="input-data">
+	               <input type="text" name="status" value = "<%= requests.getLeaveStatus() %>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="status">Status</label>
+	            </div>
+	            <div class="input-data">
+	              <input type="text" name="comments" value = "<%= requests.getComments() %>" readonly>
+	               <div class="underline"></div>
+	               <label for="comments" class="readonly-label">Comments</label>
+	            </div>
+	         </div>
+	         
+	      </form>
+	      </div>
+	      
       </div>
 
 </body>

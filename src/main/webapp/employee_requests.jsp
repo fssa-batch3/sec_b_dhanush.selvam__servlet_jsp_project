@@ -1,13 +1,15 @@
-<%@page import="in.fssa.leavepulse.dto.EmployeeRoleDTO"%>
-<%@page import="in.fssa.leavepulse.model.EmployeeRole"%>
 <%@page import="java.util.List"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="in.fssa.leavepulse.dto.RequestDTO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title> Employee-Role </title>
+<title> Employee Leave History </title>
+</head>
 <style>
 
 body{
@@ -51,8 +53,8 @@ body{
     text-align: center;
 }
 
-.edit {
-    background-color: #3498db; /* Blue background color for Edit button */
+.view {
+    background-color: #27ae60; /* Green background color for View button */
     color: #fff; /* Text color */
     border: none;
     padding: 5px 10px;
@@ -62,9 +64,10 @@ body{
     text-decoration: none;
 }
 
-.edit:hover {
-    background-color: #2980b9; /* Darker blue on hover */
+.view:hover {
+    background-color: #219d53; /* Darker green on hover */
 }
+
 
 button:hover {
     cursor: pointer;
@@ -79,40 +82,50 @@ button:hover {
 }
 
 </style>
-</head>
+
 <body>
 
 	<jsp:include page="/header.jsp"/>
-	<% List<EmployeeRoleDTO> empRoleList = (List<EmployeeRoleDTO>)request.getAttribute("empRolesList"); %>
-		
+	<% List<RequestDTO> requestList = (List<RequestDTO>)request.getAttribute("requests"); %>
+	
 	<div class="heading_container"> 
 		<div class="head_container">
-			<h1>Employee-Role List</h1> 
+			<h1>Requests List</h1> 
 		</div>
 	</div>
-	
+
+
 	<div class="table">
 		<div class="table-header">
 			<div class="header__item">S.No</div>
-			<div class="header__item">Employee Name</div>
-			<div class="header__item">Manager Name</div>
-			<div class="header__item">Role</div>
-			<div class="header__item">Edit</div>
+			<div class="header__item">Name</div>
+			<div class="header__item">Leave Type</div>
+			<div class="header__item">Applied Date</div>
+			<div class="header__item">Status</div>
+			<div class="header__item">View</div>
 		</div>
 		<div class="table-content">
 		<% int i = 1; %>
-		<% for (EmployeeRoleDTO empRole : empRoleList) { %>
+		<% for (RequestDTO requests : requestList) { %>
 			<div class="table-row">
 				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= empRole.getEmployeeName() %> </div>
-				<div class="table-data"> <%= empRole.getManagerName() %> </div>
-				<div class="table-data"> <%= empRole.getRoleName() %> </div>
-				<div class="table-data"> <a href="empRole/edit?id=<%= empRole.getEmpRoleId() %>"> <button class="edit"> Edit </button> </a> </div>
+				<div class="table-data"> <%= requests.getEmployeeName() %> </div>
+				<div class="table-data"> <%= requests.getLeaveType() %> </div>
+				<% String originalDateString = requests.getCreatedAt() + ""; %>
+				<% DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"); %>
+				<% LocalDate localDate = LocalDate.parse(originalDateString, originalFormatter); %>
+				<% DateTimeFormatter desiredFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); %>
+				<% String desiredDateString = localDate.format(desiredFormatter); %>
+				<div class="table-data"> <%= desiredDateString %> </div>
+				<div class="table-data"> <%= requests.getLeaveStatus() %> </div>
+				<div class="table-data"> <a href="request/view?id=<%= requests.getRequestId() %>"> <button class="view"> View </button> </a> </div>
 			</div>
 			<% i++; %>
 			<% } %>
 		</div>
 	</div>
-	
+
 </body>
+
+
 </html>

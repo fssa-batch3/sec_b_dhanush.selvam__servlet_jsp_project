@@ -31,6 +31,7 @@ public class UpdateRequestServlet extends HttpServlet {
 		RequestService requestService = new RequestService();
 		Request requests = new Request();
 		
+		int loggedUserId = (int) request.getSession().getAttribute("LOGGEDUSER");
 		String leaveStatusString = request.getParameter("leave_status");
 		LeaveStatus leaveStatus = LeaveStatus.Pending;
 
@@ -45,7 +46,7 @@ public class UpdateRequestServlet extends HttpServlet {
 		
 		requests.setLeaveStatus(leaveStatus);
 		requests.setComments(request.getParameter("comments"));
-		requests.setModifiedBy(Integer.parseInt(request.getParameter("manager_id")));
+		requests.setModifiedBy(loggedUserId);
 		
 		PrintWriter out = response.getWriter();
 		

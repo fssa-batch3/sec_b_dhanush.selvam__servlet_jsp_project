@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.model.Request;
+import in.fssa.leavepulse.service.EmployeeRoleService;
 import in.fssa.leavepulse.service.LeaveService;
 import in.fssa.leavepulse.service.RequestService;
 
@@ -31,8 +32,10 @@ public class CreateRequestServlet extends HttpServlet {
 		
 		RequestService requestService = new RequestService();
 		Request requests = new Request();
-		requests.setCreatedBy(Integer.parseInt(request.getParameter("employee_id")));
-		requests.setManagerId(Integer.parseInt(request.getParameter("manager_id")));
+		
+		int loggedUserId = (int)request.getSession().getAttribute("LOGGEDUSER");
+		
+		requests.setCreatedBy(loggedUserId);
 		requests.setReason(request.getParameter("reason"));
 		
 		String startDate = request.getParameter("start_date");
@@ -47,10 +50,15 @@ public class CreateRequestServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		try {
+			
+			int managerId = new EmployeeRoleService().findEmpRoleByEmployeeId(loggedUserId).getManagerId();
 			int leaveId = new LeaveService().findLeaveByLeaveName(request.getParameter("leave")).getLeaveId();
+			
+			requests.setManagerId(managerId);
 			requests.setLeaveId(leaveId);
+			
 			requestService.createRequest(requests);
-			response.sendRedirect(request.getContextPath() + "/requests");
+			response.sendRedirect(request.getContextPath() + "/leaveHistory");
 			
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();

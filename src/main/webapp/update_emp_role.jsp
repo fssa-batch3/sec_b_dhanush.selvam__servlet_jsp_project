@@ -1,3 +1,5 @@
+<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="java.util.List"%>
 <%@page import="in.fssa.leavepulse.model.EmployeeRole"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -15,13 +17,16 @@
 	  box-sizing: border-box;
 	}
 	body{
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  min-height: 80vh;
-	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
+	
+	.main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 60vh;
+	}
+	
 	.container{
 	  max-width: 800px;
 	  background: #fff;
@@ -167,52 +172,57 @@
 	<% EmployeeRole empRole = new EmployeeRole(); %>
 	<% empRole = (EmployeeRole)request.getAttribute("empRoles"); %>
 	<% String role_name = (String)request.getAttribute("role_name"); %>
-
-	<div class="container">
+	<% List<Role> roleList = (List<Role>)request.getAttribute("roleList"); %>
 	
-      <div class="text"> Edit Employee-Role </div>
-      
-      <form action="update?id=<%= empRole.getEmpRoleId() %>" method="post">
-      
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="employee_id" value = "<%= empRole.getEmployeeId() %>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="employee_id">Employee ID</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="manager_id" value = "<%= empRole.getManagerId() %>" required>
-               <div class="underline"></div>
-               <label for="manager_id">Manager ID</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-				<select name="role">
-				    <option value="CEO" <%= "CEO".equals(role_name) ? "selected" : "" %>>CEO</option>
-				    <option value="CPO" <%= "CPO".equals(role_name) ? "selected" : "" %>>CPO</option>
-				    <option value="Manager" <%= "Manager".equals(role_name) ? "selected" : "" %>>Manager</option>
-				    <option value="Developer" <%= "Developer".equals(role_name) ? "selected" : "" %>>Developer</option>
-				    <option value="Tester" <%= "Tester".equals(role_name) ? "selected" : "" %>>Tester</option>
-				</select>
-				
-				<label for="role">Role</label>
-            </div>
-         </div>
-         
-         <div class="form-row submit-btn">
-            <div class="input-data">
-               <div class="inner"></div>
-               <input type="submit" value="submit">
-            </div>
-         </div>
-         
-      </form>
+	<jsp:include page="/header.jsp"/>
+	
+	<div class="main">
+
+		<div class="container">
+		
+	      <div class="text"> Edit Employee-Role </div>
 	      
+	      <form action="update?id=<%= empRole.getEmpRoleId() %>" method="post">
+	      
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="employee_id" value = "<%= empRole.getEmployeeId() %>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="employee_id">Employee ID</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="manager_id" value = "<%= empRole.getManagerId() %>" required>
+	               <div class="underline"></div>
+	               <label for="manager_id">Manager ID</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+					<select name="role">
+						<% for (Role role : roleList) { %>
+					    	<option value="<%= role.getRoleName() %>" <%= role.getRoleName().equals(role_name) ? "selected" : "" %>> <%= role.getRoleName() %> </option>
+						<% } %>
+					</select>
+					
+					<label for="role">Role</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row submit-btn">
+	            <div class="input-data">
+	               <div class="inner"></div>
+	               <input type="submit" value="submit">
+	            </div>
+	         </div>
+	         
+	      </form>
+		      
+	   	</div>
+	   	
    	</div>
 
 </body>

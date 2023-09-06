@@ -15,13 +15,16 @@
 	  box-sizing: border-box;
 	}
 	body{
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  min-height: 80vh;
-	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
+	
+	.main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 60vh;
+	}
+	
 	.container{
 	  max-width: 800px;
 	  background: #fff;
@@ -166,50 +169,48 @@
 
 	<% Request requests = new Request(); %>
 	<% requests = (Request)request.getAttribute("requests"); %>
-
-	<div class="container">
 	
-      <div class="text"> Edit Request </div>
-      
-      <form action="update?id=<%= requests.getRequestId() %>" method="post">
-      		
- 		<div class="form-row">
-          <div class="input-data">
-             <input type="text" name="manager_id" value = "<%= requests.getManagerId() %>" readonly>
-             <div class="underline"></div>
-             <label class="readonly-label" for="manager_id">Manager ID</label>
-          </div>
-       	</div>
-       	
-   		<div class="form-row">
-            <div class="input-data">
-				<select name="leave_status">
-				    <option value="Pending" <%= "Pending".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Pending</option>
-				    <option value="Accepted" <%= "Accepted".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Accepted</option>
-				    <option value="Rejected" <%= "Rejected".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Rejected</option>
-				</select>
-				
-				<label for="leave_status">Status</label>
-            </div>
-       	</div>
-        	
-       	<div class="form-row">
-          <div class="input-data">
-             <input type="text" name="comments" value = "<%= requests.getComments() %>">
-             <div class="underline"></div>
-             <label for="comments">Comments</label>
-          </div>
-       	</div>
-         
-        <div class="form-row submit-btn">
-           <div class="input-data">
-              <div class="inner"></div>
-              <input type="submit" value="submit">
-           </div>
-        </div>
-         
-      </form>
-      </div>
+	<jsp:include page="/header.jsp"/>
+	
+	<div class="main">
+
+		<div class="container">
+		
+	      <div class="text"> Edit Request </div>
+	      
+	      <form action="update?id=<%= requests.getRequestId() %>" method="post">
+	       	
+	   		<div class="form-row">
+	            <div class="input-data">
+					<select name="leave_status">
+					    <option value="Pending" <%= "Pending".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Pending</option>
+					    <option value="Accepted" <%= "Accepted".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Accepted</option>
+					    <option value="Rejected" <%= "Rejected".equals(requests.getLeaveStatus().toString()) ? "selected" : "" %>>Rejected</option>
+					</select>
+					
+					<label for="leave_status">Status</label>
+	            </div>
+	       	</div>
+	        	
+	       	<div class="form-row">
+	          <div class="input-data">
+	             <input type="text" name="comments" value = "<%= requests.getComments() %>">
+	             <div class="underline"></div>
+	             <label for="comments">Comments</label>
+	          </div>
+	       	</div>
+	         
+	        <div class="form-row submit-btn">
+	           <div class="input-data">
+	              <div class="inner"></div>
+	              <input type="submit" value="submit">
+	           </div>
+	        </div>
+	         
+	      </form>
+	      </div>
+
+	</div>
       
 </body>
 </html>

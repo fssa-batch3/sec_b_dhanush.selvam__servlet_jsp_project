@@ -1,3 +1,5 @@
+<%@page import="in.fssa.leavepulse.model.Role"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -14,13 +16,16 @@
 	  box-sizing: border-box;
 	}
 	body{
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  min-height: 100vh;
-	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
+	
+	.main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 85vh;
+	}
+	
 	.container{
 	  max-width: 800px;
 	  background: #fff;
@@ -138,76 +143,82 @@
 </head>
 <body>
 
-	<div class="container">
+	<jsp:include page="/header.jsp"/>
 	
-      <div class="text"> Create Employee </div>
-      
-      <form action="create" method="post">
-      
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="first_name" required>
-               <div class="underline"></div>
-               <label for="first_name">First Name</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="last_name" required>
-               <div class="underline"></div>
-               <label for="last_name">Last Name</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="email" required>
-               <div class="underline"></div>
-               <label for="email">Email</label>
-            </div>
-            <div class="input-data">
-               <input type="tel" name="phone" required>
-               <div class="underline"></div>
-               <label for="phone">Phone No</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="password" required>
-               <div class="underline"></div>
-               <label for="password">Password</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="address" required>
-               <div class="underline"></div>
-               <label for="address">Address</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <select name="role">
-					<option value="CEO">CEO</option>
-					<option value="CPO">CPO</option>
-					<option value="Manager">Manager</option>
-					<option value="Developer">Developer</option>
-					<option value="Tester">Tester</option>
-				</select>
-				<label for="role">Role</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="manager_id" required>
-               <div class="underline"></div>
-               <label for="manager_id">Manager</label>
-            </div>
-         </div>
-         
-         <div class="form-row submit-btn">
-            <div class="input-data">
-               <div class="inner"></div>
-               <input type="submit" value="submit">
-            </div>
-         </div>
-      </form>
+	<% List<Role> roleList = (List<Role>)request.getAttribute("roleList"); %>
+	
+	<div class="main">
+
+		<div class="container">
+		
+	      <div class="text"> Create Employee </div>
+	      
+	      <form action="create" method="post">
+	      
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="first_name" required>
+	               <div class="underline"></div>
+	               <label for="first_name">First Name</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="last_name" required>
+	               <div class="underline"></div>
+	               <label for="last_name">Last Name</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="email" required>
+	               <div class="underline"></div>
+	               <label for="email">Email</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="tel" name="phone" required>
+	               <div class="underline"></div>
+	               <label for="phone">Phone No</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="password" required>
+	               <div class="underline"></div>
+	               <label for="password">Password</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="address" required>
+	               <div class="underline"></div>
+	               <label for="address">Address</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <select name="role">
+					    <% for (Role role : roleList) { %>
+					        <option value="<%= role.getRoleName() %>"> <%= role.getRoleName() %> </option>
+					    <% } %>
+					</select>
+					<label for="role">Role</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="manager_id" required>
+	               <div class="underline"></div>
+	               <label for="manager_id">Manager</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row submit-btn">
+	            <div class="input-data">
+	               <div class="inner"></div>
+	               <input type="submit" value="submit">
+	            </div>
+	         </div>
+	      </form>
+	      </div>
+	      
       </div>
 
 </body>

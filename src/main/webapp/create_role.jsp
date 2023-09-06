@@ -15,13 +15,16 @@
 	  box-sizing: border-box;
 	}
 	body{
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  min-height: 80vh;
-	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
+	
+	.main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 60vh;
+	}
+	
 	.container{
 	  max-width: 800px;
 	  background: #fff;
@@ -136,30 +139,36 @@
 </style>
 <body>
 
-	<div class="container">
+	<jsp:include page="/header.jsp"/>
 	
-      <div class="text"> Create Role </div>
-      
-      <form action="create" method="post">
-      
-         <div class="form-row">
-         
-            <div class="input-data">
-               <input type="text" name="role_name" required>
-               <div class="underline"></div>
-               <label for="role_name">Role Name</label>
-            </div>
-         </div>
-         
-         <div class="form-row submit-btn">
-            <div class="input-data">
-               <div class="inner"></div>
-               <input type="submit" value="submit">
-            </div>
-         </div>
-         
-      </form>
+	<div class="main">
+	
+		<div class="container">
+		
+	      <div class="text"> Create Role </div>
 	      
+	      <form action="create" method="post">
+	      
+	         <div class="form-row">
+	         
+	            <div class="input-data">
+	               <input type="text" name="role_name" required>
+	               <div class="underline"></div>
+	               <label for="role_name">Role Name</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row submit-btn">
+	            <div class="input-data">
+	               <div class="inner"></div>
+	               <input type="submit" value="submit">
+	            </div>
+	         </div>
+	         
+	      </form>
+		      
+	   	</div>
+	   	
    	</div>
 	
 </body>

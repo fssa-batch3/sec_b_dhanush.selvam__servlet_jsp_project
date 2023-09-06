@@ -1,3 +1,5 @@
+<%@page import="in.fssa.leavepulse.model.Leave"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -15,13 +17,16 @@
 	  box-sizing: border-box;
 	}
 	body{
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  min-height: 90vh;
-	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
+	
+	.main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 75vh;
+	}
+	
 	.container{
 	  max-width: 800px;
 	  background: #fff;
@@ -144,62 +149,56 @@
 </style>
 <body>
 
-	<div class="container">
+	<jsp:include page="/header.jsp"/>
 	
-      <div class="text"> Create Request </div>
-      
-      <form action="create" method="post">
-      
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="employee_id" required>
-               <div class="underline"></div>
-               <label for="employee_id">Employee ID</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="manager_id" required>
-               <div class="underline"></div>
-               <label for="manager_id">Manager ID</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <select name="leave">
-					<option value="Sick Leave">Sick Leave</option>
-					<option value="Personal Leave">Personal Leave</option>
-					<option value="Medical Leave">Medical Leave</option>
-					<option value="Casual Leave">Casual Leave</option>
-				</select>
-				<label for="leave">Leave Type</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="reason" required>
-               <div class="underline"></div>
-               <label for="reason">Reason</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="date" name="start_date" required>
-               <div class="underline"></div>
-               <label class="readonly-label" for="start_date">Start Date</label>
-            </div>
-            <div class="input-data">
-               <input type="date" name="end_date" required>
-               <div class="underline"></div>
-               <label class="readonly-label" for="end_date">End Date</label>
-            </div>
-         </div>
-         
-         <div class="form-row submit-btn">
-            <div class="input-data">
-               <div class="inner"></div>
-               <input type="submit" value="submit">
-            </div>
-         </div>
-      </form>
+	<% List<Leave> leaveList = (List<Leave>)request.getAttribute("leaveList"); %>
+	
+	<div class="main">
+
+		<div class="container">
+		
+	      <div class="text"> Create Request </div>
+	      
+	      <form action="create" method="post">
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <select name="leave">
+						<% for (Leave leave : leaveList) { %>
+					        <option value="<%= leave.getLeaveType() %>"> <%= leave.getLeaveType() %> </option>
+					    <% } %>
+					</select>
+					<label for="leave">Leave Type</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="reason" required>
+	               <div class="underline"></div>
+	               <label for="reason">Reason</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="date" name="start_date" required>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="start_date">Start Date</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="date" name="end_date" required>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="end_date">End Date</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row submit-btn">
+	            <div class="input-data">
+	               <div class="inner"></div>
+	               <input type="submit" value="submit">
+	            </div>
+	         </div>
+	      </form>
+	      </div>
+	      
       </div>
 
 </body>

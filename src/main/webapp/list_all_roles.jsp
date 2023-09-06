@@ -20,41 +20,68 @@ body{
     padding: 20px;
     border-radius: 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-}
-
-.table_header_container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center; /* Center the table within the container */
 }
 
 .table {
-	width:100%;
-	border:1px solid #EEEEEE;
+    width: 90%; /* Set the table width to 90% */
+    margin: 0 auto; /* Center the table horizontally */
+    border: 1px solid #EEEEEE;
 }
 
 .table-header {
-	display:flex;
-	width:100%;
-	background:#000;
-	padding: 15px 0px;
-	color: white;
+    display: flex;
+    width: 100%;
+    background: darkslategray;
+    padding: 15px 0px;
+    color: white;
 }
 
 .table-row {
-	display:flex;
-	width:100%;
-	padding: 15px 0px;
-	
-	&:nth-of-type(odd) {
-		background: #EEEEEE;
-	}
+    display: flex;
+    width: 100%;
+    padding: 15px 0px;
+    
+    &:nth-of-type(odd) {
+        background: #EEEEEE;
+    }
 }
 
 .table-data, .header__item {
-	flex: 1 1 20%;
-	text-align:center;
-} 
+    flex: 1 1 20%;
+    text-align: center;
+}
+
+.edit {
+    background-color: #3498db; /* Blue background color for Edit button */
+    color: #fff; /* Text color */
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.edit:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+.delete {
+    background-color: #e74c3c; /* Red background color for Delete button */
+    color: #fff; /* Text color */
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.delete:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
 
 button:hover {
     cursor: pointer;
@@ -62,7 +89,9 @@ button:hover {
 
 .heading_container {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
+	margin-top: 50px;
+	padding: 0px 75px;
 }
 
 .add_btn_container {
@@ -74,7 +103,7 @@ button:hover {
 .add {
 	color: white;
     border: none;
-    background: black;
+    background: darkslategray;
     padding: 10px 15px;
     border-radius: 5px;
 }
@@ -82,14 +111,19 @@ button:hover {
 </style>
 </head>
 <body>
-
+	
+	<jsp:include page="/header.jsp"/>
 	<% List<Role> roleList = (List<Role>) request.getAttribute("rolesList"); %>
 
-	<div class="heading_container"> <h1>Roles List</h1> </div>
-	<div class="add_btn_container">
-		<a href="role/new">
-			<button class = "add">Add Role</button>
-		</a>
+	<div class="heading_container"> 
+		<div class="head_container">
+			<h1>Roles List</h1> 
+		</div>
+		<div class="add_btn_container">
+			<a href="role/new">
+				<button class = "add">Add Role</button>
+			</a>
+		</div>
 	</div>
 
 	<div class="table">
@@ -107,8 +141,8 @@ button:hover {
 				<div class="table-data"> <%= i %> </div>
 				<div class="table-data"> <%= role.getRoleName() %> </div>
 				<div class="table-data"> <%= role.getRoleId() %> </div>
-				<div class="table-data"> <a href="role/edit?id=<%= role.getRoleId() %>"> <button> Edit </button> </a> </div>
-				<div class="table-data"> <a href="role/delete?id=<%= role.getRoleId() %>"> <button> Delete </button> </a> </div>
+				<div class="table-data"> <a href="role/edit?id=<%= role.getRoleId() %>"> <button class="edit"> Edit </button> </a> </div>
+				<div class="table-data"> <a href="role/delete?id=<%= role.getRoleId() %>"> <button class="delete"> Delete </button> </a> </div>
 			</div>
 			<% i++; %>
 			<% } %>

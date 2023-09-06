@@ -1,6 +1,8 @@
 package in.fssa.leavepulseweb.Servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.model.EmployeeRole;
+import in.fssa.leavepulse.model.Role;
 import in.fssa.leavepulse.service.EmployeeRoleService;
 import in.fssa.leavepulse.service.RoleService;
 
@@ -26,12 +29,17 @@ public class EditEmpRoleServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		List<Role> roleList = new ArrayList<>();
 
 		try {
+			
 			EmployeeRole empRole = new EmployeeRoleService().findEmpRoleByEmpRoleId(Integer.parseInt(request.getParameter("id")));
 			String role = new RoleService().findRoleByRoleId(empRole.getRoleId()).getRoleName();
+			roleList = new RoleService().getAllRole();
 			request.setAttribute("empRoles", empRole);
 			request.setAttribute("role_name", role);
+			request.setAttribute("roleList", roleList);
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/update_emp_role.jsp");
 			rd.forward(request, response);

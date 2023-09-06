@@ -14,13 +14,16 @@
 	  box-sizing: border-box;
 	}
 	body{
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  min-height: 100vh;
-	  padding: 10px;
 	  font-family: 'Poppins', sans-serif;
 	}
+	
+	.main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 85vh;
+	}
+	
 	.container{
 	  max-width: 800px;
 	  background: #fff;
@@ -148,79 +151,85 @@
 	<% int managerId = (int)request.getAttribute("manager"); %>
 	<% String role_name = (String)request.getAttribute("role_name"); %>
 	
-	<div class="container">
+	<jsp:include page="/header.jsp"/>
 	
-      <div class="text"> View Employee </div>
-      
-      <form>
-      
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="first_name" value = "<%= employee.getFirst_name()%>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="first_name">First Name</label>
+	<div class="main">
+	
+		<div class="container">
+		
+	      <div class="text"> View Employee </div>
+	      
+	      <form>
+	      
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="first_name" value = "<%= employee.getFirst_name()%>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="first_name">First Name</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="last_name" value = "<%= employee.getLast_name()%>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="last_name">Last Name</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="email" value = "<%= employee.getEmail()%>" readonly>
+	               <div class="underline"></div>
+	               <label for="email" class="readonly-label">Email</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="tel" name="phone" value = "<%= employee.getPhone_no() %>" readonly>
+	               <div class="underline"></div>
+	               <label for="phone" class="readonly-label">Phone No</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="password" value = "<%= employee.getPassword()%>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="password">Password</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="address" value = "<%= employee.getAddress()%>" readonly>
+	               <div class="underline"></div>
+	               <label class="readonly-label" for="address">Address</label>
+	            </div>
+	         </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	              <input type="text" name="role" value = "<%= role_name %>" readonly>
+	               <div class="underline"></div>
+	               <label for="role" class="readonly-label">Role</label>
+	            </div>
+	            <div class="input-data">
+	              <input type="text" name="employee_id" value = "<%= employee.getEmployee_id() %>" readonly>
+	               <div class="underline"></div>
+	               <label for="employee_id" class="readonly-label">Employee ID</label>
+	            </div>
             </div>
-            <div class="input-data">
-               <input type="text" name="last_name" value = "<%= employee.getLast_name()%>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="last_name">Last Name</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="email" value = "<%= employee.getEmail()%>" readonly>
-               <div class="underline"></div>
-               <label for="email" class="readonly-label">Email</label>
-            </div>
-            <div class="input-data">
-               <input type="tel" name="phone" value = "<%= employee.getPhone_no() %>" readonly>
-               <div class="underline"></div>
-               <label for="phone" class="readonly-label">Phone No</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="password" value = "<%= employee.getPassword()%>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="password">Password</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="address" value = "<%= employee.getAddress()%>" readonly>
-               <div class="underline"></div>
-               <label class="readonly-label" for="address">Address</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-              <input type="text" name="role" value = "<%= role_name %>" readonly>
-               <div class="underline"></div>
-               <label for="role" class="readonly-label">Role</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="manager_id" value = "<%= managerId %>" readonly>
-               <div class="underline"></div>
-               <label for="manager_id" class="readonly-label">Manager</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-              <input type="text" name="employee_id" value = "<%= employee.getEmployee_id() %>" readonly>
-               <div class="underline"></div>
-               <label for="employee_id" class="readonly-label">Employee ID</label>
-            </div>
-            <div class="input-data">
-               <input type="text" name="hire_date" value = "<%= employee.getHire_date() %>" readonly>
-               <div class="underline"></div>
-               <label for="hire_date" class="readonly-label">Joined Date</label>
-            </div>
-         </div>
-         
-      </form>
-      </div>
+	         
+	         <div class="form-row">
+	            <div class="input-data">
+	               <input type="text" name="manager_id" value = "<%= managerId %>" readonly>
+	               <div class="underline"></div>
+	               <label for="manager_id" class="readonly-label">Manager ID</label>
+	            </div>
+	            <div class="input-data">
+	               <input type="text" name="hire_date" value = "<%= employee.getHire_date() %>" readonly>
+	               <div class="underline"></div>
+	               <label for="hire_date" class="readonly-label">Joined Date</label>
+	            </div>
+	         </div>
+	         
+	      </form>
+	      </div>
+
+	</div>
 
 </body>
 </html>

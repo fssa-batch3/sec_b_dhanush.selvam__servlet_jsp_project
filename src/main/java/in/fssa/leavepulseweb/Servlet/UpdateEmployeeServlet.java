@@ -40,7 +40,7 @@ public class UpdateEmployeeServlet extends HttpServlet {
 		
 		try {
 			employeeService.updateEmployee(id, employee);
-			response.sendRedirect(request.getContextPath() + "/employees");
+			response.sendRedirect(request.getContextPath() + "/profile");
 			
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
