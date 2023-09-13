@@ -206,7 +206,7 @@
 	            <div class="input-data">
 	               <input type="text" name="manager_id" required>
 	               <div class="underline"></div>
-	               <label for="manager_id">Manager</label>
+	               <label for="manager_id">Manager ID</label>
 	            </div>
 	         </div>
 	         

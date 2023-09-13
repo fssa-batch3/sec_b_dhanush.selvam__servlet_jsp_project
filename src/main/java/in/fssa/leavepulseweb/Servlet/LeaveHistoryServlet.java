@@ -38,7 +38,7 @@ public class LeaveHistoryServlet extends HttpServlet {
 		
 			request.setAttribute("requests", requestList);
 
-			RequestDispatcher rd = request.getRequestDispatcher("/employee_requests.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/leave_history.jsp");
 			rd.forward(request, response);
 
 		} catch (ServiceException e) {

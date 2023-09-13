@@ -78,6 +78,13 @@ button:hover {
 	margin-bottom: 20px;
 }
 
+.no-records {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+    color: blue;
+}
+
 </style>
 </head>
 <body>
@@ -100,17 +107,21 @@ button:hover {
 			<div class="header__item">Edit</div>
 		</div>
 		<div class="table-content">
-		<% int i = 1; %>
-		<% for (EmployeeRoleDTO empRole : empRoleList) { %>
-			<div class="table-row">
-				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= empRole.getEmployeeName() %> </div>
-				<div class="table-data"> <%= empRole.getManagerName() %> </div>
-				<div class="table-data"> <%= empRole.getRoleName() %> </div>
-				<div class="table-data"> <a href="empRole/edit?id=<%= empRole.getEmpRoleId() %>"> <button class="edit"> Edit </button> </a> </div>
-			</div>
-			<% i++; %>
-			<% } %>
+		<% if (empRoleList != null && !empRoleList.isEmpty()) { %>
+			<% int i = 1; %>
+			<% for (EmployeeRoleDTO empRole : empRoleList) { %>
+				<div class="table-row">
+					<div class="table-data"> <%= i %> </div>
+					<div class="table-data"> <%= empRole.getEmployeeName() %> </div>
+					<div class="table-data"> <%= empRole.getManagerName() %> </div>
+					<div class="table-data"> <%= empRole.getRoleName() %> </div>
+					<div class="table-data"> <a href="empRole/edit?id=<%= empRole.getEmpRoleId() %>"> <button class="edit"> Edit </button> </a> </div>
+				</div>
+				<% i++; %>
+				<% } %>
+			<% } else { %>
+            	<div class="no-records">No records found.</div>
+        	<% } %>
 		</div>
 	</div>
 	

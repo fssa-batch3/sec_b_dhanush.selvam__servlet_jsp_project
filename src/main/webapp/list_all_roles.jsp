@@ -108,6 +108,13 @@ button:hover {
     border-radius: 5px;
 }
 
+.no-records {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+    color: blue;
+}
+
 </style>
 </head>
 <body>
@@ -135,17 +142,22 @@ button:hover {
 			<div class="header__item">Delete</div>
 		</div>
 		<div class="table-content">
-		<% int i = 1; %>
-		<% for (Role role : roleList) { %>
-			<div class="table-row">
-				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= role.getRoleName() %> </div>
-				<div class="table-data"> <%= role.getRoleId() %> </div>
-				<div class="table-data"> <a href="role/edit?id=<%= role.getRoleId() %>"> <button class="edit"> Edit </button> </a> </div>
-				<div class="table-data"> <a href="role/delete?id=<%= role.getRoleId() %>"> <button class="delete"> Delete </button> </a> </div>
-			</div>
-			<% i++; %>
-			<% } %>
+		<% if (roleList != null && !roleList.isEmpty()) { %>
+			<% int i = 1; %>
+			<% for (Role role : roleList) { %>
+				<div class="table-row">
+					<div class="table-data"> <%= i %> </div>
+					<div class="table-data"> <%= role.getRoleName() %> </div>
+					<div class="table-data"> <%= role.getRoleId() %> </div>
+					<div class="table-data"> <a href="role/edit?id=<%= role.getRoleId() %>"> <button class="edit"> Edit </button> </a> </div>
+					<div class="table-data"> <a href="role/delete?id=<%= role.getRoleId() %>"> <button class="delete"> Delete </button> </a> </div>
+				</div>
+				<% i++; %>
+				<% } %>
+			<% } else { %>
+            	<div class="no-records">No records found.</div>
+        	<% } %>
+			
 		</div>
 	</div>
 

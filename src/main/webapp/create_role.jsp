@@ -135,11 +135,18 @@
 	    font-size: 14px;
 	    color: #3498db;
 	}
-
+	
 </style>
 <body>
 
 	<jsp:include page="/header.jsp"/>
+	
+	<% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+	<% if (errorMessage != null && !errorMessage.isEmpty()) { %>
+	    <div class="error-message">
+	        <p><%= errorMessage %></p>
+	    </div>
+	<% } %>
 	
 	<div class="main">
 	

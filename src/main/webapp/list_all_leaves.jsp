@@ -134,17 +134,21 @@ button:hover {
 			<div class="header__item">Delete</div>
 		</div>
 		<div class="table-content">
-		<% int i = 1; %>
-		<% for (Leave leave : leaveList) { %>
-			<div class="table-row">
-				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= leave.getLeaveType() %> </div>
-				<div class="table-data"> <%= leave.getLeaveId() %> </div>
-				<div class="table-data"> <a href="leave/edit?id=<%= leave.getLeaveId() %>"> <button class="edit"> Edit </button> </a> </div>
-				<div class="table-data"> <a href="leave/delete?id=<%= leave.getLeaveId() %>"> <button class="delete"> Delete </button> </a> </div>
-			</div>
-			<% i++; %>
-			<% } %>
+		<% if (leaveList != null && !leaveList.isEmpty()) { %>
+			<% int i = 1; %>
+			<% for (Leave leave : leaveList) { %>
+				<div class="table-row">
+					<div class="table-data"> <%= i %> </div>
+					<div class="table-data"> <%= leave.getLeaveType() %> </div>
+					<div class="table-data"> <%= leave.getLeaveId() %> </div>
+					<div class="table-data"> <a href="leave/edit?id=<%= leave.getLeaveId() %>"> <button class="edit"> Edit </button> </a> </div>
+					<div class="table-data"> <a href="leave/delete?id=<%= leave.getLeaveId() %>"> <button class="delete"> Delete </button> </a> </div>
+				</div>
+				<% i++; %>
+				<% } %>
+			<% } else { %>
+            	<div class="no-records">No records found.</div>
+        	<% } %>
 		</div>
 	</div>
 	

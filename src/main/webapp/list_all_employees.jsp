@@ -10,6 +10,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <title> Employees </title>
 <style>
 
@@ -109,6 +110,45 @@ button:hover {
     border-radius: 5px;
 }
 
+.no-records {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+    color: blue;
+}
+
+.search {
+  display: flex;
+}
+
+.searchTerm {
+     width: 70%;
+    border: 3px solid darkslategray;
+    border-right: none;
+    padding: 0px 10px;
+    height: 40px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    font-size: 16px;
+}
+
+.searchButton {
+  width: 40px;
+  height: 40px;
+  border: 1px solid darkslategray;
+  background: darkslategray;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.wrap{
+  width: 30%;
+}
+
+
 </style>
 </head>
 <body>
@@ -120,6 +160,16 @@ button:hover {
 		<div class="head_container">
 			<h1>Employees List</h1> 
 		</div>
+		
+		<div class="wrap">
+   <div class="search">
+      <input type="text" class="searchTerm" placeholder="Search">
+      <button type="submit" class="searchButton">
+        <i class="fa fa-search"></i>
+     </button>
+   </div>
+</div>
+
 		<div class="add_btn_container">
 			<a href="employee/new">
 				<button class = "add">Add Employee</button>
@@ -138,19 +188,24 @@ button:hover {
 			<div class="header__item">Delete</div>
 		</div>
 		<div class="table-content">
-		<% int i = 1; %>
-		<% for (Employee employee : employeeList) { %>
-			<div class="table-row">
-				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= employee.getFirst_name() + " " + employee.getLast_name() %> </div>
-				<div class="table-data"> <%= employee.getEmail() %> </div>
-				<div class="table-data"> <%= employee.getPhone_no() %> </div>
-				<div class="table-data"> <%= employee.getEmployee_id() %> </div>
-				<div class="table-data"> <a href="employee/view?id=<%= employee.getEmployee_id() %>"> <button class="view"> View </button> </a> </div>
-				<div class="table-data"> <a href="employee/delete?id=<%= employee.getEmployee_id() %>"> <button class="delete"> Delete </button> </a> </div>
-			</div>
-			<% i++; %>
-			<% } %>
+		<% if (employeeList != null && !employeeList.isEmpty()) { %>
+			<% int i = 1; %>
+			<% for (Employee employee : employeeList) { %>
+				<div class="table-row">
+					<div class="table-data"> <%= i %> </div>
+					<div class="table-data"> <%= employee.getFirst_name() + " " + employee.getLast_name() %> </div>
+					<div class="table-data"> <%= employee.getEmail() %> </div>
+					<div class="table-data"> <%= employee.getPhone_no() %> </div>
+					<div class="table-data"> <%= employee.getEmployee_id() %> </div>
+					<div class="table-data"> <a href="employee/view?id=<%= employee.getEmployee_id() %>"> <button class="view"> View </button> </a> </div>
+					<div class="table-data"> <a href="employee/delete?id=<%= employee.getEmployee_id() %>"> <button class="delete"> Delete </button> </a> </div>
+				</div>
+				<% i++; %>
+				<% } %>
+			<% } else { %>
+            	<div class="no-records">No records found.</div>
+        	<% } %>
+        	
 		</div>
 	</div>
 	

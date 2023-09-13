@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDate"%>
 <%@page import="in.fssa.leavepulse.model.Leave"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -171,7 +172,7 @@
 					<label for="leave">Leave Type</label>
 	            </div>
 	            <div class="input-data">
-	               <input type="text" name="reason" required>
+	               <input type="text" name="reason">
 	               <div class="underline"></div>
 	               <label for="reason">Reason</label>
 	            </div>
@@ -179,16 +180,36 @@
 	         
 	         <div class="form-row">
 	            <div class="input-data">
-	               <input type="date" name="start_date" required>
-	               <div class="underline"></div>
-	               <label class="readonly-label" for="start_date">Start Date</label>
-	            </div>
-	            <div class="input-data">
-	               <input type="date" name="end_date" required>
-	               <div class="underline"></div>
-	               <label class="readonly-label" for="end_date">End Date</label>
-	            </div>
+				    <input type="date" name="start_date" id="start_date" min="<%= LocalDate.now() %>" required>
+				    <div class="underline"></div>
+				    <label class="readonly-label" for="start_date">Start Date</label>
+				</div>
+				<div class="input-data">
+				    <input type="date" name="end_date" id="end_date" min="<%= LocalDate.now() %>" required>
+				    <div class="underline"></div>
+				    <label class="readonly-label" for="end_date">End Date</label>
+				</div>
 	         </div>
+	         
+	         <script>
+	         
+			    const startInput = document.getElementById('start_date');
+			    const endInput = document.getElementById('end_date');
+			
+			    startInput.addEventListener('input', restrictWeekends);
+			    endInput.addEventListener('input', restrictWeekends);
+			
+			    function restrictWeekends(event) {
+			        const selectedDate = new Date(event.target.value);
+			        const dayOfWeek = selectedDate.getDay();
+			
+			        if (dayOfWeek === 0 || dayOfWeek === 6) {
+			            event.target.value = '';
+			            alert('Weekends are not allowed.');
+			        }
+			    }
+			    
+			</script>
 	         
 	         <div class="form-row submit-btn">
 	            <div class="input-data">

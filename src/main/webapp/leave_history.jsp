@@ -81,6 +81,13 @@ button:hover {
 	margin-bottom: 20px;
 }
 
+.no-records {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+    color: blue;
+}
+
 </style>
 
 <body>
@@ -94,38 +101,39 @@ button:hover {
 		</div>
 	</div>
 
-
 	<div class="table">
 		<div class="table-header">
 			<div class="header__item">S.No</div>
-			<div class="header__item">Name</div>
 			<div class="header__item">Leave Type</div>
 			<div class="header__item">Applied Date</div>
 			<div class="header__item">Status</div>
 			<div class="header__item">View</div>
 		</div>
 		<div class="table-content">
-		<% int i = 1; %>
-		<% for (RequestDTO requests : requestList) { %>
-			<div class="table-row">
-				<div class="table-data"> <%= i %> </div>
-				<div class="table-data"> <%= requests.getEmployeeName() %> </div>
-				<div class="table-data"> <%= requests.getLeaveType() %> </div>
-				<% String originalDateString = requests.getCreatedAt() + ""; %>
-				<% DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"); %>
-				<% LocalDate localDate = LocalDate.parse(originalDateString, originalFormatter); %>
-				<% DateTimeFormatter desiredFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); %>
-				<% String desiredDateString = localDate.format(desiredFormatter); %>
-				<div class="table-data"> <%= desiredDateString %> </div>
-				<div class="table-data"> <%= requests.getLeaveStatus() %> </div>
-				<div class="table-data"> <a href="request/view?id=<%= requests.getRequestId() %>"> <button class="view"> View </button> </a> </div>
-			</div>
-			<% i++; %>
-			<% } %>
+		<% if (requestList != null && !requestList.isEmpty()) { %>
+			<% int i = 1; %>
+			<% for (RequestDTO requests : requestList) { %>
+				<div class="table-row">
+					<div class="table-data"> <%= i %> </div>
+					<div class="table-data"> <%= requests.getLeaveType() %> </div>
+					<% String originalDateString = requests.getCreatedAt() + ""; %>
+					<% DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"); %>
+					<% LocalDate localDate = LocalDate.parse(originalDateString, originalFormatter); %>
+					<% DateTimeFormatter desiredFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); %>
+					<% String desiredDateString = localDate.format(desiredFormatter); %>
+					<div class="table-data"> <%= desiredDateString %> </div>
+					<div class="table-data"> <%= requests.getLeaveStatus() %> </div>
+					<div class="table-data"> <a href="request/view?id=<%= requests.getRequestId() %>"> <button class="view"> View </button> </a> </div>
+				</div>
+				<% i++; %>
+				<% } %>
+			<% } else { %>
+            	<div class="no-records">No records found.</div>
+        	<% } %>
+        	
 		</div>
 	</div>
 
 </body>
-
 
 </html>

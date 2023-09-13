@@ -57,7 +57,7 @@ public class CreateRequestServlet extends HttpServlet {
 			requests.setManagerId(managerId);
 			requests.setLeaveId(leaveId);
 			
-			requestService.createRequest(requests);
+			requestService.createRequest(loggedUserId, requests);
 			response.sendRedirect(request.getContextPath() + "/leaveHistory");
 			
 		} catch (ServiceException | ValidationException e) {
