@@ -1,0 +1,136 @@
+.table_container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.table_header_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table {
+	width:100%;
+	border:1px solid #EEEEEE;
+}
+
+.table-header {
+	display:flex;
+	width:100%;
+	background:#000;
+	padding: 18px 0px;
+	color: white;
+}
+
+.table-row {
+	display:flex;
+	width:100%;
+	padding: 18px 0px;
+	
+	&:nth-of-type(odd) {
+		background: #EEEEEE;
+	}
+}
+
+.table-data, .header__item {
+	flex: 1 1 20%;
+	text-align:center;
+}
+
+.search_container {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding-right: 15px;
+}
+
+.search_container:focus-within {
+    outline: 1.5px solid #2d7474;
+}
+
+.search_bar {
+    border: 0;
+    margin: 0;
+}
+
+.search_bar:focus-within {
+    outline: none;
+}
+
+.filter_btn {
+    padding: 10px 15px;
+    background: none;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+.fa-angle-down {
+    margin-left: 5px;
+}
+
+.filter_btn:hover {
+    background-color: #dcdcdc38;
+    cursor: pointer;
+}
+
+.filter_dropdown_container {
+    display: none;
+    width: 12%;
+    font-size: 14px;
+    line-height: 28px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    border-radius: 5px;
+    padding: 10px 12px 10px 20px;
+    position: absolute;
+    background: white;
+    right: 3.5%;
+}
+
+.filter_field_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter_field_container:hover {
+    cursor: default;
+}
+
+.checkbox {
+    margin: 0;
+}
+
+.checkbox:focus-within {
+    outline: none;
+}
+
+.field_name_container {
+    width: 85%;
+}
+
+.table {
+    margin-top: 15px;
+}
+
+.table-header {
+    display: flex;
+    padding: 18px 0px;
+    justify-content: space-around;
+    background-color: darkslategray;
+    color: white;
+}
+
+.table-row {
+    display: flex;
+    padding: 18px 0px;
+    justify-content: space-around;
+
+    &:nth-of-type(odd) {
+        background: #EEEEEE;
+    }
+}

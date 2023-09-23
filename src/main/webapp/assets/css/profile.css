@@ -1,0 +1,99 @@
+.profile_img {
+    width: 150px;
+}
+
+.user_profile_container {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px 20px 35px 0px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.left_container {
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.right_container {
+    width: 69%;
+}
+
+.info_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.email_container {
+    margin-top: 5px;
+}
+
+.fields_container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 95%;
+}
+
+.field_container {
+    display: flex;
+    flex-direction: column;
+    width: 330px; 
+}
+
+.apply_leave_inputs {
+    margin: 10px 0px 0px 0px;
+}
+
+.edit_btn_container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    padding-right: 40px;
+}
+
+.edit_btn ,.save_btn{
+    color: white;
+    border: none;
+    background: darkslategray;
+    padding: 10px 45px;
+    border-radius: 5px;
+}
+
+.edit_btn:hover ,.save_btn:hover {
+    background-color: #2d7474;
+    cursor: pointer;
+}
+
+.save_btn {
+	display: none;
+}
+
+#non_editable_fields {
+    cursor: default;
+    background-color: rgba(239, 239, 239, 0.3);
+    color: rgb(84, 84, 84);
+}
+
+#non_editable_fields:focus-within {
+    outline: none;
+}
+
+.eye_container {
+	margin-top: -8.8%;
+    margin-left: 88%;
+}
+
+.fa-eye:hover, .fa-eye-slash {
+	cursor: pointer;
+}
+
+.fa-eye-slash {
+	display: none;
+}

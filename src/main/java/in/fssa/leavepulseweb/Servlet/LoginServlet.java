@@ -1,6 +1,6 @@
 package in.fssa.leavepulseweb.Servlet;
 
-import java.io.IOException; 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.model.EmployeeRole;
 import in.fssa.leavepulse.service.EmployeeRoleService;
 import in.fssa.leavepulse.service.EmployeeService;
@@ -50,7 +51,9 @@ public class LoginServlet extends HttpServlet {
 			
 		try {
 			
-			int employee_id = employeeService.login(email, password);
+			int employeeId = employeeService.login(email, password);
+			Employee employee = employeeService.findEmployeeByEmployeeId(employeeId);
+			String employeeName = employee.getFirst_name() + " " + employee.getLast_name();
 			
 			List<EmployeeRole> empRoleList = new ArrayList<>();
 			empRoleList = new EmployeeRoleService().getAllEmpRole();
@@ -61,14 +64,15 @@ public class LoginServlet extends HttpServlet {
 			}
 			
 			String user_type = "";
-			if (employee_id == 1) user_type = "admin";
-			else if (managerList.contains(employee_id)) user_type = "manager";
+			if (employeeId == 1) user_type = "admin";
+			else if (managerList.contains(employeeId)) user_type = "manager";
 			else user_type = "employee";
 			
 			HttpSession session = request.getSession();
-			session.setAttribute("LOGGEDUSER", employee_id);	
+			session.setAttribute("LOGGEDUSER", employeeId);	
+			session.setAttribute("LOGGEDUSERNAME", employeeName);
 			session.setAttribute("LOGGEDUSERTYPE", user_type);
-			response.sendRedirect(request.getContextPath()+"/profile");
+			response.sendRedirect(request.getContextPath()+"/index");
 			
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();

@@ -5,169 +5,117 @@
 <head>
 <meta charset="ISO-8859-1">
 <title> Login </title>
-<style>
 
-	*{
-	  margin: 0;
-	  padding: 0;
-	  outline: none;
-	  box-sizing: border-box;
-	}
-	body{
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  min-height: 80vh;
-	  padding: 10px;
-	  font-family: 'Poppins', sans-serif;
-	}
-	.container{
-	  max-width: 800px;
-	  background: #fff;
-	  width: 500px;
-	  padding: 25px 40px 10px 40px;
-	  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-	}
-	.container .text{
-	  text-align: center;
-	  font-size: 41px;
-	  font-weight: 600;
-	}
-	
-	.container form .form-row{
-	  display: flex;
-	  margin: 32px 0;
-	}
-	form .form-row .input-data{
-	  width: 100%;
-	  height: 40px;
-	  margin: 0 20px;
-	  position: relative;
-	}
-	.input-data input {
-	  display: block;
-	  width: 100%;
-	  height: 100%;
-	  border: none;
-	  font-size: 17px;
-	  border-bottom: 2px solid rgba(0,0,0, 0.12);
-	}
-	.input-data input:focus ~ label, .textarea textarea:focus ~ label,
-	.input-data input:valid ~ label, .textarea textarea:valid ~ label{
-	  transform: translateY(-20px);
-	  font-size: 14px;
-	  color: #3498db;
-	}
-	.input-data label{
-	  position: absolute;
-	  pointer-events: none;
-	  bottom: 10px;
-	  font-size: 16px;
-	  transition: all 0.3s ease;
-	}
-	
-	.submit-btn .input-data{
-	  overflow: hidden;
-	  height: 45px!important;
-	  width: 25%!important;
-	}
-	.submit-btn .input-data .inner{
-	  height: 100%;
-	  width: 300%;
-	  position: absolute;
-	  left: -100%;
-	  background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
-	  transition: all 0.4s;
-	}
-	.submit-btn .input-data:hover .inner{
-	  left: 0;
-	}
-	.submit-btn .input-data input{
-	  background: none;
-	  border: none;
-	  color: #fff;
-	  font-size: 17px;
-	  font-weight: 500;
-	  text-transform: uppercase;
-	  letter-spacing: 1px;
-	  cursor: pointer;
-	  position: relative;
-	  z-index: 2;
-	}
-	@media (max-width: 700px) {
-	  .container .text{
-	    font-size: 30px;
-	  }
-	  .container form{
-	    padding: 10px 0 0 0;
-	  }
-	  .container form .form-row{
-	    display: block;
-	  }
-	  form .form-row .input-data{
-	    margin: 35px 0!important;
-	  }
-	  .submit-btn .input-data{
-	    width: 40%!important;
-	  }
-	}
-	
-	.input-data select {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: none;
-    font-size: 17px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.12);
-    appearance: none; /* Removes the default arrow in some browsers */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233498db'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E"); /* Custom arrow icon */
-    background-repeat: no-repeat;
-    background-position: right center;
-	}
-	
-	.input-data select:focus ~ label,
-	.input-data select:valid ~ label {
-	    transform: translateY(-20px);
-	    font-size: 14px;
-	    color: #3498db;
-	}
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/login.css">
 
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+    
 </head>
 <body>
+
+	<div class="header_section">
+        <div>
+
+		  <div class="header">
+		
+		    <div class="logo_container">
+		      <h2 class = "logo"> LeavePulse </h2>
+		    </div>
+		
+		</div>
+        
+    </div>
+
+	<div class="page_container">
+        <div class="image_container">
+            <img src="./assets/images/login-page-img.png">
+        </div>
+        <div class="form_container">
+            <div class="title_container">
+                <h1> Login </h1>
+            </div>
+            <form class="form" action="login" method="post">
+                <div class="field_container">
+                    <input class="field email_field" type="email" placeholder="Email" name="email" autofocus>
+                </div>
+                <div class="field_container">
+                    <input id="password_field" class="field" type="password" placeholder="Password" name="password">
+                </div>
+                <div class="password_container">
+                    <div class="show_password_container">
+                        <label> <input name="check" type="checkbox" id="checkbox"> Show Password </label>
+                    </div>
+                    <div class="forgot_password_container">
+                        <a href="#"> Forgot Password </a>
+                    </div>
+                </div>
+                <div>
+                    <button class="login_btn"> Login </button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
 	
-	<div class="container">
+	<script>
 	
-      <div class="text"> Login </div>
-      
-      <form action="login" method="post">
-      
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="email" required>
-               <div class="underline"></div>
-               <label for="email">Email</label>
-            </div>
-         </div>
-         
-         <div class="form-row">
-            <div class="input-data">
-               <input type="text" name="password" required>
-               <div class="underline"></div>
-               <label for="password">Password</label>
-            </div>
-         </div>
-         
-         <div class="form-row submit-btn">
-            <div class="input-data">
-               <div class="inner"></div>
-               <input type="submit" value="submit">
-            </div>
-         </div>
-         
-      </form>
-	      
-   	</div>
+		const password_field = document.getElementById("password_field");
+	    const checkbox = document.getElementById("checkbox");
+	
+	    checkbox.addEventListener("click", function ()  {
+	        let type = password_field.getAttribute("type") == "password" ? "text" : "password";
+	        password_field.setAttribute("type",type);
+	    })
+	    
+	    document.querySelector(".login_btn").addEventListener("click",(e) => {
+	    	
+		    e.preventDefault();
+		    
+		    const emailField = document.querySelector(".email_field");
+		    const email = emailField.value.trim();
+		    
+		    if (email == "") {
+		    	alert("Email cannot be empty");
+		    	emailField.focus();
+		    	return;
+		    }
+		    
+		    const pattern = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+		
+		    if (!pattern.test(email)) {
+		        alert("Email doesn't match the pattern. Ex:abc@gmail.com");
+		        emailField.focus();
+		        return;
+		    }
+		    
+		    const passwordField = document.querySelector("#password_field")
+		    const password = passwordField.value.trim();
+		    
+		    if (password == "") {
+		    	alert("Password cannot be empty");
+		    	passwordField.focus();
+		    	return;
+		    }
+		    
+		    const password_pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
+
+		    if (!password_pattern.test(password)) {
+		        alert("Password doesn't match the pattern. The password must contain at least one capital letter, at least one small letter, at least one number and at least one special characters, minimum eight to maximum twenty four characters");
+		        passwordField.focus();
+		        return;
+		    }
+		    
+		    document.querySelector(".form").submit();
+		    		    
+		});
+
+	    
+	</script>
 	
 </body>
 </html>

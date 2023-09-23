@@ -1,3 +1,4 @@
+<%@page import="in.fssa.leavepulse.dto.EmployeeDTO"%>
 <%@page import="in.fssa.leavepulse.model.Employee"%>
 <%@page import="in.fssa.leavepulse.service.EmployeeService"%>
 <%@page import="java.util.ArrayList"%>
@@ -10,204 +11,359 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<title> Employees </title>
-<style>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<title>Employees Page</title>
 
-body{
-  font-family: 'Poppins', sans-serif;
-}
-	
-.table_container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    text-align: center; /* Center the table within the container */
-}
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/assets/css/style.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/assets/css/header.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/assets/css/sidebar.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/assets/css/footer.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/assets/css/table.css">
 
-.table {
-    width: 90%; /* Set the table width to 90% */
-    margin: 0 auto; /* Center the table horizontally */
-    border: 1px solid #EEEEEE;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap"
+	rel="stylesheet">
 
-.table-header {
-    display: flex;
-    width: 100%;
-    background: darkslategray;
-    padding: 15px 0px;
-    color: white;
-}
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/assets/css/overlay.css">
 
-.table-row {
-    display: flex;
-    width: 100%;
-    padding: 15px 0px;
-    
-    &:nth-of-type(odd) {
-        background: #EEEEEE;
-    }
-}
-
-.table-data, .header__item {
-    flex: 1 1 20%;
-    text-align: center;
-}
-
-.delete {
-    background-color: #e74c3c; /* Red background color for Delete button */
-    color: #fff; /* Text color */
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-}
-
-.delete:hover {
-    background-color: #c0392b; /* Darker red on hover */
-}
-
-.view {
-    background-color: #27ae60; /* Green background color for View button */
-    color: #fff; /* Text color */
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-}
-
-.view:hover {
-    background-color: #219d53; /* Darker green on hover */
-}
-
-button:hover {
-    cursor: pointer;
-}
-
-.heading_container {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 50px;
-	padding: 0px 75px;
-}
-
-.add_btn_container {
-	display: flex;
-	justify-content: end;
-	margin-bottom: 20px;
-}
-
-.add {
-	color: white;
-    border: none;
-    background: darkslategray;
-    padding: 10px 15px;
-    border-radius: 5px;
-}
-
-.no-records {
-    text-align: center;
-    font-size: 18px;
-    margin-top: 20px;
-    color: blue;
-}
-
-.search {
-  display: flex;
-}
-
-.searchTerm {
-     width: 70%;
-    border: 3px solid darkslategray;
-    border-right: none;
-    padding: 0px 10px;
-    height: 40px;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-    font-size: 16px;
-}
-
-.searchButton {
-  width: 40px;
-  height: 40px;
-  border: 1px solid darkslategray;
-  background: darkslategray;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.wrap{
-  width: 30%;
-}
-
-
-</style>
 </head>
-<body>
+<body id="body">
 
-	<jsp:include page="/header.jsp"/>
-	<% List<Employee> employeeList = (List<Employee>)request.getAttribute("employeesList"); %>
-		
-	<div class="heading_container"> 
-		<div class="head_container">
-			<h1>Employees List</h1> 
-		</div>
-		
-		<div class="wrap">
-   <div class="search">
-      <input type="text" class="searchTerm" placeholder="Search">
-      <button type="submit" class="searchButton">
-        <i class="fa fa-search"></i>
-     </button>
-   </div>
-</div>
+	<%
+	List<EmployeeDTO> employeesList = (List<EmployeeDTO>) request.getAttribute("employeesList");
+	%>
+	<%
+	List<Role> rolesList = (List<Role>) request.getAttribute("rolesList");
+	%>
 
-		<div class="add_btn_container">
-			<a href="employee/new">
-				<button class = "add">Add Employee</button>
-			</a>
-		</div>
+	<div class="header_section">
+		<script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
+		<jsp:include page="/header.jsp" />
 	</div>
 
-	<div class="table">
-		<div class="table-header">
-			<div class="header__item">S.No</div>
-			<div class="header__item">Name</div>
-			<div class="header__item">Email</div>
-			<div class="header__item">Phone No</div>
-			<div class="header__item">Employee ID</div>
-			<div class="header__item">View</div>
-			<div class="header__item">Delete</div>
+	<div class="body_section">
+
+		<div class="sidebar_section">
+			<jsp:include page="/sidebar.jsp" />
 		</div>
-		<div class="table-content">
-		<% if (employeeList != null && !employeeList.isEmpty()) { %>
-			<% int i = 1; %>
-			<% for (Employee employee : employeeList) { %>
-				<div class="table-row">
-					<div class="table-data"> <%= i %> </div>
-					<div class="table-data"> <%= employee.getFirst_name() + " " + employee.getLast_name() %> </div>
-					<div class="table-data"> <%= employee.getEmail() %> </div>
-					<div class="table-data"> <%= employee.getPhone_no() %> </div>
-					<div class="table-data"> <%= employee.getEmployee_id() %> </div>
-					<div class="table-data"> <a href="employee/view?id=<%= employee.getEmployee_id() %>"> <button class="view"> View </button> </a> </div>
-					<div class="table-data"> <a href="employee/delete?id=<%= employee.getEmployee_id() %>"> <button class="delete"> Delete </button> </a> </div>
+
+		<script
+			src="<%=request.getContextPath()%>/assets/js/toggleRoleContainer.js"></script>
+
+		<div class="page_section">
+
+			<div id="overlay_container">
+
+				<div class="container">
+
+					<div class="head_container">
+						<div class="title_container">
+							<h2>Employee Details</h2>
+						</div>
+						<div id="xmark_container">
+							<i class="fa-solid fa-xmark"></i>
+						</div>
+					</div>
+
+					<form action="employee?action=updaterole" method="post">
+
+						<div class="fields_container">
+							<div class="field_container">
+								<label> First Name </label> <input type="text"
+									class="non_editable_fields" id="first_name_field" readonly>
+							</div>
+							<div class="field_container">
+								<label> Last Name </label> <input type="text"
+									class="non_editable_fields" id="last_name_field" readonly>
+							</div>
+						</div>
+
+						<div class="fields_container">
+							<div class="field_container">
+								<label> Employee Id </label> <input type="text"
+									class="non_editable_fields" name="employee_id" id="id_field"
+									readonly>
+							</div>
+							<div class="field_container">
+								<label> Email </label> <input type="text"
+									class="non_editable_fields" id="email_field" readonly>
+							</div>
+						</div>
+
+						<div class="fields_container">
+							<div class="field_container">
+								<label> Manager</label> <input type="text"
+									class="editable_fields" id="manager_id_field" name="manager_id"
+									required readonly>
+							</div>
+							<div class="field_container role_field">
+								<label> Role </label>
+								<div class="select_tag_container">
+									<button class="select_tag" type="button" id="role_field">
+									</button>
+									<i class="fa-solid fa-angle-down dropdown_icon"
+										id="fa-angle-down"></i>
+								</div>
+							</div>
+						</div>
+
+						<input type="hidden" name="role" id="selectedRole" value="">
+
+						<div class="role_type_container">
+							<%
+							for (Role role : rolesList) {
+							%>
+							<div class="role_container"
+								onclick="selectRole( '<%=role.getRoleName()%>')">
+								<p>
+									<%=role.getRoleName()%>
+								</p>
+							</div>
+							<%
+							}
+							%>
+						</div>
+
+						<div class="fields_container">
+							<div class="field_container">
+								<label> Phone </label> <input type="tel"
+									class="non_editable_fields" id="phone_no_field" readonly>
+							</div>
+							<div class="field_container">
+								<label> Joined Date </label> <input type="text"
+									class="non_editable_fields" id="joined_date_field" readonly>
+							</div>
+						</div>
+
+						<div class="fields_container">
+							<div class="field_container address_field_container">
+								<label> Address </label> <input type="text"
+									class="non_editable_fields" id="address_field" readonly>
+							</div>
+
+						</div>
+
+						<div class="form_btn_container">
+							<button class="btn" type="button" id="edit_btn">Edit</button>
+							<button class="btn" id="save_btn">Save</button>
+							<button class="btn" type="button">
+								<a id="delete_path"> Delete </a>
+							</button>
+						</div>
+
+					</form>
+
 				</div>
-				<% i++; %>
-				<% } %>
-			<% } else { %>
-            	<div class="no-records">No records found.</div>
-        	<% } %>
-        	
+
+			</div>
+
+			<div class="breadcrumbs_section">
+				<jsp:include page="/breadcrumbs.jsp" />
+			</div>
+
+			<div class="main_section">
+				<script
+					src="<%=request.getContextPath()%>/assets/js/toggleFilterContainer.js"></script>
+				<div class="table_container">
+					<div class="table_header_container">
+						<div class="table_heading_container">
+							<h2>All Employees</h2>
+						</div>
+						<div class="search_container">
+							<input type="search" placeholder="Search" class="search_bar">
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</div>
+						<div class="filter_container" onclick="toggleFilterContainer()">
+							<button class="filter_btn">
+								Filter by <i class="fa-solid fa-angle-down"></i>
+							</button>
+						</div>
+					</div>
+
+					<div class="filter_dropdown_container">
+						<div class="filter_field_container"
+							onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox">
+							<div class="field_name_container">
+								<p>Ascending Order</p>
+							</div>
+						</div>
+						<div class="filter_field_container"
+							onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox">
+							<div class="field_name_container">
+								<p>Descending Order</p>
+							</div>
+						</div>
+						<div class="filter_field_container"
+							onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox">
+							<div class="field_name_container">
+								<p>Minimum employees</p>
+							</div>
+						</div>
+						<div class="filter_field_container"
+							onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox">
+							<div class="field_name_container">
+								<p>Maximum employees</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="table">
+						<div class="table-header">
+							<div class="header__item">S.No</div>
+							<div class="header__item">Name</div>
+							<div class="header__item">Email</div>
+							<div class="header__item">Manager</div>
+							<div class="header__item">Role</div>
+							<div class="header__item">Action</div>
+						</div>
+						<div class="table-content">
+							<%
+							int i = 1;
+							%>
+							<%
+							for (EmployeeDTO employee : employeesList) {
+							%>
+							<div class="table-row">
+								<div class="table-data">
+									<%=i%>
+								</div>
+								<div class="table-data">
+									<%=employee.getFirstName() + " " + employee.getLastName()%>
+								</div>
+								<div class="table-data">
+									<%=employee.getEmail()%>
+								</div>
+								<div class="table-data">
+									<%=employee.getManagerEmail()%>
+								</div>
+								<div class="table-data">
+									<%=employee.getRoleName()%>
+								</div>
+								<div class="table-data">
+									<button class="view_btn view"
+										data-id="<%=employee.getEmployeeId()%>">View</button>
+								</div>
+							</div>
+							<%
+							i++;
+							%>
+							<%
+							}
+							%>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="footer_section">
+				<jsp:include page="/footer.jsp" />
+			</div>
+
 		</div>
+
 	</div>
+
+	<script> 
+    
+		let employeesList = <%=employeesList%>;
+    	
+	    let view = document.querySelectorAll(".view");
+	    let xmark_container = document.getElementById("xmark_container");
+	    let edit_btn = document.getElementById("edit_btn");
+	    let editable_fields = document.querySelectorAll(".editable_fields");
+	    let non_editable_fields = document.querySelectorAll(".non_editable_fields");
+	    let save_btn = document.getElementById("save_btn");
+	    let select_tag_container = document.querySelector(".select_tag_container");
+	    let dropdown_icon = document.querySelector(".dropdown_icon");
+	    
+	    let first_name_field = document.getElementById("first_name_field");
+	    let last_name_field = document.getElementById("last_name_field");
+	    let id_field = document.getElementById("id_field");
+	    let email_field = document.getElementById("email_field");
+	    let manager_id_field = document.getElementById("manager_id_field");
+	    let role_field = document.getElementById("role_field");
+	    let phone_no_field = document.getElementById("phone_no_field");
+	    let joined_date_field = document.getElementById("joined_date_field");
+	    let address_field = document.getElementById("address_field");
+	    let selectedRole = document.getElementById("selectedRole");
+	    let delete_path = document.getElementById("delete_path");
+	    
+	    // To open overlay container
+
+	    view.forEach((e) => {
+	    	e.addEventListener("click", () => {
+	    		let id = e.getAttribute("data-id");
+	    		let employee = employeesList.find((e) => e.employee_id == id);
+	    		
+		        document.getElementById("overlay_container").style.display = "flex";
+		        document.getElementById("body").style.overflow = "hidden";
+			        
+		        first_name_field.value = employee.first_name;
+		        last_name_field.value = employee.last_name;
+		        id_field.value = employee.employee_id;
+		        email_field.value = employee.email;
+		        manager_id_field.value = employee.manager_id;
+		        role_field.innerHTML = employee.roleName;
+		        phone_no_field.value = employee.phone_no;
+		        joined_date_field.value = employee.hire_date;
+		        address_field.value = employee.address;
+		        delete_path.setAttribute("href","employee?action=delete&id=" + employee.employee_id);
+		    })
+	    })
 	
+	    // To close overlay container
+	    
+	    xmark_container.addEventListener("click", () => {
+	        document.getElementById("overlay_container").style.display = "none"
+	        document.getElementById("body").style.overflow = "auto";
+	        save_btn.style.display = "none";
+	    	edit_btn.style.display = "block";
+	    	editable_fields.forEach((e) => {
+	    		e.setAttribute("readonly","readonly");
+	    	})
+	    	non_editable_fields.forEach((e) => {
+	    		e.removeAttribute("id");
+	    	})
+	    	delete_path.removeAttribute("href");
+	    	select_tag_container.removeAttribute("onclick");
+	    	dropdown_icon.style.display = "none";
+	        
+	    })
+	    
+	    // Remove readonly while clicking edit button
+	    
+	    edit_btn.addEventListener("click", () => {
+	    	editable_fields.forEach((e) => {
+	    		e.removeAttribute("readonly");
+	    	})
+	    	non_editable_fields.forEach((e) => {
+	    		e.setAttribute("id","non_editable_fields");
+	    	})
+	    	manager_id_field.focus();
+	    	selectedRole.value = role_field.innerHTML;
+	    	select_tag_container.setAttribute("onclick","toggleRoleSelectContainer()");
+	    	dropdown_icon.style.display = "block";
+	    	edit_btn.style.display = "none";
+	    	save_btn.style.display = "block";
+	    })
+    
+    </script>
+
 </body>
 </html>

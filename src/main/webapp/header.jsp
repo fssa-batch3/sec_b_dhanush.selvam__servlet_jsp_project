@@ -1,82 +1,66 @@
-<header>
-    <style>
-        /* Your CSS styles here */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<%@page import="in.fssa.leavepulse.model.Employee"%>
+<div>
 
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+  <div class="header">
 
-        /* Navbar styles */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: black; /* Background color */
-            padding: 20px;
-            width: 100%;
-            top: 0;
-            z-index: 1;
-        }
-
-        .logo a {
-            text-decoration: none;
-            color: #fff; /* Logo text color */
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            list-style-type: none;
-            display: flex;
-        }
-
-        .nav-links li {
-            margin: 0 20px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #fff; /* Link text color */
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-    </style>
+    <div class="logo_container">
+      <h2 class = "logo"> <a href = "<%=request.getContextPath()%>/index" class="anchor_logo"> LeavePulse </a> </h2>
+    </div>
     
-    <% String loggedUserType = (String) request.getSession().getAttribute("LOGGEDUSERTYPE"); %>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-	    $(document).ready(function() {
-	        let loggedUserType = "<%= loggedUserType %>";
-	        if (loggedUserType == "admin") $(".admin-access").hide();
-	        else if (loggedUserType == "manager") $(".manager-access").hide();
-	        else {
-	        	$(".employee-access").hide();
-	        	$(".manager-access").hide();
-	        }
-	    });
-	</script>
-	
-     <nav class="navbar">
-        <div class="logo">
-            <a href="#">LeavePulse</a>
-        </div>
-        <ul class="nav-links">
-            <li class="manager-access"><a href="roles">Role</a></li>
-            <li class="manager-access"><a href="employees">Employee</a></li>
-            <li class="manager-access"><a href="leaves">Leave</a></li>
-            <li class="employee-access"><a href="requests">Request</a></li>
-            <li class="manager-access"><a href="empRoles">Emp-Role</a></li>
-            <li class="admin-access"><a href="request/new"> Apply Leave </a></li>
-            <li class="admin-access"><a href="leaveHistory"> Leave History </a></li>
-            <li><a href="profile">Profile</a></li>
-        </ul>
-    </nav>
+	<% String employeeName = (String) request.getSession().getAttribute("LOGGEDUSERNAME"); %>
 
-</header>
+    <div class="profile_container" onclick="toggleProfileContainer()">
+      <img src="<%=request.getContextPath()%>/assets/images/profile.jpg" class="profile_photo">
+      <p class="user_name"> <%= employeeName %> </p>
+      <i class="fa-solid fa-caret-down"></i>
+    </div>
+
+  </div>
+
+  <div class="dropdown_container">
+
+	<a href = "<%= request.getContextPath() %>/profile">
+		<div class="dropdown_list_container">
+	      <div class="icon_container"> <i class="fa-solid fa-user"></i> </div>
+	      <div> <p class="dropdown_list"> Profile </p></div>
+	    </div>
+	</a>
+	
+	<a href = "<%= request.getContextPath() %>/logout">
+	    <div class="dropdown_list_container">
+	      <div class="icon_container"> <i class="fa-solid fa-right-from-bracket"></i> </div>
+	      <div> <p class="dropdown_list"> Log Out </p></div>
+	    </div>
+    </a>
+    
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+	let isDropdownOpen = false;
+	
+	function toggleProfileContainer() {
+	  const dropdownContainer = document.querySelector(".dropdown_container");
+	  isDropdownOpen = !isDropdownOpen;
+	  dropdownContainer.style.display = isDropdownOpen ? "block" : "none";
+	}
+	
+	document.body.addEventListener("click", function (event) {
+	  const dropdownContainer = document.querySelector(".dropdown_container");
+	  const profileContainer = document.querySelector(".profile_container");
+	  if (!profileContainer.contains(event.target) && isDropdownOpen) {
+	    dropdownContainer.style.display = "none";
+	    isDropdownOpen = false;
+	  }
+	});
+	
+	function stopPropagation(event) {
+	  event.stopPropagation();
+	}
+	
+</script>
+
 

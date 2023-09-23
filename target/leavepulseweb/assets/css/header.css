@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&family=Questrial&display=swap');
+
+body {
+    font-family: 'Noto Sans', sans-serif;
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251/var(--tw-bg-opacity));
+    position: relative;
+    height: 100%;
+}
+
+.header_section {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 40px;
+    border-bottom: 1px solid gainsboro;
+    background-color: white;
+}
+
+.logo {
+    font-size: 28px;
+    margin: 16px 0px;
+}
+
+.anchor_logo {
+    color: darkslategray;
+}
+
+.profile_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile_photo {
+    height: 40px;
+    width: 45px;
+}
+
+.user_name {
+    font-size: 18px;
+    margin: 0px 15px;
+    color: darkslategray;
+}
+
+.dropdown_container {
+    position: absolute;
+    right: 50px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    border-radius: 5px;
+    display: none;
+    padding: 8px 5px;
+    background-color: white;
+}
+
+.dropdown_list_container {
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+    border-radius: 10px;
+}
+
+.dropdown_list_container:hover {
+    background-color: rgb(243 244 246/var(--tw-bg-opacity));
+    cursor: pointer;
+}
+
+.icon_container {
+    margin-right: 15px;
+}
+
+.dropdown_list {
+    margin: 14px 0px;
+}
+
+.fa-solid, .fa-regular {
+    color: dimgray;
+}
+
+.body_section {
+    display: flex;
+}
+
+.page_section {
+    width: 81%;
+    padding: 2%;
+}
+
+.breadcrumbs_container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    /* box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px; */
+    /* box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px; */
+}
+
+.breadcrumbs {
+    margin: 0px 0px 12px 0px;
+}
+
+.main_section {
+    margin-top: 40px;
+}
+
+input {
+    margin-left: 20px;
+    padding: 0px 20px;
+    height: 38px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+input:focus-within {
+    outline: 1.5px solid #2d7474;
+}
+
+.submit_btn {
+    color: white;
+    border: none;
+    background: darkslategray;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.submit_btn:hover {
+    background-color: #2d7474;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+	height: 14px;
+}

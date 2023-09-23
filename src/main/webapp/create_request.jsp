@@ -2,225 +2,161 @@
 <%@page import="in.fssa.leavepulse.model.Leave"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="ISO-8859-1">
-<title> Create Request </title>
+<title>Create Request</title>
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/sidebar.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/footer.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/applyleave.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+
 </head>
-<style>
-		
-	*{
-	  margin: 0;
-	  padding: 0;
-	  outline: none;
-	  box-sizing: border-box;
-	}
-	body{
-	  font-family: 'Poppins', sans-serif;
-	}
-	
-	.main {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		min-height: 75vh;
-	}
-	
-	.container{
-	  max-width: 800px;
-	  background: #fff;
-	  width: 800px;
-	  padding: 25px 40px 10px 40px;
-	  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-	}
-	.container .text{
-	  text-align: center;
-	  font-size: 41px;
-	  font-weight: 600;
-	}
-	
-	.container form .form-row{
-	  display: flex;
-	  margin: 32px 0;
-	}
-	form .form-row .input-data{
-	  width: 100%;
-	  height: 40px;
-	  margin: 0 20px;
-	  position: relative;
-	}
-	
-	.input-data input {
-	  display: block;
-	  width: 100%;
-	  height: 100%;
-	  border: none;
-	  font-size: 17px;
-	  border-bottom: 2px solid rgba(0,0,0, 0.12);
-	}
-	.input-data input:focus ~ label, .textarea textarea:focus ~ label,
-	.input-data input:valid ~ label, .textarea textarea:valid ~ label{
-	  transform: translateY(-20px);
-	  font-size: 14px;
-	  color: #3498db;
-	}
-	
-	.input-data label{
-	  position: absolute;
-	  pointer-events: none;
-	  bottom: 10px;
-	  font-size: 16px;
-	  transition: all 0.3s ease;
-	}
-	
-	.submit-btn .input-data{
-	  overflow: hidden;
-	  height: 45px!important;
-	  width: 25%!important;
-	}
-	.submit-btn .input-data .inner{
-	  height: 100%;
-	  width: 300%;
-	  position: absolute;
-	  left: -100%;
-	  background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
-	  transition: all 0.4s;
-	}
-	.submit-btn .input-data:hover .inner{
-	  left: 0;
-	}
-	.submit-btn .input-data input{
-	  background: none;
-	  border: none;
-	  color: #fff;
-	  font-size: 17px;
-	  font-weight: 500;
-	  text-transform: uppercase;
-	  letter-spacing: 1px;
-	  cursor: pointer;
-	  position: relative;
-	  z-index: 2;
-	}
-	@media (max-width: 700px) {
-	  .container .text{
-	    font-size: 30px;
-	  }
-	  .container form{
-	    padding: 10px 0 0 0;
-	  }
-	  .container form .form-row{
-	    display: block;
-	  }
-	  form .form-row .input-data{
-	    margin: 35px 0!important;
-	  }
-	  .submit-btn .input-data{
-	    width: 40%!important;
-	  }
-	}
-	
-	.input-data select {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: none;
-    font-size: 17px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.12);
-    appearance: none; /* Removes the default arrow in some browsers */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233498db'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E"); /* Custom arrow icon */
-    background-repeat: no-repeat;
-    background-position: right center;
-	}
-	
-	.input-data select:focus ~ label,
-	.input-data select:valid ~ label {
-	    transform: translateY(-20px);
-	    font-size: 14px;
-	    color: #3498db;
-	}
-	
-	.readonly-label {
-		transform: translateY(-20px);
-	    font-size: 14px;
-	    color: #3498db;
-	}
-	
-</style>
+
 <body>
 
-	<jsp:include page="/header.jsp"/>
-	
-	<% List<Leave> leaveList = (List<Leave>)request.getAttribute("leaveList"); %>
-	
-	<div class="main">
+	<% List<Leave> leavesList = (List<Leave>) request.getAttribute("leaveList"); %>
 
-		<div class="container">
+	<div class="header_section">
+		<script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
+		<jsp:include page="/header.jsp"/>
+	</div>
+	
+	<div class="body_section">
+
+		<div class="sidebar_section">
+			<jsp:include page="/sidebar.jsp" />
+		</div>
+
+		<div class="page_section">
+
+			<div class="breadcrumbs_section">
+				<jsp:include page="/breadcrumbs.jsp" />
+			</div>
+
+			<div class="main_section">
+
+				<script src="<%=request.getContextPath()%>/assets/js/toggleLeaveContainer.js"></script>
+
+				<div class="application_form_container">
+					<div>
+						<h3 class="form_title">Application Form</h3>
+					</div>
+					<form action="request" method="post">
+						<div class="form_container">
+							<div class="fields_container">
+								<div class="field_container">
+									<label> Start Date </label> <input name="start_date" class="apply_leave_inputs start_date" type="date" required min="<%= LocalDate.now() %>">
+								</div>
+								<div class="field_container">
+									<label> End date </label> <input name="end_date" class="apply_leave_inputs end_date" required type="date" min="<%= LocalDate.now() %>">
+								</div>
+							</div>
+							<div class="fields_container">
+								<div class="field_container">
+									<label> Leave Type </label>
+									<div class="select_tag_container">
+										<button class="select_tag" type="button" onclick="toggleLeaveSelectContainer()">Select leave type</button>
+										<i class="fa-solid fa-angle-down"></i>
+									</div>
+								</div>
+								<div class="field_container">
+									<label> Upload Document </label> <input
+										class="apply_leave_inputs" type="file" id="document_field" multiple="multiple">
+								</div>
+							</div>
+							
+							<input type="hidden" name="leave" id="selectedLeave" value="">
+							
+							<div class="leave_type_container">
+								<% for (Leave leave : leavesList) { %>
+									<div class="leave_container" onclick="selectLeave('<%= leave.getLeaveType() %>')"> <p> <%= leave.getLeaveType() %> </p> </div>
+								<% } %>
+							</div>
+							<div class="fields_container">
+								<div class="field_container">
+									<label> Reason </label>
+									<textarea class="apply_leave_textarea" name="reason"> </textarea>
+								</div>
+								<div class="field_container submit_btn_container">
+									<button class="submit_btn">Submit</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+
+			<div class="footer_section">
+				<jsp:include page="/footer.jsp" />
+			</div>
+
+		</div>
+
+	</div>
+
+	<script>
+			 
+		const start_date = document.querySelector(".start_date");
+		const end_date = document.querySelector(".end_date");
 		
-	      <div class="text"> Create Request </div>
-	      
-	      <form action="create" method="post">
-	         
-	         <div class="form-row">
-	            <div class="input-data">
-	               <select name="leave">
-						<% for (Leave leave : leaveList) { %>
-					        <option value="<%= leave.getLeaveType() %>"> <%= leave.getLeaveType() %> </option>
-					    <% } %>
-					</select>
-					<label for="leave">Leave Type</label>
-	            </div>
-	            <div class="input-data">
-	               <input type="text" name="reason">
-	               <div class="underline"></div>
-	               <label for="reason">Reason</label>
-	            </div>
-	         </div>
-	         
-	         <div class="form-row">
-	            <div class="input-data">
-				    <input type="date" name="start_date" id="start_date" min="<%= LocalDate.now() %>" required>
-				    <div class="underline"></div>
-				    <label class="readonly-label" for="start_date">Start Date</label>
-				</div>
-				<div class="input-data">
-				    <input type="date" name="end_date" id="end_date" min="<%= LocalDate.now() %>" required>
-				    <div class="underline"></div>
-				    <label class="readonly-label" for="end_date">End Date</label>
-				</div>
-	         </div>
-	         
-	         <script>
-	         
-			    const startInput = document.getElementById('start_date');
-			    const endInput = document.getElementById('end_date');
+		start_date.addEventListener("change",() => {
 			
-			    startInput.addEventListener('input', restrictWeekends);
-			    endInput.addEventListener('input', restrictWeekends);
+		    const startDate = new Date(start_date.value);
+		    const minEndDate = new Date(startDate);
+		    
+		    minEndDate.setDate(startDate.getDate());
+		    const minEndDateFormatted = minEndDate.toISOString().split("T")[0];
+		    end_date.min = minEndDateFormatted;
 			
-			    function restrictWeekends(event) {
-			        const selectedDate = new Date(event.target.value);
-			        const dayOfWeek = selectedDate.getDay();
+		})	
+		
+		end_date.addEventListener("change",() => {
 			
-			        if (dayOfWeek === 0 || dayOfWeek === 6) {
-			            event.target.value = '';
-			            alert('Weekends are not allowed.');
-			        }
-			    }
-			    
-			</script>
-	         
-	         <div class="form-row submit-btn">
-	            <div class="input-data">
-	               <div class="inner"></div>
-	               <input type="submit" value="submit">
-	            </div>
-	         </div>
-	      </form>
-	      </div>
-	      
-      </div>
+		    const endDate = new Date(end_date.value);
+		    const maxStartDate = new Date(endDate);
+		    
+		    maxStartDate.setDate(endDate.getDate());
+		    const maxStartDateFormatted = maxStartDate.toISOString().split("T")[0];
+		    start_date.max = maxStartDateFormatted;
+			
+		})	
+		 
+		let submit_btn = document.querySelector(".submit_btn");
+		
+		submit_btn.addEventListener("click", () => {
+						
+			const reason = document.querySelector(".apply_leave_textarea").value.trim();
+	        
+	        const reason_pattern = /^[A-Za-z0-9\s]*$/;
+	        
+	        if (!reason_pattern.test(reason)) {
+	            alert("Only alphanumeric characters and spaces are allowed");
+	            reason.focus();
+				event.preventDefault();
+		        return;
+		    }
+			
+			let selectedLeave = document.getElementById("selectedLeave").value;
+	        if (selectedLeave == "") {
+	            alert("Please select a leave before submitting the form.");
+				event.preventDefault();
+	        }
+	        
+	    });
+	
+	</script>
 
 </body>
 </html>

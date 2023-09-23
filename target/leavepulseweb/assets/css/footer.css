@@ -1,0 +1,35 @@
+.footer_section {
+    margin-top: 40px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px 60px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    /* box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px; */
+    /* box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px; */
+}
+
+.copyright {
+    color: black;
+}
+
+.footer_links_container {
+    width: 18%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.fa-facebook, .fa-instagram, .fa-twitter, .fa-github {
+    font-size: 22px;
+    color: gray;
+}
+
+.fa-facebook:hover, .fa-instagram:hover, .fa-twitter:hover, .fa-github:hover {
+    color: darkslategray;
+    cursor: pointer;
+}

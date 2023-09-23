@@ -1,0 +1,116 @@
+.application_form_container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.fields_container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.field_container {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+}
+
+.apply_leave_inputs {
+    margin: 10px 0px 0px 0px;
+}
+
+.form_title {
+    font-size: 20px;
+}
+
+#leave_field {
+    width: 1109px;
+}
+
+.select_tag_container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.select_tag {
+    display: flex;
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid gray;
+    background-color: white;
+}
+
+.fa-angle-down {
+    margin-left: -40px;
+}
+
+.leave_type_container {
+    position: absolute;
+    background-color: white;
+    display: none;
+    padding: 5px 0px;
+    border: 1px solid gray;
+    margin-top: 5px;
+    border-top: none;
+    width: 450px;
+    height: 155px;
+    overflow-y: scroll;
+}
+
+.leave_container {
+    padding: 10px 22px;
+}
+
+.leave_container:hover {
+    background-color: rgb(243 244 246/var(--tw-bg-opacity));
+    cursor: pointer;
+}  
+  
+::-webkit-file-upload-button {
+   display: none;
+}
+
+.apply_leave_textarea {
+    margin-top: 10px;
+    padding: 10px 20px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid gray;
+    resize: none;
+    height: 100px;
+}
+
+.apply_leave_textarea:focus-within {
+    outline: 1.5px solid #2d7474;
+}
+
+.submit_btn_container {
+    margin-top: 9.7%;
+}
+
+.submit_btn {
+    width: 200px;
+    padding: 12px 15px;
+}
+
+.leave_type_container::-webkit-scrollbar {
+	display: block;
+    width: 0.4rem;
+}
+
+.leave_type_container::-webkit-scrollbar-thumb {
+    --tw-border-opacity: 1;
+    background-color: rgba(217, 217, 227, 0.8);
+    border-color: rgba(255,255,255,var(--tw-border-opacity));
+    border-radius: 50px;
+}
+
+#document_field {
+	padding: 10px 20px;
+	height: auto;
+}

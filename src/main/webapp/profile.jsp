@@ -1,3 +1,4 @@
+<%@page import="in.fssa.leavepulse.dto.EmployeeDTO"%>
 <%@page import="in.fssa.leavepulse.model.Employee"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -5,226 +6,154 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/sidebar.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/footer.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/profile.css">
 
 <title>Profile</title>
-<style>
-	* {
-    margin: 0;
-    padding: 0
-}
-
-.card {
-    width: 350px;
-    background-color: #efefef;
-    border: none;
-    cursor: pointer;
-    transition: all 0.5s;
-}
-
-.image img {
-    transition: all 0.5s
-}
-
-.card:hover .image img {
-    transform: scale(1.5)
-}
-
-.btn {
-    height: 140px;
-    width: 140px;
-    border-radius: 50%
-}
-
-.name {
-    font-size: 22px;
-    font-weight: bold
-}
-
-.idd {
-    font-size: 14px;
-    font-weight: 600
-}
-
-.idd1 {
-    font-size: 12px
-}
-
-.number {
-    font-size: 22px;
-    font-weight: bold
-}
-
-.follow {
-    font-size: 12px;
-    font-weight: 500;
-    color: #444444
-}
-
-.btn1 {
-    height: 40px;
-    width: 150px;
-    border: none;
-    background-color: #000;
-    color: #aeaeae;
-    font-size: 15px
-}
-
-.text span {
-    font-size: 13px;
-    color: #545454;
-    font-weight: 500
-}
-
-.icons i {
-    font-size: 19px
-}
-
-hr .new1 {
-    border: 1px solid
-}
-
-.join {
-    font-size: 14px;
-    color: #a0a0a0;
-    font-weight: bold
-}
-
-.date {
-    background-color: #ccc
-}
-
-.dl, ol, ul {
-	margin-bottom: 0px;
-}
-
-.col-md-12 {
-    margin-top: 1rem;
-}
-
-.mt-3 {
-	margin-top: 0px !important;
-}
-
-.mb-5 {
-	margin-top: 3rem !important;
-    margin-bottom: 0px !important;
-}
-
-.btn {
-    height: 40px;
-    width: 125px;
-    border-radius: 5px;
-}
-
-.container {
-	margin-right: 0;
-}
-
-body {
-	line-height: normal;
-}
-
-input {
-	margin-top: 5px;
-}
-
-.form-control[readonly] {
-    background-color: transparent; /* Set to transparent or any other desired color */
-}
-
-.mt-5 {
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.logout {
-    background-color: #3498db; /* Blue background color for Edit button */
-    border-color: #3498db;
-}
-
-.logout:hover {
-    background-color: #2980b9; /* Darker blue on hover */
-}
-
-.edit {
-    background-color: #27ae60; /* Green background color for View button */
-    border-color: #27ae60;
-}
-
-.edit:hover {
-    background-color: #219d53; /* Darker green on hover */
-}
-
-</style>
 </head>
 <body>
 
-	<jsp:include page="/header.jsp"/>
-	<% Employee employee = new Employee(); %>
-	<% employee = (Employee)request.getAttribute("EMPLOYEEDETAILS"); %>
-	<% int manager = (int)request.getAttribute("manager"); %>
-	<% String role_name = (String)request.getAttribute("role_name"); %>
+	<% EmployeeDTO employee = (EmployeeDTO) request.getAttribute("EMPLOYEEDETAILS"); %>
 
-	<div class="container rounded bg-white mt-5 mb-5">
-		<div class="row">
-			<div class="col-md-3 border-right">
-				<div
-					class="d-flex flex-column align-items-center text-center p-3 py-5">
-					<img class="rounded-circle mt-5" width="150px"
-						src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
-						class="font-weight-bold"> <%= employee.getEmployee_id() %> </span><span class="text-black-50"> <%= employee.getEmail() %> </span><span>
-					</span>
-				</div>
-			</div>
-			<div class="col-md-5 border-right">
-				<div class="p-3 py-5">
-					<div class="d-flex justify-content-between align-items-center mb-3">
-						<h4 class="text-right">Profile</h4>
-					</div>
-					<div class="row mt-2">
-						<div class="col-md-6">
-							<label class="labels">First Name</label><input type="text"
-								class="form-control" value = "<%= employee.getFirst_name() %>" readonly>
-						</div>
-						<div class="col-md-6">
-							<label class="labels">Last Name</label><input type="text"
-								class="form-control" value="<%= employee.getLast_name() %>" readonly>
-						</div>
-					</div>
-					<div class="row mt-3">
-						<div class="col-md-12">
-							<label class="labels">Phone No</label><input type="text"
-								class="form-control" value="<%= employee.getPhone_no() %>" readonly>
-							</div>
-						<div class="col-md-12">
-							<label class="labels">Role</label><input type="text"
-								class="form-control" value="<%= role_name %>" readonly>
-							</div>
-						<div class="col-md-12">
-							<label class="labels">Manager ID</label><input type="text"
-								class="form-control" value="<%= manager %>" readonly>
-						</div>
-						<div class="col-md-12">
-							<label class="labels">Password</label><input type="text"
-								class="form-control" value="<%= employee.getPassword() %>" readonly>
-						</div>
-						<div class="col-md-12">
-							<label class="labels">Address</label><input type="text"
-								class="form-control" value="<%= employee.getAddress() %>" readonly>
-						</div>
-					</div>
-					
-					<div class="mt-5 text-center">
-						<a href="logout"> <button class="btn btn-primary profile-button logout" type="button"> Log Out </button> </a>
-						<a href="employee/edit?id=<%= employee.getEmployee_id() %>"> <button class="btn btn-primary profile-button edit" type="button"> Edit </button> </a>
-					</div>
-				</div>
-			</div>
-			
-		</div>
+	<div class="header_section">
+		<script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
+		<jsp:include page="/header.jsp" />
 	</div>
+
+	<div class="body_section">
+
+		<div class="sidebar_section">
+			<jsp:include page="/sidebar.jsp" />
+		</div>
+
+		<div class="page_section">
+
+			<div class="breadcrumbs_section">
+				<jsp:include page="/breadcrumbs.jsp" />
+			</div>
+
+			<div class="main_section">
+
+				<div class="user_profile_container">
+
+					<div class="left_container">
+						<div class="profile_image_container">
+							<img src="<%=request.getContextPath()%>/assets/images/profile.jpg" class="profile_img">
+						</div>
+						<div class="info_container">
+							<p> <%= employee.getEmployeeId() %> </p>
+							<div class="email_container">
+								<p> <%= employee.getEmail() %> </p>
+							</div>
+						</div>
+					</div>
+
+					<div class="right_container">
+						<form action="employee?action=update" method="post">
+						
+							<input type="hidden" name="employee_id" value = <%= employee.getEmployeeId() %>>
+							<input type="hidden" name="email" value = <%= employee.getEmail() %>>
+							
+							<div class="fields_container">
+								<div class="field_container">
+									<label> First Name </label> <input name = "first_name" class="apply_leave_inputs editable_fields" id="first_field" value="<%= employee.getFirstName() %>" readonly type="text">
+								</div>
+								<div class="field_container">
+									<label> Last Name </label> <input name = "last_name" class="apply_leave_inputs editable_fields" value="<%= employee.getLastName() %>" readonly type="text">
+								</div>
+							</div>
+							<div class="fields_container">
+								<div class="field_container">
+									<label> Phone No </label> <input name = "phone_no" class="apply_leave_inputs editable_fields" value="<%= employee.getPhoneNo() %>" readonly type="text">
+								</div>
+								<div class="field_container">
+									<label> Role </label> <input class="apply_leave_inputs non_editable_fields" value="<%= employee.getRoleName() %>" readonly type="text">
+								</div>
+							</div>
+							<div class="fields_container">
+								<div class="field_container">
+									<label> Manager </label> <input class="apply_leave_inputs non_editable_fields" value="<%= employee.getManagerEmail() %>" readonly type="text">
+								</div>
+								<div class="field_container">
+									<label> Joined Date </label> <input class="apply_leave_inputs non_editable_fields" value="<%= employee.getHireDate() %>" readonly type="text">
+								</div>
+							</div>
+							<div class="fields_container">
+								<div class="field_container">
+									<label> Password </label> 
+									<input name="password" class="apply_leave_inputs non_editable_fields" id="password_field" value="<%= employee.getPassword() %>" readonly type="password">
+									<div class = "eye_container"> <i class="fa-solid fa-eye"></i> <i class="fa-solid fa-eye-slash"></i> </div> 
+								</div>
+								<div class="field_container">
+									<label> Address </label> <input name="address" class="apply_leave_inputs editable_fields" value="<%= employee.getAddress() %>" readonly type="text">
+								</div>
+							</div>
+							<div class="edit_btn_container">
+								<button class="edit_btn" type="button"> Edit </button>
+								<button class="save_btn"> Save </button>
+							</div>
+						</form>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="footer_section">
+				<jsp:include page="/footer.jsp" />
+			</div>
+
+		</div>
+
+	</div>
+	
+	<script>
+	
+		let eye_icon = document.querySelector(".fa-eye");
+		let eye_slash_icon = document.querySelector(".fa-eye-slash");
+		let password_field = document.getElementById("password_field");
+		
+		eye_icon.addEventListener("click",() => {
+			password_field.setAttribute("type","text");
+			eye_icon.style.display = "none";
+			eye_slash_icon.style.display = "block";
+		})
+		
+		eye_slash_icon.addEventListener("click",() => {
+			password_field.setAttribute("type","password");
+			eye_slash_icon.style.display = "none";
+			eye_icon.style.display = "block";
+		})
+	
+		let edit_btn = document.querySelector(".edit_btn");
+		let save_btn = document.querySelector(".save_btn");
+		let editable_fields = document.querySelectorAll(".editable_fields");
+		let non_editable_fields = document.querySelectorAll(".non_editable_fields")
+		let first_field = document.getElementById("first_field");
+		
+		edit_btn.addEventListener("click",() => {
+			editable_fields.forEach((e) => {
+				e.removeAttribute("readonly");
+			})
+			non_editable_fields.forEach((e) => {
+				e.setAttribute("id","non_editable_fields");
+			})
+			edit_btn.style.display = "none";
+			save_btn.style.display = "block";
+			 first_field.focus();
+		})
+	
+	</script>
 
 </body>
 </html>
