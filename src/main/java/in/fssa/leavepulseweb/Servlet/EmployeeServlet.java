@@ -1,7 +1,8 @@
 package in.fssa.leavepulseweb.Servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -42,15 +43,13 @@ public class EmployeeServlet extends HttpServlet {
 
 		try {
 			
-			rolesList = new RoleService().getAllRole();
-			request.setAttribute("rolesList", rolesList);
-			
 			// Create Employee Page
 
 			if ("new".equals(action)) {
-
 				
+				rolesList = new RoleService().getAllRole();
 				int lastEmployeeId = employeeService.getTableLastEmployeeId();
+				request.setAttribute("rolesList", rolesList);
 				request.setAttribute("lastEmployeeId", lastEmployeeId);
 
 				RequestDispatcher rd = request.getRequestDispatcher("/create_employee.jsp");
@@ -73,7 +72,10 @@ public class EmployeeServlet extends HttpServlet {
 			else if ("allemployees".equals(action)) {
 
 				employeeList = employeeService.getAllEmployeeWithRole();
+				rolesList = new RoleService().getAllRole();
 				request.setAttribute("employeesList", employeeList);
+				request.setAttribute("rolesList", rolesList);
+				
 
 				RequestDispatcher rd = request.getRequestDispatcher("/list_all_employees.jsp");
 				rd.forward(request, response);
@@ -84,7 +86,9 @@ public class EmployeeServlet extends HttpServlet {
 
 				int managerId = (int) request.getSession().getAttribute("LOGGEDUSER");
 				employeeList = employeeService.getAllEmployeeWithRoleByManagerId(managerId);
+				rolesList = new RoleService().getAllRole();
 				request.setAttribute("employeesList", employeeList);
+				request.setAttribute("rolesList", rolesList);
 
 				RequestDispatcher rd = request.getRequestDispatcher("/list_all_employees.jsp");
 				rd.forward(request, response);
@@ -102,68 +106,122 @@ public class EmployeeServlet extends HttpServlet {
 
 		String action = request.getParameter("action");
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee();
+		Employee employee = new Employee();	
+		List<Role> rolesList = null;
 
-		PrintWriter out = response.getWriter();
+		// Update EmpRole
 
-		try {
+		if ("updaterole".equals(action)) {
+			
+			int managerId = (int) request.getSession().getAttribute("LOGGEDUSER");
+			List<EmployeeDTO> employeesList = null;
+			String role = null;
+			int id = 0;
+			
+			try {
 
-			// Update EmpRole
-
-			if ("updaterole".equals(action)) {
-
-				int id = Integer.parseInt(request.getParameter("employee_id"));
+				employeesList = employeeService.getAllEmployeeWithRoleByManagerId(managerId);
+				rolesList = new RoleService().getAllRole();
+				
+				id = Integer.parseInt(request.getParameter("employee_id"));
 				EmployeeRoleService empRoleService = new EmployeeRoleService();
 				EmployeeRole empRole = new EmployeeRole();
 				empRole.setManagerId(Integer.parseInt(request.getParameter("manager_id")));
+				
+				role = request.getParameter("role");
 
-				int roleId = new RoleService().findRoleByRoleName(request.getParameter("role")).getRoleId();
+				int roleId = new RoleService().findRoleByRoleName(role).getRoleId();
 				empRole.setRoleId(roleId);
 				empRoleService.updateEmpRole(id, empRole);
 				response.sendRedirect(request.getContextPath() + "/employee");
+			
+			} catch (ServiceException | ValidationException e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", e.getMessage());
+				request.setAttribute("employeesList", employeesList);
+				request.setAttribute("rolesList", rolesList);
+				request.setAttribute("employeeId", id);
+				request.setAttribute("role", role);
+				request.getRequestDispatcher("/list_all_employees.jsp").forward(request, response);
 
 			}
+			
+		}
 
-			// Update Employee
+		// Update Employee
 
-			else if ("update".equals(action)) {
+		else if ("update".equals(action)) {
+			
+			EmployeeDTO loginEmployee = null;
+			
+			try {
 
 				int id = Integer.parseInt(request.getParameter("employee_id"));
-				employee.setFirst_name(request.getParameter("first_name"));
-				employee.setLast_name(request.getParameter("last_name"));
+				employee.setFirstName(request.getParameter("first_name"));
+				employee.setLastName(request.getParameter("last_name"));
 				employee.setEmail(request.getParameter("email"));
-				employee.setPhone_no(Long.parseLong(request.getParameter("phone_no")));
-				employee.setPassword(request.getParameter("password"));
+				employee.setPhoneNo(Long.parseLong(request.getParameter("phone_no")));
 				employee.setAddress(request.getParameter("address"));
+				
+				loginEmployee = new EmployeeService().findEmployeeWithRole(id);
+				request.setAttribute("loginEmployee", employee);
 
 				employeeService.updateEmployee(id, employee);
 				response.sendRedirect(request.getContextPath() + "/profile");
-
+				
+			} catch (ServiceException | ValidationException e) {
+				e.printStackTrace();
+				request.setAttribute("loginEmployee", loginEmployee);
+				request.setAttribute("errorMessage", e.getMessage());
+				request.setAttribute("employee", employee);
+				request.getRequestDispatcher("/profile.jsp").forward(request, response);
 			}
 
-			// Create Employee
+		}
 
-			else {
+		// Create Employee
 
-				employee.setFirst_name(request.getParameter("first_name"));
-				employee.setLast_name(request.getParameter("last_name"));
+		else {
+			
+			int lastEmployeeId = 0;
+			String role = null;
+			
+			try {
+				
+				rolesList = new RoleService().getAllRole();
+				lastEmployeeId = employeeService.getTableLastEmployeeId();
+
+				employee.setFirstName(request.getParameter("first_name"));
+				employee.setLastName(request.getParameter("last_name"));
 				employee.setEmail(request.getParameter("email"));
-				employee.setPhone_no(Long.parseLong(request.getParameter("phone")));
+				employee.setPhoneNo(Long.parseLong(request.getParameter("phone")));
 				employee.setPassword(request.getParameter("password"));
 				employee.setAddress(request.getParameter("address"));
 				int managerId = Integer.parseInt(request.getParameter("manager_id"));
+				
+				role = request.getParameter("role");
 
-				int roleId = new RoleService().findRoleByRoleName(request.getParameter("role")).getRoleId();
+				String dateString = request.getParameter("joining_date");
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				employee.setJoiningDate(LocalDate.parse(dateString, formatter));
+		            
+				int roleId = new RoleService().findRoleByRoleName(role).getRoleId();
 				employeeService.createEmployee(employee, managerId, roleId);
 				response.sendRedirect(request.getContextPath() + "/employee");
-
+				
+			} catch (ServiceException | ValidationException e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", e.getMessage());
+				request.setAttribute("employee", employee);
+				request.setAttribute("role", role);
+				request.setAttribute("managerId", rolesList);
+				request.setAttribute("rolesList", rolesList);
+				request.setAttribute("lastEmployeeId", lastEmployeeId);
+				request.getRequestDispatcher("/create_employee.jsp").forward(request, response);
 			}
 
-		} catch (ServiceException | ValidationException e) {
-			e.printStackTrace();
-			out.print(e.getMessage());
 		}
-
+		
 	}
 
 }

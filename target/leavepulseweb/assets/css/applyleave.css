@@ -52,9 +52,8 @@
 .leave_type_container {
     position: absolute;
     background-color: white;
-    left: 66%;
     display: none;
-    padding-bottom: 3px;
+    padding: 5px 0px;
     border: 1px solid gray;
     margin-top: 5px;
     border-top: none;
@@ -91,8 +90,7 @@
 }
 
 .submit_btn_container {
-    margin-top: 10%;
-    /* width: 30%; */
+    margin-top: 9.7%;
 }
 
 .submit_btn {
@@ -110,4 +108,9 @@
     background-color: rgba(217, 217, 227, 0.8);
     border-color: rgba(255,255,255,var(--tw-border-opacity));
     border-radius: 50px;
+}
+
+#document_field {
+	padding: 10px 20px;
+	height: auto;
 }

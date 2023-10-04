@@ -1,3 +1,4 @@
+
 <%@page import="in.fssa.leavepulse.model.Employee"%>
 <%@page import="in.fssa.leavepulse.model.Role"%>
 <%@page import="java.util.List"%>
@@ -10,13 +11,14 @@
 <meta charset="ISO-8859-1">
 <title> Create Employee </title>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/sidebar.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/footer.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 
@@ -30,11 +32,17 @@
 	<% int employeeId = (int) request.getSession().getAttribute("LOGGEDUSER"); %>
 	<% int lastEmployeeId = (int) request.getAttribute("lastEmployeeId"); %>
 	
+	<% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+	<% Employee invalidEmployee = (Employee)request.getAttribute("employee"); %>
+	<% String invalidRole = (String) request.getAttribute("role"); %>
+	
 	<div class="header_section">
         <script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
         <jsp:include page="/header.jsp"/>
     </div>
 
+	<jsp:include page="/error_popup.jsp"/>
+	
     <div class="body_section">
 
         <div class="sidebar_section">
@@ -55,26 +63,26 @@
                     <div>
                         <h3 class="form_title"> Application Form </h3>
                     </div>
-                    <form action="employee" method="post">
+                    <form class="form" action="employee" method="post">
 	                    <div class="form_container">
 	                        <div class="fields_container">
 	                            <div class="field_container">
 	                                <label for="first_name"> First Name </label>
-	                                <input name="first_name" class="apply_leave_inputs first_name" type="text" required autofocus>
+	                                <input name="first_name" autocomplete="off" class="apply_leave_inputs first_name" type="text" required autofocus>
 	                            </div>
 	                            <div class="field_container">
 	                                <label for="last_name"> Last Name </label>
-	                                <input name="last_name" class="apply_leave_inputs last_name" type="text" required>
+	                                <input name="last_name" autocomplete="off" class="apply_leave_inputs last_name" type="text" required>
 	                            </div>
 	                            <div class="field_container">
 	                                <label for="email"> Email </label>
-	                                <input name="email" class="apply_leave_inputs email" type="text" required>
+	                                <input name="email" autocomplete="off" class="apply_leave_inputs email" type="text" required>
 	                            </div>
 	                        </div>
 	                        <div class="fields_container">
 	                            <div class="field_container">
 	                                <label for="phone"> Phone Number </label>
-	                                <input name="phone" class="apply_leave_inputs phone" type="tel" required>
+	                                <input name="phone" autocomplete="off" class="apply_leave_inputs phone" type="tel" required>
 	                            </div>
 	                            <div class="field_container">
 	                                <label for="password"> Password </label>
@@ -101,7 +109,7 @@
 	                        <div class="fields_container">
 	                            <div class="field_container">
 	                                <label for="address"> Address </label>
-	                                <input name="address" required class="apply_leave_inputs address" type="text">
+	                                <input name="address" autocomplete="off" required class="apply_leave_inputs address" type="text">
 	                            </div>
 	                            <div class="field_container">
 	                                <label> Employee Id </label>
@@ -112,9 +120,16 @@
 	                                <input name="manager_id" class="apply_leave_inputs" value=<%= employeeId %> type="text" readonly>
 	                            </div>
 	                        </div>
-                            <div class="submit_btn_container">
-                                <button class="submit_btn" id="submit_btn"> Submit </button>
-                            </div>
+	                        <div class="fields_container">
+	                            <div class="field_container">
+	                                <label for="joining_date"> Joining Date </label>
+	                                <input name="joining_date" required class="apply_leave_inputs" type="date" id="joining_date">
+	                            </div>
+	                            <div class="submit_btn_container">
+                              		<button class="submit_btn" id="submit_btn"> Submit </button>
+                            	</div>
+	                            <div class="field_container"></div>
+	                        </div>
 	                    </div>
                     </form>
                 </div>
@@ -131,59 +146,124 @@
     
     <script>
     
-	    let eye_icon = document.querySelector(".fa-eye");
-		let eye_slash_icon = document.querySelector(".fa-eye-slash");
-		let password_field = document.getElementById("password_field");
-		let submit_btn = document.getElementById("submit_btn");
-		
-		
-		eye_icon.addEventListener("click",() => {
-			password_field.setAttribute("type","text");
-			eye_icon.style.display = "none";
-			eye_slash_icon.style.display = "block";
-		})
-		
-		eye_slash_icon.addEventListener("click",() => {
-			password_field.setAttribute("type","password");
-			eye_slash_icon.style.display = "none";
-			eye_icon.style.display = "block";
-		})
+	    const firstNameField = document.querySelector(".first_name");
+	    const lastNameField = document.querySelector(".last_name");
+		const emailField = document.querySelector(".email");
+		const phoneField = document.querySelector(".phone") 
+	    const passwordField = document.querySelector("#password_field");
+	    const addressField = document.querySelector(".address");
+	    const joiningDateInput = document.querySelector('#joining_date');
 	    
-	    submit_btn.addEventListener("click", (e) => {
+	    const errorMessage = "<%= errorMessage %>";
+		const invalidEmployee = <%= invalidEmployee %>;
+		const invalidRole = "<%= invalidRole %>";
+		
+		const popUpContainer = document.querySelector(".pop_up_container");
+		const okayBtn = document.querySelector(".okay_btn");
+		
+		function isError(errorMessage) {
+			if (errorMessage != "null") {
+				popUpContainer.style.display = "block";
+				document.querySelector(".error_message").innerHTML = errorMessage;
+				firstNameField.value = invalidEmployee.firstName;
+				lastNameField.value = invalidEmployee.lastName;
+				emailField.value = (errorMessage == "Email ID already exist") ? "" : invalidEmployee.email;
+				phoneField.value = (errorMessage == "Phone Number already exist") ? "" : invalidEmployee.phoneNo;
+				selectRole(invalidRole);
+				passwordField.value = invalidEmployee.password;
+				addressField.value = invalidEmployee.address;
+				joiningDateInput.value = invalidEmployee.joiningDate;
+				okayBtn.focus();
+			}
+		}
+		
+		isError(errorMessage);
+		
+		okayBtn.addEventListener("click", () => {
+			popUpContainer.style.display = "none";
+			(emailField.value == "") ? emailField.focus() : phoneField.focus();
+			return;
+		})
+	    		
+		const eyeIcon = document.querySelector(".fa-eye");
+		const eyeSlashIcon = document.querySelector(".fa-eye-slash");
+		const submitBtn = document.getElementById("submit_btn");
+		
+		
+		eyeIcon.addEventListener("click",() => {
+			passwordField.setAttribute("type","text");
+			eyeIcon.style.display = "none";
+			eyeSlashIcon.style.display = "block";
+		})
+		
+		eyeSlashIcon.addEventListener("click",() => {
+			passwordField.setAttribute("type","password");
+			eyeSlashIcon.style.display = "none";
+			eyeIcon.style.display = "block";
+		})
+		
+		const today = new Date();
+  		const oneWeekAgo = new Date(today);
+	  	oneWeekAgo.setDate(today.getDate() - 7);
+	  	const threeMonthsLater = new Date(today);
+	  	threeMonthsLater.setMonth(today.getMonth() + 3);
+		
+	  	function isSunday(date) {
+	    	return date.getDay() === 0;
+	  	}
+	
+	  	joiningDateInput.min = oneWeekAgo.toISOString().split('T')[0];
+	  	joiningDateInput.max = threeMonthsLater.toISOString().split('T')[0];
+	  	
+  	 	joiningDateInput.addEventListener('keydown', function (e) {
+    		e.preventDefault();
+  	  	});
+  	 	
+  	 	joiningDateInput.addEventListener('input', function () {
+  	 	    const selectedDate = new Date(this.value);
+  	 	    if (isSunday(selectedDate)) {
+  	 	      alert('Sundays are not allowed. Please choose another date.');
+  	 	      this.value = '';
+  	 	    }
+  	 	  });
+	
+	    submitBtn.addEventListener("click", (e) => {
 	    	
 	    	e.preventDefault();
 	    	
-	    	const first_name = document.querySelector(".first_name").value.trim();
+	    	const firstName = firstNameField.value.trim();
 		    
-		    if (first_name == "") {
+		    if (firstName == "") {
 		    	alert("First name cannot be empty");
-		    	first_name.focus();
+		    	firstNameField.focus();
 		    	return;
 		    }
 		    
-		    const name_pattern = /^[A-Za-z\s]{3,24}$/;
+		    const namePattern = /^[A-Za-z\s]{3,24}$/;
 		
-		    if (!name_pattern.test(first_name)) {
+		    if (!namePattern.test(firstName)) {
 		        alert("Only letters are allowed in this field. Please remove any numbers or special characters.");
-		        first_name.focus();
+		        firstNameField.value = "";
+		        firstNameField.focus();
 		        return;
 		    }
 		    
-			const last_name = document.querySelector(".last_name").value.trim();
+			const lastName = lastNameField.value.trim();
 		    
-		    if (last_name == "") {
+		    if (lastName == "") {
 		    	alert("Last name cannot be empty");
-		    	last_name.focus();
+		    	lastNameField.focus();
 		    	return;
 		    }
 		    		
-		    if (!name_pattern.test(last_name)) {
+		    if (!namePattern.test(lastName)) {
 		        alert("Only letters are allowed in this field. Please remove any numbers or special characters.");
-		        last_name.focus();
+		        lastNameField.value = "";
+		        lastNameField.focus();
 		        return;
 		    }
 	    	
-	    	const email = document.querySelector(".email").value.trim();
+	    	const email = emailField.value.trim();
 		    
 		    if (email == "") {
 		    	alert("Email cannot be empty");
@@ -191,31 +271,33 @@
 		    	return;
 		    }
 		    
-		    const email_pattern = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+		    const emailPattern = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 		
-		    if (!email_pattern.test(email)) {
+		    if (!emailPattern.test(email)) {
 		        alert("Email doesn't match the pattern. Ex:abc@gmail.com");
+		        emailField.value = "";
 		        emailField.focus();
 		        return;
 		    }
 		    
-		    const phone = document.querySelector(".phone").value.trim(); 
+		    const phone = phoneField.value.trim(); 
 		    
 		    if (phone == "") {
 		    	alert("Phone No cannot be empty");
-		    	phone.focus();
+		    	phoneField.focus();
 		    	return;
 		    }
 
-		    const phone_pattern = /^[6-9]\d{9}$/;
+		    const phonePattern = /^[6-9]\d{9}$/;
 		
-		    if (!phone_pattern.test(phone)) {
+		    if (!phonePattern.test(phone)) {
 		        alert("No letters and characters. Start with 6,7,8 and 9. Only 10 digits");
-		        phone.focus();
+		        phoneField.value = "";
+		        phoneField.focus();
 		        return;
 		    }
 		    
-		    const password = document.querySelector("#password_field").value.trim();
+		    const password = passwordField.value.trim();
 		    
 		    if (password == "") {
 		    	alert("Password cannot be empty");
@@ -223,10 +305,11 @@
 		    	return;
 		    }
 		    
-		    const password_pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
+		    const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
 
-		    if (!password_pattern.test(password)) {
+		    if (!passwordPattern.test(password)) {
 		        alert("Password doesn't match the pattern. The password must contain at least one capital letter, at least one small letter, at least one number and at least one special characters, minimum eight to maximum twenty four characters");
+		        passwordField.value = "";
 		        passwordField.focus();
 		        return;
 		    }
@@ -234,23 +317,33 @@
 		    let selectedRole = document.getElementById("selectedRole").value;
 	        if (selectedRole == "") {
 	            alert("Please select a role before submitting the form.");
+	            return;
 	        }
 	        
-	        const address = document.querySelector(".address").value.trim();
+	        const address = addressField.value.trim();
 	        
 	        if (address == "") {
 		    	alert("Address cannot be empty");
-		    	address.focus();
+		    	addressField.focus();
 		    	return;
 		    }
 	        
-	        const address_pattern = /^[A-Za-z0-9\s.,#-]+$/;
+	        const addressPattern = /^[A-Za-z0-9\s.,#-/]+$/;
 	        
-	        if (!address_pattern.test(address)) {
+	        if (!addressPattern.test(address)) {
 	            alert("Please enter a valid address. Only alphanumeric characters, spaces, periods, commas, hashtags, and hyphens are allowed.");
-		        address.focus();
+	            addressField.value = "";
+	            addressField.focus();
 		        return;
 		    }
+	        
+	        if (joiningDateInput.value == "") {
+	        	alert("Please select the joining date");
+	        	joiningDateInput.focus();
+	        	return;
+	        }
+	       
+	        document.querySelector(".form").submit();
 	        
 	    });
     

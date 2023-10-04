@@ -1,3 +1,4 @@
+<%@page import="in.fssa.leavepulse.dto.LeaveBalanceDTO"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="in.fssa.leavepulse.model.Leave"%>
 <%@page import="java.util.List"%>
@@ -10,14 +11,15 @@
 <meta charset="ISO-8859-1">
 <title>Create Request</title>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/sidebar.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/footer.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/applyleave.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/createleave.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 
@@ -26,7 +28,8 @@
 <body>
 
 	<% List<Leave> leavesList = (List<Leave>) request.getAttribute("leaveList"); %>
-
+	<% List<LeaveBalanceDTO> availableLeaves = (List<LeaveBalanceDTO>) request.getAttribute("availableLeaves"); %>
+	
 	<div class="header_section">
 		<script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
 		<jsp:include page="/header.jsp"/>
@@ -52,7 +55,7 @@
 					<div>
 						<h3 class="form_title">Application Form</h3>
 					</div>
-					<form action="request" method="post">
+					<form class="form" action="request" method="post">
 						<div class="form_container">
 							<div class="fields_container">
 								<div class="field_container">
@@ -70,9 +73,13 @@
 										<i class="fa-solid fa-angle-down"></i>
 									</div>
 								</div>
-								<div class="field_container">
+								<!-- <div class="field_container">
 									<label> Upload Document </label> <input
 										class="apply_leave_inputs" type="file" id="document_field" multiple="multiple">
+								</div> -->
+								<div class="field_container">
+									<label> Remaining Leaves </label> <input
+										class="apply_leave_inputs remaining_leaves_field" type="text" disabled>
 								</div>
 							</div>
 							
@@ -80,7 +87,7 @@
 							
 							<div class="leave_type_container">
 								<% for (Leave leave : leavesList) { %>
-									<div class="leave_container" onclick="selectLeave('<%= leave.getLeaveType() %>')"> <p> <%= leave.getLeaveType() %> </p> </div>
+									<div class="leave_container" onclick="selectLeave('<%= leave.getLeaveType() %>'); selectedLeave('<%= leave.getLeaveType() %>')"> <p> <%= leave.getLeaveType() %> </p> </div>
 								<% } %>
 							</div>
 							<div class="fields_container">
@@ -93,6 +100,9 @@
 								</div>
 							</div>
 						</div>
+						
+						<input type="hidden" name="days" class="hidden_days">
+						
 					</form>
 				</div>
 
@@ -107,7 +117,21 @@
 	</div>
 
 	<script>
-			 
+	
+		const availableLeaves = <%= availableLeaves %>;
+		const remaining_leaves_field = document.querySelector(".remaining_leaves_field");
+				
+		let count = 0;
+		availableLeaves.forEach((e) => {
+			count += e.availableLeaveDays;
+		})
+		
+		remaining_leaves_field.value = count;
+	
+		function selectedLeave(leave) {
+		    remaining_leaves_field.value = availableLeaves.find((e) => e.leaveType == leave).availableLeaveDays;
+		}
+	 
 		const start_date = document.querySelector(".start_date");
 		const end_date = document.querySelector(".end_date");
 		
@@ -136,23 +160,44 @@
 		let submit_btn = document.querySelector(".submit_btn");
 		
 		submit_btn.addEventListener("click", () => {
+			
+			event.preventDefault();
+			
+			if (start_date.value == "") {
+	        	alert("Please select the start date");
+	        	start_date.focus();
+	        	return;
+	        }
+	        
+	        if (end_date.value == "") {
+	        	alert("Please select the end date");
+	        	end_date.focus();
+	        	return;
+	        }
+	        
+	        const date1 = new Date(start_date.value);
+	        const date2 = new Date(end_date.value);
+	        const differenceInMilliseconds = date2 - date1;
+	     	const differenceInDays = (differenceInMilliseconds / (1000 * 60 * 60 * 24)) + 1;
+	     	document.querySelector(".hidden_days").value = differenceInDays;
 						
 			const reason = document.querySelector(".apply_leave_textarea").value.trim();
 	        
-	        const reason_pattern = /^[A-Za-z0-9\s]*$/;
+	        const reason_pattern = /^[A-Za-z0-9\s\-:;.]*$/;
 	        
 	        if (!reason_pattern.test(reason)) {
 	            alert("Only alphanumeric characters and spaces are allowed");
 	            reason.focus();
-				event.preventDefault();
 		        return;
 		    }
 			
-			let selectedLeave = document.getElementById("selectedLeave").value;
-	        if (selectedLeave == "") {
-	            alert("Please select a leave before submitting the form.");
-				event.preventDefault();
+			const selectedLeave = document.getElementById("selectedLeave");
+	        if (selectedLeave.value == "") {
+	            alert("Please select a leave");
+	            return;
 	        }
+	        
+	     	document.querySelector(".form").submit();
 	        
 	    });
 	

@@ -1,5 +1,5 @@
 #overlay_container {
-    position: absolute;
+    position: fixed;
     width: 100%;
     display: none;
     justify-content: center;
@@ -183,5 +183,9 @@ input {
 }
 
 #delete_btn {
+	display: none;
+}
+
+.hidden_status {
 	display: none;
 }

@@ -7,6 +7,8 @@
 <meta charset="ISO-8859-1">
 <title>Home Page</title>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
 <link rel="stylesheet" href="./assets/css/style.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/sidebar.css">
@@ -15,7 +17,6 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/table.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 

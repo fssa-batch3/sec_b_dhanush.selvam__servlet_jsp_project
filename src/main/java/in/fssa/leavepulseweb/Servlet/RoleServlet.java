@@ -1,7 +1,6 @@
 package in.fssa.leavepulseweb.Servlet;
 
-import java.io.IOException ;
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -70,25 +69,32 @@ public class RoleServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+				
 		RoleService roleService = new RoleService();
-		Role role = new Role();
 		
-		String role_name = request.getParameter("role_name");
-		int role_id = Integer.parseInt(request.getParameter("role_id"));
-
-		PrintWriter out = response.getWriter();
+		String roleName = request.getParameter("role_name");
+		int roleId = Integer.parseInt(request.getParameter("role_id"));
+		
+		List<Role> rolesList = null;
+		int lastRoleId = 0;
 			
 		try {
 			
-			role.setRoleName(role_name);
-			if (roleService.findRoleByRoleId(role_id) == null) roleService.createRole(role);
-			else roleService.updateRole(role_id, role);
+			rolesList = roleService.getAllRole();
+            lastRoleId = roleService.getTableLastRoleId();
+
+			if (roleService.findRoleByRoleId(roleId) == null) roleService.createRole(roleName);
+			else roleService.updateRole(roleId, roleName);
 			response.sendRedirect(request.getContextPath() + "/role");
 
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
-			out.println(e.getMessage());
+			request.setAttribute("rolesList", rolesList);
+            request.setAttribute("lastRoleId", lastRoleId);
+			request.setAttribute("errorMessage", e.getMessage());
+			request.setAttribute("roleName", roleName);
+			request.setAttribute("roleId", roleId);
+			request.getRequestDispatcher("/role.jsp").forward(request, response);
 		}
 
 	}

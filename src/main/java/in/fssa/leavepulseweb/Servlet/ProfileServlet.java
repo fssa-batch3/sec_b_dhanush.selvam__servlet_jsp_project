@@ -1,6 +1,6 @@
 package in.fssa.leavepulseweb.Servlet;
 
-import java.io.IOException; 
+import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,7 +32,7 @@ public class ProfileServlet extends HttpServlet {
 		try {
 			
 			employee = new EmployeeService().findEmployeeWithRole(employeeid);
-			request.setAttribute("EMPLOYEEDETAILS", employee);
+			request.setAttribute("loginEmployee", employee);
 
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");
 			dispatcher.forward(request, response);

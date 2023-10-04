@@ -1,7 +1,6 @@
 package in.fssa.leavepulseweb.Servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +30,10 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+				
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
 		dispatcher.forward(request, response);
-	
+		
 	}
 
 	/**
@@ -46,14 +45,12 @@ public class LoginServlet extends HttpServlet {
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-
-		PrintWriter out = response.getWriter();
-			
+					
 		try {
 			
 			int employeeId = employeeService.login(email, password);
 			Employee employee = employeeService.findEmployeeByEmployeeId(employeeId);
-			String employeeName = employee.getFirst_name() + " " + employee.getLast_name();
+			String employeeName = employee.getFirstName() + " " + employee.getLastName();
 			
 			List<EmployeeRole> empRoleList = new ArrayList<>();
 			empRoleList = new EmployeeRoleService().getAllEmpRole();
@@ -63,20 +60,23 @@ public class LoginServlet extends HttpServlet {
 				managerList.add(id.getManagerId());
 			}
 			
-			String user_type = "";
-			if (employeeId == 1) user_type = "admin";
-			else if (managerList.contains(employeeId)) user_type = "manager";
-			else user_type = "employee";
+			String userType = "";
+			if (employeeId == 1) userType = "admin";
+			else if (managerList.contains(employeeId)) userType = "manager";
+			else userType = "employee";
 			
 			HttpSession session = request.getSession();
 			session.setAttribute("LOGGEDUSER", employeeId);	
 			session.setAttribute("LOGGEDUSERNAME", employeeName);
-			session.setAttribute("LOGGEDUSERTYPE", user_type);
+			session.setAttribute("LOGGEDUSERTYPE", userType);
 			response.sendRedirect(request.getContextPath()+"/index");
 			
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
-			out.println(e.getMessage());
+			request.setAttribute("errorMessage", e.getMessage());
+			request.setAttribute("email", email);
+			request.setAttribute("password", password);
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}
 			
 	}

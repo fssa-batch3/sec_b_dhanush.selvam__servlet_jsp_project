@@ -11,34 +11,14 @@ const fileName = getPathAfterLeavePulseWeb(url);
 let breadcrumbs_title = url;
 let breadcrumbs_path = fileName;
 
-// Leave and Role section for table
-let createFormTitle = "";
-let createFormField1 = "";
-let createFormField2 = "";
-let tableTitle = "";
-let columnTitle1 = "";
-let columnTitle2 = "";
-
 // Role page
 if (fileName == "role") {
-	createFormTitle = "New Role";
-	createFormField1 = "Role Name";
-	createFormField2 = "Role ID";
-	tableTitle = "Role List";
-	columnTitle1 = "Role"
-	columnTitle2 = "Role Id"
 	breadcrumbs_title = "Role Module";
 	breadcrumbs_path = "Dashboard > Role";
 }
 
 // Leave page
 if (fileName == "leave") {
-	createFormTitle = "New Leave";
-	createFormField1 = "Leave Name";
-	createFormField2 = "Leave ID";
-	tableTitle = "Leave List";
-	columnTitle1 = "Leave"
-	columnTitle2 = "Leave Id"
 	breadcrumbs_title = "Leave Module";
 	breadcrumbs_path = "Dashboard > Leave Type";
 }
@@ -89,6 +69,12 @@ if (fileName == "request?action=employeerequests") {
 if (fileName == "profile") {
 	breadcrumbs_title = "User Profile"
 	breadcrumbs_path = "Dashboard > Profile"	
+}
+
+// Leave Balance page
+if (fileName == "leavebalance") {
+	breadcrumbs_title = "Available Leaves List"
+	breadcrumbs_path = "Dashboard > Available Leaves"	
 }
 
 // Calendar page

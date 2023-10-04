@@ -24,12 +24,12 @@
     justify-content: space-between;
 }
 
-.fa-facebook, .fa-instagram, .fa-twitter, .fa-github {
+.fa-facebook, .fa-instagram, .fa-envelope, .fa-github {
     font-size: 22px;
     color: gray;
 }
 
-.fa-facebook:hover, .fa-instagram:hover, .fa-twitter:hover, .fa-github:hover {
+.fa-facebook:hover, .fa-instagram:hover, .fa-envelope:hover, .fa-github:hover {
     color: darkslategray;
     cursor: pointer;
 }

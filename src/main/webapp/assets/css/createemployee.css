@@ -74,15 +74,13 @@
 }  
 
 .submit_btn_container {
-   	margin-top: 3.5%;
-    display: flex;
-    justify-content: end;
-    padding-right: 25%;
+   	margin-top: 2.3%;
+    width: 330px;
 }
 
 .submit_btn {
-    width: 160px;
-    padding: 12px 15px;
+    width: -webkit-fill-available;
+    height: 42px;
 }
 
 .role_type_container::-webkit-scrollbar {

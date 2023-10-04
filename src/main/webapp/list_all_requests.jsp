@@ -11,35 +11,25 @@
 <meta charset="ISO-8859-1">
 <title>Requests Page</title>
 
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/style.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/header.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/sidebar.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/footer.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/table.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/sidebar.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/footer.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/table.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap"
-	rel="stylesheet">
+<lin" href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/overlay.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/overlay.css">
 
 </head>
 
 <body id="body">
 
-	<%
-	List<RequestDTO> requestList = (List<RequestDTO>) request.getAttribute("requests");
-	%>
+	<% List<RequestDTO> requestList = (List<RequestDTO>) request.getAttribute("requests"); %>
 	
 	<div class="header_section">
 		<script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
@@ -70,12 +60,12 @@
 						</div>
 					</div>
 
-					<form action="request?action=updaterequest" method="post">
+					<form action="request?action=updaterequest" class="form" method="post">
 
 						<input type="hidden" value="" name="request_id"
 							id="request_id_field">
 
-						<div class="fields_container employee_hiddent_container">
+						<div class="fields_container employee_hidden_container">
 							<div class="field_container">
 								<label> Employee </label> <input type="text"
 									class="non_editable_fields" id="name_field" readonly>
@@ -116,10 +106,8 @@
 							<div class="field_container status_field">
 								<label> Status </label>
 								<div class="select_tag_container">
-									<button class="select_tag" type="button" id="status_field">
-									</button>
-									<i class="fa-solid fa-angle-down dropdown_icon"
-										id="fa-angle-down"></i>
+									<button class="select_tag" type="button">
+									</button> <i class="fa-solid fa-angle-down dropdown_icon" id="fa-angle-down"></i>
 								</div>
 							</div>
 						</div>
@@ -136,12 +124,15 @@
 							<div class="status_container" onclick="selectStatus('Rejected')">
 								<p>Rejected</p>
 							</div>
+							<div class="status_container hidden_status" onclick="selectStatus('Cancelled')">
+								<p>Cancelled</p>
+							</div>
 						</div>
 
 						<div class="fields_container">
 							<div class="field_container comment_field_container">
 								<label> Comments </label> <input name="comments" type="text"
-									class="editable_fields" id="comment_field" readonly>
+									class="editable_fields" value = "" id="comment_field" readonly>
 							</div>
 
 						</div>
@@ -151,7 +142,12 @@
 							<button class="btn" id="save_btn">Save</button>
 							<button class="btn" type="button" id="delete_btn"> <a id="cancel_path"> Delete </a> </button>
 						</div>
-
+						
+						<input type="hidden" name="old_status" class="old_status">
+						<input type="hidden" name="employee_id" class="hidden_employee_id">
+						<input type="hidden" name="leave_id" class="hidden_leave_id">
+						<input type="hidden" name="days" class="hidden_days">
+					
 					</form>
 
 				</div>
@@ -163,8 +159,9 @@
 			</div>
 
 			<div class="main_section">
-				<script
-					src="<%=request.getContextPath()%>/assets/js/toggleFilterContainer.js"></script>
+			
+				<script src="<%=request.getContextPath()%>/assets/js/toggleFilterContainer.js"></script>
+				
 				<div class="table_container">
 					<div class="table_header_container">
 						<div class="table_heading_container">
@@ -204,7 +201,7 @@
 							</div>
 						</div>
 					</div>
-
+					
 					<div class="table">
 						<div class="table-header">
 							<div class="header__item">S.No</div>
@@ -215,42 +212,20 @@
 							<div class="header__item">Action</div>
 						</div>
 						<div class="table-content">
-							<%
-							int i = 1;
-							%>
-							<%
-							for (RequestDTO requests : requestList) {
-							%>
+							<% int i = 1; %>
+							<% for (RequestDTO requests : requestList) { %>
 							<div class="table-row">
-								<div class="table-data">
-									<%=i%>
-								</div>
-								<div class="table-data">
-									<%=requests.getEmployeeName()%>
-								</div>
-								<div class="table-data">
-									<%=requests.getLeaveType()%>
-								</div>
+								<div class="table-data"> <%= i %> </div>
+								<div class="table-data"> <%=requests.getEmployeeName()%> </div>
+								<div class="table-data"> <%=requests.getLeaveType()%> </div>
 
-								<%
-								String originalDateString = requests.getCreatedAt() + "";
-								%>
-								<%
-								DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-								%>
-								<%
-								LocalDate localDate = LocalDate.parse(originalDateString, originalFormatter);
-								%>
-								<%
-								DateTimeFormatter desiredFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-								%>
-								<%
-								String desiredDateString = localDate.format(desiredFormatter);
-								%>
+								<% String originalDateString = requests.getCreatedAt() + ""; %>
+								<% DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"); %>
+								<% LocalDate localDate = LocalDate.parse(originalDateString, originalFormatter); %>
+								<% DateTimeFormatter desiredFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); %>
+								<% String desiredDateString = localDate.format(desiredFormatter); %>
 
-								<div class="table-data">
-									<%=desiredDateString%>
-								</div>
+								<div class="table-data"> <%=desiredDateString%> </div>
 								<div class="table-data">
 									<% if (!requests.getCancelledLeave()) { %>
 									    <%=requests.getLeaveStatus()%>
@@ -260,20 +235,16 @@
 								</div>
 								
 								<div class="table-data">
-									<button class="view_btn view"
-										data-id="<%=requests.getRequestId()%>">View</button>
+									<button class="view_btn view" data-id="<%=requests.getRequestId()%>">View</button>
 								</div>
 							</div>
-							<%
-							i++;
-							%>
-							<%
-							}
-							%>
+							<% i++; %>
+							<% } %>
 						</div>
 					</div>
 
 				</div>
+
 			</div>
 
 			<div class="footer_section">
@@ -286,31 +257,42 @@
 
 	<script> 
     	
-    	let requestsList = <%=requestList%>;
-    	    	
-    	let view = document.querySelectorAll(".view");
-	    let xmark_container = document.getElementById("xmark_container");
-	    let edit_btn = document.getElementById("edit_btn");
-	    let editable_fields = document.querySelectorAll(".editable_fields");
-	    let non_editable_fields = document.querySelectorAll(".non_editable_fields");
-	    let save_btn = document.getElementById("save_btn");
-	    let select_tag_container = document.querySelector(".select_tag_container");
-	    let dropdown_icon = document.querySelector(".dropdown_icon");
-	    
-	    let request_id_field = document.getElementById("request_id_field");
-    	let name_field = document.getElementById("name_field");
-    	let email_field = document.getElementById("email_field");
-   		let leave_field = document.getElementById("leave_field");
-   		let reason_field = document.getElementById("reason_field");
-   		let start_date = document.getElementById("start_date");
-   		let end_date = document.getElementById("end_date");
-   		let applied_date = document.getElementById("applied_date");
-   		let selectedStatus = document.getElementById("selectedStatus");
-   		let comment_field = document.getElementById("comment_field");
-   		let status_field = document.getElementById("status_field");
+    	let requestsList = <%= requestList %>;
    		
-	   	// To open overlay container
+  		if (requestsList.length == 0) {
+  			document.querySelector(".table_container").style.display = "none";
+  		}
+    	
+  		else {
+  			
+	    	let view = document.querySelectorAll(".view");
+		    let xmark_container = document.getElementById("xmark_container");
+		    let edit_btn = document.getElementById("edit_btn");
+		    let editable_fields = document.querySelectorAll(".editable_fields");
+		    let non_editable_fields = document.querySelectorAll(".non_editable_fields");
+		    let save_btn = document.getElementById("save_btn");
+		    let select_tag_container = document.querySelector(".select_tag_container");
+		    let dropdown_icon = document.querySelector(".dropdown_icon");
+		    
+		    let request_id_field = document.getElementById("request_id_field");
+	    	let name_field = document.getElementById("name_field");
+	    	let email_field = document.getElementById("email_field");
+	   		let leave_field = document.getElementById("leave_field");
+	   		let reason_field = document.getElementById("reason_field");
+	   		let start_date = document.getElementById("start_date");
+	   		let end_date = document.getElementById("end_date");
+	   		let applied_date = document.getElementById("applied_date");
+	   		let selectedStatus = document.getElementById("selectedStatus");
+	   		let comment_field = document.getElementById("comment_field");
+	   		let status_field = document.querySelector(".select_tag");
 	   		
+	   		let oldStatus = document.querySelector(".old_status");
+	   		let employeeId = document.querySelector(".hidden_employee_id");
+	   		let leaveId = document.querySelector(".hidden_leave_id");
+	   		let days = document.querySelector(".hidden_days");
+	   		
+		   	// To open overlay container
+		   		
 		    view.forEach((e) => {
 		    	e.addEventListener("click", () => {
 		    		let id = e.getAttribute("data-id");
@@ -322,42 +304,59 @@
 			        name_field.value = request.employeeName;
 			        email_field.value = request.employeeEmail;
 			        leave_field.value = request.leaveType;
+			        			        
 			        reason_field.value = request.reason;
+			        if (reason_field.value == "") 
+			        	reason_field.setAttribute("placeholder","No reason")
+			        
 			        start_date.value = request.startDate;
 			        end_date.value = request.endDate;
 			        const dateParts = request.createdAt.split(' ');
 			        applied_date.value = dateParts[0];
+			        status_field.innerHTML = request.leaveStatus
 			        
-			        if (request.cancelledLeave == true){
-			        	 status_field.innerHTML = "Request Cancelled";
-			        	 edit_btn.style.display = "none";
-			        }
+			        const date1 = new Date(request.startDate);
+			        const date2 = new Date(request.endDate);
+			        const differenceInMilliseconds = date2 - date1;
+			     	const differenceInDays = (differenceInMilliseconds / (1000 * 60 * 60 * 24)) + 1;
 			        
 			        let startDate = new Date(request.startDate);
 		   			let currentDate = new Date();
 		   			
-			        if (startDate <= currentDate) edit_btn.style.display = "none";
+		   			startDate.setHours(0, 0, 0, 0);
+		   			currentDate.setHours(0, 0, 0, 0);
+		   			
+			        if (startDate < currentDate || request.leaveStatus == "Cancelled") {
+			        	edit_btn.style.display = "none";
+			        }
 			        
-			        status_field.innerHTML = request.leaveStatus
-			        if (request.comments == "null") comment_field.setAttribute("placeholder","Add comment")
-			        else comment_field.value = request.comments;
+			        comment_field.value = request.comments;
+			        if (comment_field.value == "null") comment_field.value = "";
+			        if (comment_field.value == "") comment_field.setAttribute("placeholder","Add comment")
+			        
 			        request_id_field.value = request.requestId;
 			        
+			        oldStatus.value = request.leaveStatus;
+			    	employeeId.value = request.employeeId;
+			    	leaveId.value = request.leaveId;
+			    	days.value = differenceInDays;
+
 			        if (fileName == "request?action=employeerequests") {
-			   			document.querySelector(".employee_hiddent_container").style.display = "none";
+			        	
+			   			document.querySelector(".employee_hidden_container").style.display = "none";
 			   			edit_btn.style.display = "none";
 			   			
-			   			if (startDate > currentDate) {
-			   				if (request.cancelledLeave == false) {
-				   				document.getElementById("delete_btn").style.display = "block";
-				   				document.getElementById("cancel_path").setAttribute("href","request?action=cancel&id=" + request.requestId);
-			   				}
+				        if (comment_field.value == "") comment_field.setAttribute("placeholder","No comments");
+				        			   			
+			   			if (startDate >= currentDate && request.leaveStatus != "Cancelled") {
+		   					document.getElementById("delete_btn").style.display = "block";
+			   				document.getElementById("cancel_path").setAttribute("href","request?action=cancel&id=" + request.requestId + "&leaveId=" + request.leaveId + "&days=" + differenceInDays + "&status=" + request.leaveStatus);			   				
 			   			}
 			   		}
 			        
 		    	 })
 		    })
-		    
+			    
 		    // To close overlay container
 	    
 		    xmark_container.addEventListener("click", () => {
@@ -371,9 +370,14 @@
 		    	non_editable_fields.forEach((e) => {
 		    		e.removeAttribute("id");
 		    	})
+		    	oldStatus.value = "";
+		    	employeeId.value = "";
+		    	leaveId.value = "";
+		    	days.value = "";
 		    	select_tag_container.removeAttribute("onclick");
 		    	dropdown_icon.style.display = "none";
 		    	comment_field.value = "";
+		    	reason_field.value = "";
 		        
 		    })
 		    
@@ -386,6 +390,7 @@
 		    	non_editable_fields.forEach((e) => {
 		    		e.setAttribute("id","non_editable_fields");
 		    	})
+		    	
 		    	selectedStatus.value = status_field.innerHTML;
 		    	select_tag_container.setAttribute("onclick","toggleStatusSelectContainer()");
 		    	dropdown_icon.style.display = "block";
@@ -394,20 +399,25 @@
 		    })
 		    
 		    save_btn.addEventListener("click",(e) => {
+		    	
 		    	e.preventDefault();
 		    	
 		    	const comment = comment_field.value.trim();
 		        
-		        const comment_pattern = /^[A-Za-z0-9\s]*$/;
+		        const comment_pattern = /^[A-Za-z0-9\s\-:;.]*$/;
 		        
-		        if (!comment_pattern.test(reason)) {
+		        if (!comment_pattern.test(comment)) {
 		            alert("Only alphanumeric characters and spaces are allowed");
+		            comment_field.value = "";
 		            comment_field.focus();
-					event.preventDefault();
 			        return;
 			    }
+		        
+		        document.querySelector(".form").submit();
 
 		    })
+			    
+  		}
 			        
     </script>
 

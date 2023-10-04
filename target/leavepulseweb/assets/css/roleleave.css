@@ -12,6 +12,10 @@ form {
     align-items: center;
 }
 
+.leave_form {
+	display: block;
+}
+
 label {
     font-size: 18px;
 }
@@ -32,4 +36,26 @@ label {
 
 .delete_btn:hover {
 	color: red;
+}
+
+.fields_container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.leave_field_container {
+	display: flex; 
+	flex-direction: column;
+}
+
+.leave_fields {
+	margin: 0;
+	margin-top: 10px;
+}
+
+.submit_btn_container {
+	margin-top: 20px;
+	display: flex;
+    justify-content: end;
+    padding-right: 27%;
 }

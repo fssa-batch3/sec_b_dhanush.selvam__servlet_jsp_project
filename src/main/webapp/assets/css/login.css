@@ -1,11 +1,3 @@
-body {
-    font-family: 'Noto Sans', sans-serif;
-    --tw-bg-opacity: 1;
-    background-color: rgb(249 250 251/var(--tw-bg-opacity));
-    position: relative;
-    height: 100%;
-}
-
 .page_container {
     display: flex;
     justify-content: space-evenly;

@@ -1,7 +1,6 @@
 package in.fssa.leavepulseweb.Servlet;
 
-import java.io.IOException; 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -77,21 +76,32 @@ public class LeaveServlet extends HttpServlet {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave();
 		
-		String leave_name = request.getParameter("leave_name");
-		int leave_id = Integer.parseInt(request.getParameter("leave_id"));
+		String leaveName = request.getParameter("leave_name");
+		int leaveId = Integer.parseInt(request.getParameter("leave_id"));
+		int leaveDays = Integer.parseInt(request.getParameter("leave_days"));
 		
-		PrintWriter out = response.getWriter();
-
+		List<Leave> leavesList = null;
+		int lastLeaveId = 0;
+		
 		try {
 			
-			leave.setLeaveType(leave_name);
-			if (leaveService.findLeaveByLeaveId(leave_id) == null) leaveService.createLeave(leave);
-			else leaveService.updateLeave(leave_id, leave);
+			leavesList = leaveService.getAllLeave();
+			lastLeaveId = leaveService.getTableLastLeaveId();
+			
+			leave.setLeaveType(leaveName);
+			leave.setLeaveDays(leaveDays);
+			if (leaveService.findLeaveByLeaveId(leaveId) == null) leaveService.createLeave(leave);
+			else leaveService.updateLeave(leaveId, leave);
 			response.sendRedirect(request.getContextPath() + "/leave");
 
 		} catch (ServiceException | ValidationException e) {
 			e.printStackTrace();
-			out.println(e.getMessage());
+			request.setAttribute("leavesList", leavesList);
+            request.setAttribute("lastLeaveId", lastLeaveId);
+			request.setAttribute("errorMessage", e.getMessage());
+			request.setAttribute("leaveDays", leaveDays);
+			request.setAttribute("leaveId", leaveId);
+			request.getRequestDispatcher("/leave.jsp").forward(request, response);
 		}
 
 	}

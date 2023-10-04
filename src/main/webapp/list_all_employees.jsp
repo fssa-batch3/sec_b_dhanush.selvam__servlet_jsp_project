@@ -15,42 +15,42 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <title>Employees Page</title>
 
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/style.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/header.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/sidebar.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/footer.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/table.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/sidebar.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/footer.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/table.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/assets/css/overlay.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/overlay.css">
 
+<style>
+	.pop_up_container {
+		z-index: 2;
+	}
+</style>
 </head>
 <body id="body">
 
-	<%
-	List<EmployeeDTO> employeesList = (List<EmployeeDTO>) request.getAttribute("employeesList");
-	%>
-	<%
-	List<Role> rolesList = (List<Role>) request.getAttribute("rolesList");
-	%>
+	<% List<EmployeeDTO> employeesList = (List<EmployeeDTO>) request.getAttribute("employeesList"); %>
+	<% List<Role> rolesList = (List<Role>) request.getAttribute("rolesList"); %>
+	
+	<% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+	<% Integer invalidEmployeeId = (Integer) request.getAttribute("employeeId"); %>
+	<% String invalidRole = (String) request.getAttribute("role"); %>	
+	<% System.out.print(errorMessage); %>
 
 	<div class="header_section">
 		<script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
 		<jsp:include page="/header.jsp" />
 	</div>
+	
+	<jsp:include page="/error_popup.jsp"/>
 
 	<div class="body_section">
 
@@ -76,7 +76,7 @@
 						</div>
 					</div>
 
-					<form action="employee?action=updaterole" method="post">
+					<form id="form" action="employee?action=updaterole" method="post">
 
 						<div class="fields_container">
 							<div class="field_container">
@@ -104,8 +104,7 @@
 						<div class="fields_container">
 							<div class="field_container">
 								<label> Manager</label> <input type="text"
-									class="editable_fields" id="manager_id_field" name="manager_id"
-									required readonly>
+									class="editable_fields" id="manager_id_field" name="manager_id" autocomplete="off" required readonly>
 							</div>
 							<div class="field_container role_field">
 								<label> Role </label>
@@ -121,18 +120,12 @@
 						<input type="hidden" name="role" id="selectedRole" value="">
 
 						<div class="role_type_container">
-							<%
-							for (Role role : rolesList) {
-							%>
+							<% for (Role role : rolesList) { %>
 							<div class="role_container"
 								onclick="selectRole( '<%=role.getRoleName()%>')">
-								<p>
-									<%=role.getRoleName()%>
-								</p>
+								<p> <%=role.getRoleName()%> </p>
 							</div>
-							<%
-							}
-							%>
+							<% } %>
 						</div>
 
 						<div class="fields_container">
@@ -232,39 +225,20 @@
 							<div class="header__item">Action</div>
 						</div>
 						<div class="table-content">
-							<%
-							int i = 1;
-							%>
-							<%
-							for (EmployeeDTO employee : employeesList) {
-							%>
+							<% int i = 1; %>
+							<% for (EmployeeDTO employee : employeesList) { %>
 							<div class="table-row">
+								<div class="table-data"> <%=i%> </div>
+								<div class="table-data"> <%=employee.getFirstName() + " " + employee.getLastName()%> </div>
+								<div class="table-data"> <%=employee.getEmail()%> </div>
+								<div class="table-data"> <%=employee.getManagerEmail()%> </div>
+								<div class="table-data"> <%=employee.getRoleName()%> </div>
 								<div class="table-data">
-									<%=i%>
-								</div>
-								<div class="table-data">
-									<%=employee.getFirstName() + " " + employee.getLastName()%>
-								</div>
-								<div class="table-data">
-									<%=employee.getEmail()%>
-								</div>
-								<div class="table-data">
-									<%=employee.getManagerEmail()%>
-								</div>
-								<div class="table-data">
-									<%=employee.getRoleName()%>
-								</div>
-								<div class="table-data">
-									<button class="view_btn view"
-										data-id="<%=employee.getEmployeeId()%>">View</button>
+									<button class="view_btn view" data-id="<%=employee.getEmployeeId()%>">View</button>
 								</div>
 							</div>
-							<%
-							i++;
-							%>
-							<%
-							}
-							%>
+							<% i++; %>
+							<% } %>
 						</div>
 					</div>
 
@@ -284,83 +258,128 @@
 		let employeesList = <%=employeesList%>;
     	
 	    let view = document.querySelectorAll(".view");
-	    let xmark_container = document.getElementById("xmark_container");
-	    let edit_btn = document.getElementById("edit_btn");
-	    let editable_fields = document.querySelectorAll(".editable_fields");
-	    let non_editable_fields = document.querySelectorAll(".non_editable_fields");
-	    let save_btn = document.getElementById("save_btn");
-	    let select_tag_container = document.querySelector(".select_tag_container");
-	    let dropdown_icon = document.querySelector(".dropdown_icon");
+	    let xmarkContainer = document.getElementById("xmark_container");
+	    let editBtn = document.getElementById("edit_btn");
+	    let editableFields = document.querySelectorAll(".editable_fields");
+	    let nonEditableFields = document.querySelectorAll(".non_editable_fields");
+	    let saveBtn = document.getElementById("save_btn");
+	    let selectTagContainer = document.querySelector(".select_tag_container");
+	    let dropdownIcon = document.querySelector(".dropdown_icon");
 	    
-	    let first_name_field = document.getElementById("first_name_field");
-	    let last_name_field = document.getElementById("last_name_field");
-	    let id_field = document.getElementById("id_field");
-	    let email_field = document.getElementById("email_field");
-	    let manager_id_field = document.getElementById("manager_id_field");
-	    let role_field = document.getElementById("role_field");
-	    let phone_no_field = document.getElementById("phone_no_field");
-	    let joined_date_field = document.getElementById("joined_date_field");
-	    let address_field = document.getElementById("address_field");
+	    let firstNameField = document.getElementById("first_name_field");
+	    let lastNameField = document.getElementById("last_name_field");
+	    let idField = document.getElementById("id_field");
+	    let emailField = document.getElementById("email_field");
+	    let managerIdField = document.getElementById("manager_id_field");
+	    let roleField = document.getElementById("role_field");
+	    let phoneNoField = document.getElementById("phone_no_field");
+	    let joinedDateField = document.getElementById("joined_date_field");
+	    let addressField = document.getElementById("address_field");
 	    let selectedRole = document.getElementById("selectedRole");
-	    let delete_path = document.getElementById("delete_path");
+	    let deletePath = document.getElementById("delete_path");
+	    
+	    const errorMessage = "<%= errorMessage %>";
+		const invalidEmployeeId = "<%= invalidEmployeeId %>";
+		const invalidRole = "<%= invalidRole %>";
+		
+		const popUpContainer = document.querySelector(".pop_up_container");
+		const okayBtn = document.querySelector(".okay_btn");
+		
+		function isError(errorMessage) {
+			if (errorMessage != "null") {
+				console.log(errorMessage);
+				okayBtn.focus();
+			}
+		}
+		
+		isError(errorMessage);
+		
+		okayBtn.addEventListener("click", () => {
+			popUpContainer.style.display = "none";
+		})
 	    
 	    // To open overlay container
 
 	    view.forEach((e) => {
 	    	e.addEventListener("click", () => {
 	    		let id = e.getAttribute("data-id");
-	    		let employee = employeesList.find((e) => e.employee_id == id);
+	    		let employee = employeesList.find((e) => e.employeeId == id);
 	    		
 		        document.getElementById("overlay_container").style.display = "flex";
 		        document.getElementById("body").style.overflow = "hidden";
 			        
-		        first_name_field.value = employee.first_name;
-		        last_name_field.value = employee.last_name;
-		        id_field.value = employee.employee_id;
-		        email_field.value = employee.email;
-		        manager_id_field.value = employee.manager_id;
-		        role_field.innerHTML = employee.roleName;
-		        phone_no_field.value = employee.phone_no;
-		        joined_date_field.value = employee.hire_date;
-		        address_field.value = employee.address;
-		        delete_path.setAttribute("href","employee?action=delete&id=" + employee.employee_id);
+		        firstNameField.value = employee.firstName;
+		        lastNameField.value = employee.lastName;
+		        idField.value = employee.employeeId;
+		        emailField.value = employee.email;
+		        managerIdField.value = employee.managerId;
+		        roleField.innerHTML = employee.roleName;
+		        phoneNoField.value = employee.phoneNo;
+		        joinedDateField.value = employee.joiningDate;
+		        addressField.value = employee.address;
+		        deletePath.setAttribute("href","employee?action=delete&id=" + employee.employeeId);
 		    })
 	    })
 	
 	    // To close overlay container
 	    
-	    xmark_container.addEventListener("click", () => {
+	    xmarkContainer.addEventListener("click", () => {
 	        document.getElementById("overlay_container").style.display = "none"
 	        document.getElementById("body").style.overflow = "auto";
-	        save_btn.style.display = "none";
-	    	edit_btn.style.display = "block";
-	    	editable_fields.forEach((e) => {
+	        saveBtn.style.display = "none";
+	        editBtn.style.display = "block";
+	        editableFields.forEach((e) => {
 	    		e.setAttribute("readonly","readonly");
 	    	})
-	    	non_editable_fields.forEach((e) => {
+	    	nonEditableFields.forEach((e) => {
 	    		e.removeAttribute("id");
 	    	})
-	    	delete_path.removeAttribute("href");
-	    	select_tag_container.removeAttribute("onclick");
-	    	dropdown_icon.style.display = "none";
+	    	deletePath.removeAttribute("href");
+	        selectTagContainer.removeAttribute("onclick");
+	        dropdownIcon.style.display = "none";
 	        
 	    })
 	    
 	    // Remove readonly while clicking edit button
 	    
-	    edit_btn.addEventListener("click", () => {
-	    	editable_fields.forEach((e) => {
+	    editBtn.addEventListener("click", () => {
+	    	editableFields.forEach((e) => {
 	    		e.removeAttribute("readonly");
 	    	})
-	    	non_editable_fields.forEach((e) => {
-	    		e.setAttribute("id","non_editable_fields");
+	    	nonEditableFields.forEach((e) => {
+	    		e.setAttribute("id","nonEditableFields");
 	    	})
 	    	manager_id_field.focus();
 	    	selectedRole.value = role_field.innerHTML;
-	    	select_tag_container.setAttribute("onclick","toggleRoleSelectContainer()");
-	    	dropdown_icon.style.display = "block";
-	    	edit_btn.style.display = "none";
-	    	save_btn.style.display = "block";
+	    	selectTagContainer.setAttribute("onclick","toggleRoleSelectContainer()");
+	    	dropdownIcon.style.display = "block";
+	    	editBtn.style.display = "none";
+	    	saveBtn.style.display = "block";
+	    })
+	    
+	    saveBtn.addEventListener("click", (e) => {
+	    	e.preventDefault();
+	    	
+	    	const managerId = managerIdField.value;
+	    	
+	    	if (managerId < 1) {
+	    		alert("Invalid Manager Id");
+	    		managerIdField.value = "";
+	    		managerIdField.focus();
+	    		return;
+	    	}
+	    	
+			const numPattern = /^[0-9]+$/;
+		    
+		    if (!numPattern.test(managerId)) {
+		        alert("Only numbers are allowed");
+		        managerIdField.value = "";
+		        managerIdField.focus();
+		        return;
+		    }
+	    	
+	    	document.querySelector("#form").submit();
+	    	
 	    })
     
     </script>

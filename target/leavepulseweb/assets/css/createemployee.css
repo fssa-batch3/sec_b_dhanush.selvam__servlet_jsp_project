@@ -74,14 +74,13 @@
 }  
 
 .submit_btn_container {
-    margin-top: 2.2%;
-    /* width: 265px;
-    padding-left: 65px; */
+   	margin-top: 2.3%;
+    width: 330px;
 }
 
 .submit_btn {
-    width: 330px;
-    padding: 12px 15px;
+    width: -webkit-fill-available;
+    height: 42px;
 }
 
 .role_type_container::-webkit-scrollbar {
@@ -94,4 +93,27 @@
     background-color: rgba(217, 217, 227, 0.8);
     border-color: rgba(255,255,255,var(--tw-border-opacity));
     border-radius: 50px;
+}
+
+input[readonly] {
+    cursor: default;
+    background-color: rgba(239, 239, 239, 0.3);
+    color: rgb(84, 84, 84);
+}
+
+input[readonly]:focus-within {
+    outline: none;
+}
+
+.eye_container {
+	margin-top: -8.8%;
+    margin-left: 88%;
+}
+
+.fa-eye:hover, .fa-eye-slash {
+	cursor: pointer;
+}
+
+.fa-eye-slash {
+	display: none;
 }
