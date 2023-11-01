@@ -11,8 +11,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <title>Employees Page</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
@@ -43,7 +42,6 @@
 	<% String errorMessage = (String) request.getAttribute("errorMessage"); %>
 	<% Integer invalidEmployeeId = (Integer) request.getAttribute("employeeId"); %>
 	<% String invalidRole = (String) request.getAttribute("role"); %>	
-	<% System.out.print(errorMessage); %>
 
 	<div class="header_section">
 		<script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
@@ -103,16 +101,14 @@
 
 						<div class="fields_container">
 							<div class="field_container">
-								<label> Manager</label> <input type="text"
+								<label for="manager_id_field"> Manager </label> <input type="text"
 									class="editable_fields" id="manager_id_field" name="manager_id" autocomplete="off" required readonly>
 							</div>
 							<div class="field_container role_field">
 								<label> Role </label>
 								<div class="select_tag_container">
-									<button class="select_tag" type="button" id="role_field">
-									</button>
-									<i class="fa-solid fa-angle-down dropdown_icon"
-										id="fa-angle-down"></i>
+									<button class="select_tag" type="button" id="role_field"> </button>
+									<i class="fa-solid fa-angle-down dropdown_icon" id="fa-angle-down"></i>
 								</div>
 							</div>
 						</div>
@@ -148,9 +144,9 @@
 						</div>
 
 						<div class="form_btn_container">
-							<button class="btn" type="button" id="edit_btn">Edit</button>
-							<button class="btn" id="save_btn">Save</button>
-							<button class="btn" type="button">
+							<button class="btn" type="button" id="edit_btn"> Edit </button>
+							<button class="btn" id="save_btn"> Save </button>
+							<button class="btn" type="button" id="del_btn">
 								<a id="delete_path"> Delete </a>
 							</button>
 						</div>
@@ -185,32 +181,16 @@
 					</div>
 
 					<div class="filter_dropdown_container">
-						<div class="filter_field_container"
-							onclick="stopPropagation(event)">
-							<input type="checkbox" class="checkbox">
+						<div class="filter_field_container" onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox" id="asc_order" onclick="handleCheckboxClick('asc_order')"> 
 							<div class="field_name_container">
-								<p>Ascending Order</p>
+								<label for="asc_order"> Ascending Order </label>
 							</div>
 						</div>
-						<div class="filter_field_container"
-							onclick="stopPropagation(event)">
-							<input type="checkbox" class="checkbox">
+						<div class="filter_field_container" onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox" id="desc_order" onclick="handleCheckboxClick('desc_order')">
 							<div class="field_name_container">
-								<p>Descending Order</p>
-							</div>
-						</div>
-						<div class="filter_field_container"
-							onclick="stopPropagation(event)">
-							<input type="checkbox" class="checkbox">
-							<div class="field_name_container">
-								<p>Minimum employees</p>
-							</div>
-						</div>
-						<div class="filter_field_container"
-							onclick="stopPropagation(event)">
-							<input type="checkbox" class="checkbox">
-							<div class="field_name_container">
-								<p>Maximum employees</p>
+								<label for="desc_order"> Descending Order </label>
 							</div>
 						</div>
 					</div>
@@ -255,133 +235,290 @@
 
 	<script> 
     
-		let employeesList = <%=employeesList%>;
-    	
-	    let view = document.querySelectorAll(".view");
-	    let xmarkContainer = document.getElementById("xmark_container");
-	    let editBtn = document.getElementById("edit_btn");
-	    let editableFields = document.querySelectorAll(".editable_fields");
-	    let nonEditableFields = document.querySelectorAll(".non_editable_fields");
-	    let saveBtn = document.getElementById("save_btn");
-	    let selectTagContainer = document.querySelector(".select_tag_container");
-	    let dropdownIcon = document.querySelector(".dropdown_icon");
-	    
-	    let firstNameField = document.getElementById("first_name_field");
-	    let lastNameField = document.getElementById("last_name_field");
-	    let idField = document.getElementById("id_field");
-	    let emailField = document.getElementById("email_field");
-	    let managerIdField = document.getElementById("manager_id_field");
-	    let roleField = document.getElementById("role_field");
-	    let phoneNoField = document.getElementById("phone_no_field");
-	    let joinedDateField = document.getElementById("joined_date_field");
-	    let addressField = document.getElementById("address_field");
-	    let selectedRole = document.getElementById("selectedRole");
-	    let deletePath = document.getElementById("delete_path");
-	    
-	    const errorMessage = "<%= errorMessage %>";
-		const invalidEmployeeId = "<%= invalidEmployeeId %>";
-		const invalidRole = "<%= invalidRole %>";
+		const employeesList = <%=employeesList%>;
 		
-		const popUpContainer = document.querySelector(".pop_up_container");
-		const okayBtn = document.querySelector(".okay_btn");
+		const tableContent = document.querySelector(".table-content");
 		
-		function isError(errorMessage) {
-			if (errorMessage != "null") {
-				console.log(errorMessage);
-				okayBtn.focus();
-			}
-		}
+  		if (employeesList.length == 0) noRecord(tableContent);
 		
-		isError(errorMessage);
-		
-		okayBtn.addEventListener("click", () => {
-			popUpContainer.style.display = "none";
-		})
-	    
-	    // To open overlay container
-
-	    view.forEach((e) => {
-	    	e.addEventListener("click", () => {
-	    		let id = e.getAttribute("data-id");
-	    		let employee = employeesList.find((e) => e.employeeId == id);
-	    		
-		        document.getElementById("overlay_container").style.display = "flex";
-		        document.getElementById("body").style.overflow = "hidden";
-			        
-		        firstNameField.value = employee.firstName;
-		        lastNameField.value = employee.lastName;
-		        idField.value = employee.employeeId;
-		        emailField.value = employee.email;
-		        managerIdField.value = employee.managerId;
-		        roleField.innerHTML = employee.roleName;
-		        phoneNoField.value = employee.phoneNo;
-		        joinedDateField.value = employee.joiningDate;
-		        addressField.value = employee.address;
-		        deletePath.setAttribute("href","employee?action=delete&id=" + employee.employeeId);
-		    })
-	    })
-	
-	    // To close overlay container
-	    
-	    xmarkContainer.addEventListener("click", () => {
-	        document.getElementById("overlay_container").style.display = "none"
-	        document.getElementById("body").style.overflow = "auto";
-	        saveBtn.style.display = "none";
-	        editBtn.style.display = "block";
-	        editableFields.forEach((e) => {
-	    		e.setAttribute("readonly","readonly");
-	    	})
-	    	nonEditableFields.forEach((e) => {
-	    		e.removeAttribute("id");
-	    	})
-	    	deletePath.removeAttribute("href");
-	        selectTagContainer.removeAttribute("onclick");
-	        dropdownIcon.style.display = "none";
-	        
-	    })
-	    
-	    // Remove readonly while clicking edit button
-	    
-	    editBtn.addEventListener("click", () => {
-	    	editableFields.forEach((e) => {
-	    		e.removeAttribute("readonly");
-	    	})
-	    	nonEditableFields.forEach((e) => {
-	    		e.setAttribute("id","nonEditableFields");
-	    	})
-	    	manager_id_field.focus();
-	    	selectedRole.value = role_field.innerHTML;
-	    	selectTagContainer.setAttribute("onclick","toggleRoleSelectContainer()");
-	    	dropdownIcon.style.display = "block";
-	    	editBtn.style.display = "none";
-	    	saveBtn.style.display = "block";
-	    })
-	    
-	    saveBtn.addEventListener("click", (e) => {
-	    	e.preventDefault();
+		else {
 	    	
-	    	const managerId = managerIdField.value;
-	    	
-	    	if (managerId < 1) {
-	    		alert("Invalid Manager Id");
-	    		managerIdField.value = "";
-	    		managerIdField.focus();
-	    		return;
-	    	}
-	    	
-			const numPattern = /^[0-9]+$/;
+		    const view = document.querySelectorAll(".view");
+		    const xmarkContainer = document.getElementById("xmark_container");
+		    const editBtn = document.getElementById("edit_btn");
+		    const editableFields = document.querySelectorAll(".editable_fields");
+		    const nonEditableFields = document.querySelectorAll(".non_editable_fields");
+		    const saveBtn = document.getElementById("save_btn");
+		    const selectTagContainer = document.querySelector(".select_tag_container");
+		    const dropdownIcon = document.querySelector(".dropdown_icon");
 		    
-		    if (!numPattern.test(managerId)) {
-		        alert("Only numbers are allowed");
-		        managerIdField.value = "";
-		        managerIdField.focus();
-		        return;
-		    }
+		    const firstNameField = document.getElementById("first_name_field");
+		    const lastNameField = document.getElementById("last_name_field");
+		    const idField = document.getElementById("id_field");
+		    const emailField = document.getElementById("email_field");
+		    const managerIdField = document.getElementById("manager_id_field");
+		    const roleField = document.getElementById("role_field");
+		    const phoneNoField = document.getElementById("phone_no_field");
+		    const joinedDateField = document.getElementById("joined_date_field");
+		    const addressField = document.getElementById("address_field");
+		    const selectedRole = document.getElementById("selectedRole");
+		    const deletePath = document.getElementById("delete_path");
+		    
+		    const errorMessage = "<%= errorMessage %>";
+			const invalidEmployeeId = "<%= invalidEmployeeId %>";
+			const invalidRole = "<%= invalidRole %>";
+					
+			const popUpContainer = document.querySelector(".pop_up_container");
+			const okayBtn = document.querySelector(".okay_btn");
+			
+			const search = document.querySelector(".search_bar");
+						
+			// To open overlay container
+			
+			let employee;
+	
+		    tableContent.addEventListener('click', (event) => {
+	    		if (event.target.classList.contains('view_btn')) {
+		    		const id = event.target.getAttribute("data-id");
+		    		employee = employeesList.find((e) => e.employeeId == id);
+		    		
+			        document.getElementById("overlay_container").style.display = "flex";
+			        document.getElementById("body").style.overflow = "hidden";
+				        
+			        firstNameField.value = employee.firstName;
+			        lastNameField.value = employee.lastName;
+			        idField.value = employee.employeeId;
+			        emailField.value = employee.email;
+			        managerIdField.value = employee.managerId;
+			        roleField.innerHTML = employee.roleName;
+			        phoneNoField.value = employee.phoneNo;
+			        joinedDateField.value = employee.joiningDate;
+			        addressField.value = employee.address;
+			        deletePath.setAttribute("href","employee?action=delete&id=" + employee.employeeId);
+			    };
+		    })
+		    
+		    function isError(errorMessage) {
+				if (errorMessage != "null") {
+					document.getElementById("breadcrumbs_title").innerHTML = "Team Members";
+					document.getElementById("breadcrumbs_path").innerHTML = "Dashboard > Manage Employee";
+	  				history.replaceState(null, null, window.location.href.replace("?action=updaterole",""));
+					document.querySelector(`button.view`).click();
+					popUpContainer.style.display = "block";
+					document.querySelector(".error_message").innerHTML = errorMessage;
+					okayBtn.focus();
+				}
+			}
+			
+			isError(errorMessage);
+			
+			okayBtn.addEventListener("click", () => {
+				popUpContainer.style.display = "none";
+				editBtn.click();
+				managerIdField.value = "";
+	    		managerIdField.focus();
+			})
+		
+		    // To close overlay container
+		    
+		    xmarkContainer.addEventListener("click", () => {
+		        document.getElementById("overlay_container").style.display = "none"
+		        document.getElementById("body").style.overflow = "auto";
+		        saveBtn.style.display = "none";
+		        editBtn.style.display = "block";
+		        editableFields.forEach((e) => {
+		    		e.setAttribute("readonly","readonly");
+		    	})
+		    	nonEditableFields.forEach((e) => {
+		    		e.removeAttribute("id");
+		    	})
+		    	deletePath.removeAttribute("href");
+		        selectTagContainer.removeAttribute("onclick");
+		        dropdownIcon.style.display = "none";
+		        selectedRole.value = "";
+		    })
+		    
+		    // Remove readonly while clicking edit button
+		    
+		    editBtn.addEventListener("click", () => {
+		    	editableFields.forEach((e) => {
+		    		e.removeAttribute("readonly");
+		    	})
+		    	nonEditableFields.forEach((e) => {
+		    		e.setAttribute("id","nonEditableFields");
+		    	})
+		    	managerIdField.focus();
+		    	selectedRole.value = roleField.innerHTML;
+		    	selectTagContainer.setAttribute("onclick","toggleRoleSelectContainer()");
+		    	dropdownIcon.style.display = "block";
+		    	editBtn.style.display = "none";
+		    	saveBtn.style.display = "block";
+		    })
+		    
+		    saveBtn.addEventListener("click", (e) => {
+		    	e.preventDefault();
+		    	
+		    	const managerId = managerIdField.value;
+		    	
+		    	if (employee.managerId == managerId && employee.roleName === selectedRole.value) {
+			    	location.reload();
+			    	return;
+			    }
+		    	
+		    	if (managerId < 1) {
+		    		alert("Invalid Manager Id");
+		    		managerIdField.value = "";
+		    		managerIdField.focus();
+		    		return;
+		    	}
+		    	
+				const numPattern = /^[0-9]+$/;
+			    
+			    if (!numPattern.test(managerId)) {
+			        alert("Only numbers are allowed");
+			        managerIdField.value = "";
+			        managerIdField.focus();
+			        return;
+			    }
+			    
+		    	document.querySelector("#form").submit();
+		    	
+		    })
+		    		    
+		    // Search
+		    
+		    function createRow(i, employee) {
+				
+				const row = document.createElement('div');
+			  	row.classList.add('table-row');
+	
+			  	const data1 = document.createElement('div');
+			  	data1.textContent = i;
+			  	data1.classList.add('table-data');
+	
+			  	const data2 = document.createElement('div');
+			  	data2.classList.add('table-data');
+			  	data2.textContent = employee.firstName + " " + employee.lastName;
+	
+			  	const data3 = document.createElement('div');
+			  	data3.classList.add('table-data');
+			  	data3.textContent = employee.email;
+			  	
+			  	const data4 = document.createElement('div');
+			  	data4.classList.add('table-data');
+			  	data4.textContent = employee.managerEmail;
+			  	
+			  	const data5 = document.createElement('div');
+			  	data5.classList.add('table-data');
+			  	data5.textContent = employee.roleName;
+	
+			  	const data6 = document.createElement('div');
+			  	data6.classList.add('table-data');
+			  	const viewButton = document.createElement('button');
+			  	viewButton.classList.add('view_btn');
+			  	viewButton.classList.add('view');
+			  	viewButton.setAttribute('data-id', employee.employeeId);
+			  	viewButton.textContent = 'View';
+			  	data6.appendChild(viewButton);
+	
+			  	row.appendChild(data1);
+			  	row.appendChild(data2);
+			  	row.appendChild(data3);
+			  	row.appendChild(data4);
+			  	row.appendChild(data5);
+			  	row.appendChild(data6);
+	
+			  	tableContent.appendChild(row);
+			}
+			
+			function defaultOrder() {
+				tableContent.innerHTML = "";
+		        let i = 1;
+		        employeesList.sort((a,b) => {
+		        	  return a.employeeId - b.employeeId;
+		        	})
+		        employeesList.forEach((employee) => {
+		            createRow(i, employee);
+		            i++;
+		        });
+			}
+			
+			let searchedEmployees = [];
+			
+			search.addEventListener("focus",() => {
+				scroll(150);
+			})
+			
+			search.addEventListener("input", () => {
+				
+				const value = search.value.toLowerCase().trim();
+				
+				searchedEmployees = employeesList.filter((employee) => {
+				    const employeeName = employee.firstName.toLowerCase() + employee.lastName.toLowerCase();
+				    const employeeEmail = employee.email.toLowerCase();
+				    const managerEmail = employee.managerEmail.toLowerCase();
+				    const roleName = employee.roleName.toLowerCase();
+				    const searchValue = value.toLowerCase();
+				
+				    return employeeName.includes(searchValue) || employeeEmail.includes(searchValue) || managerEmail.includes(searchValue) || roleName.includes(searchValue);
+				});
+	
+				tableContent.innerHTML = "";
+				
+				if (searchedEmployees.length != 0) {
+					let i = 1;
+					searchedEmployees.forEach((employee) => {
+					  createRow(i, employee);
+					  i++;
+					});
+				}
+				
+				else noRecord(tableContent)
+					
+				scroll(150);
+			})
+			
+			// Sort
+			
+			const ascOrder = document.querySelector("#asc_order");
+			const descOrder = document.querySelector("#desc_order");
+			
+			function sortByEmployeeName(sortOrder, tableContent, employeesList) {
+				
+				employeesList.sort((a, b) => {
+			        const nameA = a.firstName.toLowerCase();
+			        const nameB = b.firstName.toLowerCase();
+			        const comparison = sortOrder === 'asc' ? 1 : -1;
+			        return nameA.localeCompare(nameB) * comparison;
+			    });
+			
+			    tableContent.innerHTML = '';
+			    let i = 1;
+			    employeesList.forEach((employee) => {
+			        createRow(i, employee);
+			        i++;
+			    });
+			    
+			}
+			
+			ascOrder.addEventListener('change', () => {
+			    if (ascOrder.checked)
+			    	sortByEmployeeName('asc', tableContent, employeesList);
+			    else
+			        defaultOrder(tableContent, employeesList);
+			    scroll(150);
+			});
+			
+			descOrder.addEventListener('change', () => {
+			    if (descOrder.checked)
+			    	sortByEmployeeName('desc', tableContent, employeesList);
+			    else
+			        defaultOrder(tableContent, employeesList);
+			    scroll(150);
+			});
+			
+		}
 	    	
-	    	document.querySelector("#form").submit();
-	    	
-	    })
-    
     </script>
 
 </body>

@@ -1,4 +1,4 @@
-<% String user_type = (String) request.getSession().getAttribute("LOGGEDUSERTYPE"); %>
+<% String userType = (String) request.getSession().getAttribute("LOGGEDUSERTYPE"); %>
 
 <a href="<%=request.getContextPath()%>/index">
 	<div class="sidebar_row_container">
@@ -183,21 +183,21 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>	
 <script>
 
-	let userType = "<%= user_type %>";
-	let admin_restrict_access = document.querySelector(".admin_restrict_access");
-	let manager_restrict_access = document.querySelectorAll(".manager_restrict_access");
-	let employee_restrict_access = document.querySelectorAll(".employee_restrict_access");
+	const userType = "<%= userType %>";
+	const adminRestrictAccess = document.querySelector(".admin_restrict_access");
+	const managerRestrictAccess = document.querySelectorAll(".manager_restrict_access");
+	const employeeRestrictAccess = document.querySelectorAll(".employee_restrict_access");
 	
-	if (userType == "admin") admin_restrict_access.style.display = "none";
+	if (userType == "admin") adminRestrictAccess.style.display = "none";
 	else if (userType == "manager") 
-		manager_restrict_access.forEach((e) => {
+		managerRestrictAccess.forEach((e) => {
 			e.style.display = "none";
 		})
 	else {
-		manager_restrict_access.forEach((e) => {
+		managerRestrictAccess.forEach((e) => {
 			e.style.display = "none";
 		})
-		employee_restrict_access.forEach((e) => {
+		employeeRestrictAccess.forEach((e) => {
 			e.style.display = "none";
 		})
 	}

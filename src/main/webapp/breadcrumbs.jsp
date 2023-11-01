@@ -5,7 +5,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-	document.getElementById("breadcrumbs_title").innerHTML = breadcrumbs_title;
-	document.getElementById("breadcrumbs_path").innerHTML = breadcrumbs_path;
+	document.getElementById("breadcrumbs_title").innerHTML = breadcrumbsTitle;
+	document.getElementById("breadcrumbs_path").innerHTML = breadcrumbsPath;
 </script>
 

@@ -72,35 +72,42 @@
 							
 							<div class="fields_container">
 								<div class="field_container">
-									<label> First Name </label> <input autocomplete="off" name = "first_name" id="first_name_field" class="apply_leave_inputs editable_fields" id="first_field" value="<%= employee.getFirstName() %>" readonly type="text">
+									<label for="first_name_field"> First Name </label> 
+									<input tabindex=1 autocomplete="off" name = "first_name" id="first_name_field" class="apply_leave_inputs editable_fields" id="first_field" value="<%= employee.getFirstName() %>" readonly type="text">
 								</div>
 								<div class="field_container">
-									<label> Last Name </label> <input autocomplete="off" name = "last_name" id="last_name_field" class="apply_leave_inputs editable_fields" value="<%= employee.getLastName() %>" readonly type="text">
-								</div>
-							</div>
-							<div class="fields_container">
-								<div class="field_container">
-									<label> Phone No </label> <input name = "phone_no" autocomplete="off" class="apply_leave_inputs editable_fields" value="<%= employee.getPhoneNo() %>" readonly type="text" id="phone_no_field">
-								</div>
-								<div class="field_container">
-									<label> Role </label> <input class="apply_leave_inputs non_editable_fields" value="<%= employee.getRoleName() %>" readonly type="text">
+									<label for="last_name_field"> Last Name </label> 
+									<input tabindex=2 autocomplete="off" name = "last_name" id="last_name_field" class="apply_leave_inputs editable_fields" value="<%= employee.getLastName() %>" readonly type="text">
 								</div>
 							</div>
 							<div class="fields_container">
 								<div class="field_container">
-									<label> Manager </label> <input class="apply_leave_inputs non_editable_fields" value="<%= employee.getManagerEmail() %>" readonly type="text">
+									<label for="phone_no_field"> Phone No </label> 
+									<input tabindex=3 name = "phone_no" autocomplete="off" class="apply_leave_inputs editable_fields" value="<%= employee.getPhoneNo() %>" readonly type="text" id="phone_no_field">
 								</div>
 								<div class="field_container">
-									<label> Joined Date </label> <input class="apply_leave_inputs non_editable_fields" value="<%= employee.getJoiningDate() %>" readonly type="text">
+									<label> Role </label> 
+									<input class="apply_leave_inputs non_editable_fields" value="<%= employee.getRoleName() %>" readonly type="text">
+								</div>
+							</div>
+							<div class="fields_container">
+								<div class="field_container">
+									<label> Manager </label> 
+									<input class="apply_leave_inputs non_editable_fields" value="<%= employee.getManagerEmail() %>" readonly type="text">
+								</div>
+								<div class="field_container">
+									<label> Joined Date </label> 
+									<input class="apply_leave_inputs non_editable_fields" value="<%= employee.getJoiningDate() %>" readonly type="text">
 								</div>
 							</div>
 							<div class="fields_container address">
 								<div class="field_container">
-									<label> Address </label> <input name="address" autocomplete="off" id="address_field" class="apply_leave_inputs editable_fields" value="<%= employee.getAddress() %>" readonly type="text">
+									<label for="address_field"> Address </label> 
+									<input tabindex=4 name="address" autocomplete="off" id="address_field" class="apply_leave_inputs editable_fields" value="<%= employee.getAddress() %>" readonly type="text">
 								</div>
 								<div class="edit_btn_container">
 									<button class="edit_btn" type="button"> Edit </button>
-									<button class="save_btn"> Save </button>
+									<button tabindex=5 class="save_btn"> Save </button>
 								</div>
 							</div>
 							
@@ -120,6 +127,8 @@
 	</div>
 	
 	<script>
+	
+		const employee = <%= employee %>;
 	
 		const firstNameField = document.querySelector("#first_name_field");
 	    const lastNameField = document.querySelector("#last_name_field");
@@ -152,92 +161,59 @@
 			return;
 		})
 	
-		let edit_btn = document.querySelector(".edit_btn");
-		let save_btn = document.querySelector(".save_btn");
-		let editable_fields = document.querySelectorAll(".editable_fields");
-		let non_editable_fields = document.querySelectorAll(".non_editable_fields")
+		const editBtn = document.querySelector(".edit_btn");
+		const saveBtn = document.querySelector(".save_btn");
+		const editableFields = document.querySelectorAll(".editable_fields");
+		const nonEditableFields = document.querySelectorAll(".non_editable_fields")
 		
-		edit_btn.addEventListener("click",() => {
-			editable_fields.forEach((e) => {
+		editBtn.addEventListener("click",() => {
+			editableFields.forEach((e) => {
 				e.removeAttribute("readonly");
 			})
-			non_editable_fields.forEach((e) => {
+			nonEditableFields.forEach((e) => {
 				e.setAttribute("id","non_editable_fields");
 			})
-			edit_btn.style.display = "none";
-			save_btn.style.display = "block";
+			editBtn.style.display = "none";
+			saveBtn.style.display = "block";
 			firstNameField.focus();
 		})
 		
-		save_btn.addEventListener("click", (e) => {
+		saveBtn.addEventListener("click", (e) => {
 	    	
 	    	e.preventDefault();
 	    	
 			const firstName = firstNameField.value.trim();
-
-		    if (firstName == "") {
-		    	alert("First name cannot be empty");
-		    	firstNameField.focus();
-		    	return;
-		    }
-		    
-		    const namePattern = /^[A-Za-z\s]{3,24}$/;
-		
-		    if (!namePattern.test(firstName)) {
-		        alert("Only letters are allowed in this field. Please remove any numbers or special characters.");
-		        firstNameField.value = "";
-		        firstNameField.focus();
-		        return;
-		    }
-		    
 			const lastName = lastNameField.value.trim();
-
-		    if (lastName == "") {
-		    	alert("Last name cannot be empty");
-		    	lastNameField.focus();
-		    	return;
-		    }
-		    		
-		    if (!namePattern.test(lastName)) {
-		        alert("Only letters are allowed in this field. Please remove any numbers or special characters.");
-		        lastNameField.value = "";
-		        lastNameField.focus();
-		        return;
-		    }
-		   
 		    const phone = phoneNoField.value.trim(); 
-
-		    if (phone == "") {
-		    	alert("Phone No cannot be empty");
-		    	phoneNoField.focus();
-		    	return;
-		    }
-
-		    const phonePattern = /^[6-9]\d{9}$/;
-		
-		    if (!phonePattern.test(phone)) {
-		        alert("No letters and characters. Start with 6,7,8 and 9. Only 10 digits");
-		        phoneNoField.value = "";
-		        phoneNoField.focus();
-		        return;
-		    }
-		    
 		    const address = addressField.value.trim();
 
-	        if (address == "") {
-		    	alert("Address cannot be empty");
-		    	addressField.focus();
-		    	return;
-		    }
-	        
+		    const namePattern = /^[A-Za-z\s]*$/;
+		    const nameLengthPattern = /^[A-Za-z\s]{3,24}$/;
+		    const phonePattern = /^[6-9]\d{9}$/;
 	        const addressPattern = /^[A-Za-z0-9\s.,#-/]+$/;
 	        
-	        if (!addressPattern.test(address)) {
-	            alert("Please enter a valid address. Only alphanumeric characters, spaces, periods, commas, hashtags, and hyphens are allowed.");
-	            addressField.value = "";
-	            addressField.focus();
-		        return;
-		    }
+	        if (employee.firstName === firstName && employee.lastName === lastName && employee.phoneNo == phone && employee.address === address) {
+	        	location.reload();
+	        	return;
+	        }
+
+	        if (!checkEmpty(firstName, firstNameField, "First name")) return;
+	        if (!checkLength(nameLengthPattern, firstName, firstNameField, "First name")) return;
+	        if (!checkPattern(namePattern, firstName, firstNameField, "Only letters are allowed in the First name field. Please remove any numbers or special characters.")) 
+	        	return;
+	        
+	        if (!checkEmpty(lastName, lastNameField, "Last name")) return;
+	        if (!checkLength(nameLengthPattern, lastName, lastNameField, "Last name")) return;
+	        if (!checkPattern(namePattern, lastName, lastNameField, "Only letters are allowed in the Last name field. Please remove any numbers or special characters.")) 
+	        	return;
+
+	        if (!checkEmpty(phone, phoneNoField, "Phone number")) return;
+	        if (!checkPattern(phonePattern, phone, phoneNoField, "No letters and characters. Start with 6,7,8 and 9. Only 10 digits")) 
+	        	return;
+		    
+	        if (!checkEmpty(address, addressField, "Address")) return;
+	        if (!checkPattern(addressPattern, address, addressField, "Please enter a valid address. Only alphanumeric characters, spaces, periods, commas, hashtags, and hyphens are allowed.")) 
+	        	return;
 	        
 	        document.querySelector(".form").submit();
 	        

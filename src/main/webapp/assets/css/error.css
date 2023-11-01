@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&family=Questrial&display=swap');
+
+body {
+    font-family: 'Noto Sans', sans-serif;
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251/var(--tw-bg-opacity));
+    position: relative;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 210px;
+    text-shadow: 2px 2px 0 midnightblue, 4px 4px 0 #fff, 8px 8px 0 midnightblue;
+    line-height: 1;
+    color: #181f48;
+    letter-spacing: 10px;
+}
+
+h3 {
+    margin: 30px 0px 20px 0px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: black;
+}
+
+p {
+    line-height: 25px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.btn_container {
+    margin-top: 30px;
+}
+
+button {
+    border: none;
+    background: midnightblue;
+    padding: 12px 15px;
+    border-radius: 5px;
+    width: 50%;
+}
+
+button:hover {
+    background-color: #191970b8;
+    cursor: pointer;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+}

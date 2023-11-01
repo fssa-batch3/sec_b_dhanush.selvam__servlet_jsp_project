@@ -53,18 +53,18 @@
 			
 				<div class="form_container">
 				
-					<h2 class="breadcrumbs"> New Role </h2>
+					<h2 class="breadcrumbs" id="action_title"> Add Role </h2>
 					<form action="role" class="form" method="post">
 						<div class="field_container">
-							<label> Role Name </label> <input id="name_field"
-								name="role_name" autocomplete="off" type="text">
+							<label for="name_field"> Role Name </label> 
+							<input id="name_field" name="role_name" autocomplete="off" type="text" tabindex=1>
 						</div>
 						<div class="field_container">
-							<label> Role Id </label> <input id="id_field"
-								type="text" autocomplete="off" name="role_id" readonly>
+							<label> Role Id </label> 
+							<input id="id_field" type="text" autocomplete="off" name="role_id" readonly>
 						</div>
 						<div>
-							<button class="submit_btn">Submit</button>
+							<button class="submit_btn" tabindex=2> Submit </button>
 						</div>
 					</form>
 					
@@ -87,34 +87,30 @@
 					</div>
 
 					<div class="filter_dropdown_container">
-						<div class="filter_field_container"
-							onclick="stopPropagation(event)">
-							<input type="checkbox" class="checkbox">
+						<div class="filter_field_container" onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox" id="asc_order" onclick="handleCheckboxClick('asc_order')">
 							<div class="field_name_container">
-								<p>Ascending Order</p>
+								<label class="filter_label" for="asc_order"> Ascending Order </label>
 							</div>
 						</div>
-						<div class="filter_field_container"
-							onclick="stopPropagation(event)">
-							<input type="checkbox" class="checkbox">
+						<div class="filter_field_container" onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox" id="desc_order" onclick="handleCheckboxClick('desc_order')">
 							<div class="field_name_container">
-								<p>Descending Order</p>
+								<label class="filter_label" for="desc_order"> Descending Order </label>
 							</div>
 						</div>
-						<div class="filter_field_container"
-							onclick="stopPropagation(event)">
-							<input type="checkbox" class="checkbox">
+						<!-- <div class="filter_field_container" onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox" id="min_emp">
 							<div class="field_name_container">
-								<p>Minimum employees</p>
+								<label class="filter_label" for="min_emp"> Minimum employees </label>
 							</div>
 						</div>
-						<div class="filter_field_container"
-							onclick="stopPropagation(event)">
-							<input type="checkbox" class="checkbox">
+						<div class="filter_field_container" onclick="stopPropagation(event)">
+							<input type="checkbox" class="checkbox" id="max_emp">
 							<div class="field_name_container">
-								<p>Maximum employees</p>
+								<label class="filter_label" for="max_emp"> Maximum employees </label>
 							</div>
-						</div>
+						</div> -->
 					</div>
 
 					<div class="table">
@@ -141,8 +137,8 @@
 								</div>
 							<% i++; %>
 							<% } %>
-
 						</div>
+						
 					</div>
 
 				</div>
@@ -161,101 +157,258 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	
-		let rolesList = <%= rolesList %>;
+		const rolesList = <%= rolesList %>;
 
-		let nameField = document.getElementById("name_field");
-		let idField = document.getElementById("id_field");
-		let editBtn = document.querySelectorAll(".edit_btn");
-		
-		const errorMessage = "<%= errorMessage %>";
-		const invalidRoleName = "<%= invalidRoleName %>";
-		const invalidRoleId = "<%= invalidRoleId %>";
+		const tableContent = document.querySelector(".table-content");
 
-		const popUpContainer = document.querySelector(".pop_up_container");
-		const okayBtn = document.querySelector(".okay_btn");
-		
-		let isEditClicked = false;
-		
-		function isError(errorMessage) {
-			if (errorMessage != "null") {
-				popUpContainer.style.display = "block";
-				document.querySelector(".error_message").innerHTML = errorMessage;
-				nameField.value = "";
-				idField.value = invalidRoleId;
-				if (<%= lastRoleId + 1 %> != invalidRoleId) isEditClicked = true;
-				okayBtn.focus();
-			}
-		}
-		
-		isError(errorMessage);
-		
-		okayBtn.addEventListener("click", () => {
-			popUpContainer.style.display = "none";
-			nameField.focus();
-			return;
-		})
-									
-		// Edit function
-		
-		editBtn.forEach((e) => {
-			e.addEventListener("click", function () {
-				let id = e.getAttribute("data-id");
-				isEditClicked = true;
-				if (idField.value !== id){
-					idField.value = id;
-					let roleName = rolesList.find((e) => e.roleId == id).roleName;
-					nameField.value = roleName;
-					nameField.focus();
+  		if (rolesList.length == 0) noRecord(tableContent);
+
+		else {
+			
+			const nameField = document.getElementById("name_field");
+			const idField = document.getElementById("id_field");
+			const editBtn = document.querySelectorAll(".edit_btn_container");
+			
+			const errorMessage = "<%= errorMessage %>";
+			const invalidRoleName = "<%= invalidRoleName %>";
+			const invalidRoleId = "<%= invalidRoleId %>";
+	
+			const popUpContainer = document.querySelector(".pop_up_container");
+			const okayBtn = document.querySelector(".okay_btn");
+			
+			const search = document.querySelector(".search_bar");
+					
+			let isEditClicked = false;
+			
+			function isError(errorMessage) {
+				if (errorMessage != "null") {
+					popUpContainer.style.display = "block";
+					document.querySelector(".error_message").innerHTML = errorMessage;
+					nameField.value = "";
+					idField.value = invalidRoleId;
+					if (<%= lastRoleId + 1 %> != invalidRoleId) isEditClicked = true;
+					okayBtn.focus();
 				}
-		        else {
-		        	idField.value = "";
-		        	nameField.value = "";
-		        	isEditClicked = false;
-		        }
-				window.scrollTo({
-			        top: 0,
-			        behavior: "smooth"
-			    });
+			}
+			
+			isError(errorMessage);
+			
+			okayBtn.addEventListener("click", () => {
+				popUpContainer.style.display = "none";
+				nameField.focus();
+				return;
+			});
+			
+			const actionTitle = document.getElementById("action_title");
+			
+			// Edit function
+			
+			let roleName;
+			
+			tableContent.addEventListener('click', (event) => {
+	    		if (event.target.classList.contains('edit_btn')) {
+					const id = event.target.getAttribute("data-id");
+					isEditClicked = true;
+					if (idField.value !== id){
+						actionTitle.innerText = "Edit Role";
+						idField.value = id;
+						roleName = rolesList.find((e) => e.roleId == id).roleName;
+						nameField.value = roleName;
+						nameField.focus();
+					}
+			        else {
+			        	actionTitle.innerText = "Add Role";
+			        	idField.value = "";
+			        	nameField.value = "";
+			        	isEditClicked = false;
+			        }
+					scroll(0);
+	    		}
+			});	
+			
+			// Generate Id
+			
+			nameField.addEventListener("input", function () {
+				const value = nameField.value.trim();
+				if (value.length > 2 && !isEditClicked) {
+					idField.value = <%= lastRoleId + 1 %>;
+				}
+				else if (value.length == 0 && !isEditClicked) idField.value = "";
+			})
+				
+			document.querySelector(".submit_btn").addEventListener("click",(e) => {
+					
+		        e.preventDefault();
+		
+			    const name = nameField.value.trim();
+			    
+			    if (roleName === name) {
+			    	location.reload();
+			    	return;
+			    }
+			    
+			    if (name == "") {
+			    	alert("Role name cannot be empty");
+			    	nameField.value = "";
+			    	nameField.focus();
+			    	return;
+			    }
+			    		    
+			    const charPattern = /^[A-Za-z\s]*$/;
+			    const countPattern = /^[A-Za-z\s]{3,24}$/;
+			
+			    if (!charPattern.test(name)) {
+			        alert("Only letters are allowed in the Role name field. Please remove any numbers or special characters.");
+			        nameField.value = "";
+			        nameField.focus();
+			        if(isEditClicked == false)
+			    		idField.value = "";
+			        return;
+			    }
+			    
+			    if (!countPattern.test(name)) {
+			    	alert("Role name should contain a minimum of 3 letters and a maximum of 24 letters.");
+			        nameField.focus();
+			        if(isEditClicked == false)
+			    		idField.value = "";
+			        return;
+			    }
+			  
+			    document.querySelector(".form").submit();
 				
 			})
-		})		
-		
-		// Generate Id
-		
-		nameField.addEventListener("input", function () {
-			let value = nameField.value.trim();
-			if (value.length > 2 && !isEditClicked) {
-				idField.value = <%= lastRoleId + 1 %>;
-			}
-			else if (value.length == 0 && !isEditClicked) idField.value = "";
-		})
 			
-		document.querySelector(".submit_btn").addEventListener("click",(e) => {
+			// Search 
+			
+			function createRow(i, role) {
 				
-	        e.preventDefault();
+				const row = document.createElement('div');
+			  	row.classList.add('table-row');
 	
-		    const name = nameField.value.trim();
-		    
-		    if (name == "") {
-		    	alert("Role name cannot be empty");
-		    	nameField.focus();
-		    	return;
-		    }
-		    
-		    const pattern = /^[A-Za-z\s]{3,24}$/;
-		
-		    if (!pattern.test(name)) {
-		        alert("Only letters are allowed in this field. Please remove any numbers or special characters.");
-		        nameField.value = "";
-		        nameField.focus();
-		        if(isEditClicked == false)
-		    		idField.value = "";
-		        return;
-		    }
-		  
-		    document.querySelector(".form").submit();
+			  	const data1 = document.createElement('div');
+			  	data1.textContent = i;
+			  	data1.classList.add('table-data');
+	
+			  	const data2 = document.createElement('div');
+			  	data2.classList.add('table-data');
+			  	data2.textContent = role.roleName;
+	
+			  	const data3 = document.createElement('div');
+			  	data3.classList.add('table-data');
+			  	data3.textContent = role.roleId;
+	
+			  	const data4 = document.createElement('div');
+			  	data4.classList.add('table-data');
+			  	const editButton = document.createElement('button');
+			  	editButton.classList.add('edit_btn');
+			  	editButton.setAttribute('data-id', role.roleId);
+			  	editButton.textContent = 'Edit';
+			  	data4.appendChild(editButton);
+	
+			  	const data5 = document.createElement('div');
+			  	data5.classList.add('table-data');
+			  	const deleteButton = document.createElement('button');
+			  	deleteButton.classList.add('delete_btn');
+			  	const deleteLink = document.createElement('a');
+			  	deleteLink.href = "role?action=delete&id=" + role.roleId;
+			  	deleteButton.textContent = 'Delete';
+			  	deleteLink.appendChild(deleteButton);
+			  	data5.appendChild(deleteLink);
+	
+			  	row.appendChild(data1);
+			  	row.appendChild(data2);
+			  	row.appendChild(data3);
+			  	row.appendChild(data4);
+			  	row.appendChild(data5);
+	
+			  	tableContent.appendChild(row);
+			}
 			
-		})
+			function defaultOrder() {
+				tableContent.innerHTML = "";
+		        let i = 1;
+		        rolesList.sort((a,b) => {
+		        	  return a.roleId - b.roleId;
+		        	})
+		        rolesList.forEach((role) => {
+		            createRow(i, role);
+		            i++;
+		        });
+			}
+			
+			let searchedRoles = [];
+			
+			search.addEventListener("focus",() => {
+				scroll(320);
+			})
+			
+			search.addEventListener("input", () => {
+				
+				const value = search.value.toLowerCase().trim();
+				
+				searchedRoles = rolesList.filter((role) => {
+				    const roleName = role.roleName.toLowerCase();
+				    const roleId = role.roleId.toString().toLowerCase();
+				    const searchValue = value.toLowerCase();
+				
+				    return roleName.includes(searchValue) || roleId.includes(searchValue);
+				});
+	
+				tableContent.innerHTML = "";
+				
+				if (searchedRoles.length != 0) {
+					let i = 1;
+					searchedRoles.forEach((role) => {
+					  createRow(i, role);
+					  i++;
+					});
+				}
+				
+				else noRecord(tableContent)
+				
+				scroll(320);
+			})
+			
+			// Sort
+			
+			const ascOrder = document.querySelector("#asc_order");
+			const descOrder = document.querySelector("#desc_order");
+			
+			function sortByRoleName(sortOrder, tableContent, rolesList) {
+				
+			    rolesList.sort((a, b) => {
+			        const nameA = a.roleName.toLowerCase();
+			        const nameB = b.roleName.toLowerCase();
+			        const comparison = sortOrder === 'asc' ? 1 : -1;
+			        return nameA.localeCompare(nameB) * comparison;
+			    });
+			
+			    tableContent.innerHTML = '';
+			    let i = 1;
+			    rolesList.forEach((role) => {
+			        createRow(i, role);
+			        i++;
+			    });
+			    
+			}
+			
+			ascOrder.addEventListener('change', () => {
+			    if (ascOrder.checked)
+			    	sortByRoleName('asc', tableContent, rolesList);
+			    else
+			        defaultOrder(tableContent, rolesList);
+			    scroll(320);
+			});
+			
+			descOrder.addEventListener('change', () => {
+			    if (descOrder.checked)
+			    	sortByRoleName('desc', tableContent, rolesList);
+			    else
+			        defaultOrder(tableContent, rolesList);
+			    scroll(320);
+			});
+			
+		}
 	
 	</script>
 

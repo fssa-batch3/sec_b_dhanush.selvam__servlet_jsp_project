@@ -33,8 +33,7 @@ public class EmployeeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String action = request.getParameter("action");
 		EmployeeService employeeService = new EmployeeService();
@@ -101,8 +100,7 @@ public class EmployeeServlet extends HttpServlet {
 
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String action = request.getParameter("action");
 		EmployeeService employeeService = new EmployeeService();
@@ -141,9 +139,7 @@ public class EmployeeServlet extends HttpServlet {
 				request.setAttribute("employeesList", employeesList);
 				request.setAttribute("rolesList", rolesList);
 				request.setAttribute("employeeId", id);
-				request.setAttribute("role", role);
 				request.getRequestDispatcher("/list_all_employees.jsp").forward(request, response);
-
 			}
 			
 		}
@@ -214,10 +210,10 @@ public class EmployeeServlet extends HttpServlet {
 				request.setAttribute("errorMessage", e.getMessage());
 				request.setAttribute("employee", employee);
 				request.setAttribute("role", role);
-				request.setAttribute("managerId", rolesList);
 				request.setAttribute("rolesList", rolesList);
 				request.setAttribute("lastEmployeeId", lastEmployeeId);
 				request.getRequestDispatcher("/create_employee.jsp").forward(request, response);
+
 			}
 
 		}

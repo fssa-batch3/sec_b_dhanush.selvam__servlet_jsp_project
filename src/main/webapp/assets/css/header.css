@@ -135,6 +135,10 @@ input:focus-within {
     cursor: pointer;
 }
 
+.submit_btn:focus {
+    background-color: #2d7474;
+}
+
 input[type="checkbox"] {
 	height: auto;
 }
@@ -172,6 +176,8 @@ input[type="checkbox"] {
 
 .error_message {
     font-size: 20px;
+    line-height: 30px;
+    text-align: center;
 }
 
 .error_btn_container {

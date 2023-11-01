@@ -90,3 +90,11 @@ a:hover {
     background-color: #2d7474;
     cursor: pointer;
 }
+
+.login_btn:focus {
+    background-color: #2d7474;
+}
+
+input[type="checkbox"]:focus-within {
+	outline: 1.5px solid #2d7474; 
+}

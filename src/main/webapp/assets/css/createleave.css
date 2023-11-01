@@ -83,6 +83,7 @@
     border: 1px solid gray;
     resize: none;
     height: 100px;
+    line-height: 25px;
 }
 
 .apply_leave_textarea:focus-within {
@@ -113,4 +114,8 @@
 #document_field {
 	padding: 10px 20px;
 	height: auto;
+}
+
+label {
+	width: fit-content;
 }

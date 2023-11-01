@@ -18,6 +18,7 @@ form {
 
 label {
     font-size: 18px;
+    width: fit-content;
 }
 
 .table_container {
@@ -28,6 +29,10 @@ label {
 	border: none;
 	cursor: pointer;
 	background-color: transparent;
+}
+
+.edit_btn:hover ,.delete_btn:hover {
+	letter-spacing: 0.5px;
 }
 
 .edit_btn:hover {
@@ -58,4 +63,14 @@ label {
 	display: flex;
     justify-content: end;
     padding-right: 27%;
+}
+
+.filter_label {
+	font-size: 14px;
+}
+
+#id_field {
+	cursor: default;
+    background-color: rgba(239, 239, 239, 0.3);
+    color: rgb(84, 84, 84);
 }

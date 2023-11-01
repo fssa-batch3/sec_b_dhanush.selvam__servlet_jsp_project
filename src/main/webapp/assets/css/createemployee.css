@@ -117,3 +117,7 @@ input[readonly]:focus-within {
 .fa-eye-slash {
 	display: none;
 }
+
+label {
+	width: fit-content;
+}

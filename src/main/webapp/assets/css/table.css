@@ -32,7 +32,7 @@
 	
 	&:nth-of-type(odd) {
         background: #EEEEEE;
-    }
+	}
 }
 
 .table-data, .header__item {
@@ -154,4 +154,10 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 .view_btn:hover {
 	color: green;
+	letter-spacing: 0.5px;
+} 
+
+.no-record-row {
+	width: 100%;
+	text-align: center;	
 }

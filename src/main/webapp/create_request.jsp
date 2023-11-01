@@ -1,3 +1,4 @@
+<%@page import="in.fssa.leavepulse.model.Request"%>
 <%@page import="in.fssa.leavepulse.dto.LeaveBalanceDTO"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="in.fssa.leavepulse.model.Leave"%>
@@ -30,10 +31,16 @@
 	<% List<Leave> leavesList = (List<Leave>) request.getAttribute("leaveList"); %>
 	<% List<LeaveBalanceDTO> availableLeaves = (List<LeaveBalanceDTO>) request.getAttribute("availableLeaves"); %>
 	
+	<% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+	<% Request invalidRequest = (Request) request.getAttribute("requestsData"); %>
+	<% String invalidLeave = (String) request.getAttribute("leave"); %>
+
 	<div class="header_section">
 		<script src="<%=request.getContextPath()%>/assets/js/resource.js"></script>
 		<jsp:include page="/header.jsp"/>
 	</div>
+	
+	<jsp:include page="/error_popup.jsp"/>
 	
 	<div class="body_section">
 
@@ -59,10 +66,12 @@
 						<div class="form_container">
 							<div class="fields_container">
 								<div class="field_container">
-									<label> Start Date </label> <input name="start_date" class="apply_leave_inputs start_date" type="date" required min="<%= LocalDate.now() %>">
+									<label for="start_date"> Start Date </label> 
+									<input id="start_date" name="start_date" class="apply_leave_inputs" type="date" required min="<%= LocalDate.now() %>">
 								</div>
 								<div class="field_container">
-									<label> End date </label> <input name="end_date" class="apply_leave_inputs end_date" required type="date" min="<%= LocalDate.now() %>">
+									<label for="end_date"> End date </label> 
+									<input id="end_date" name="end_date" class="apply_leave_inputs" required type="date" min="<%= LocalDate.now() %>">
 								</div>
 							</div>
 							<div class="fields_container">
@@ -92,8 +101,8 @@
 							</div>
 							<div class="fields_container">
 								<div class="field_container">
-									<label> Reason </label>
-									<textarea class="apply_leave_textarea" name="reason"> </textarea>
+									<label for="reason"> Reason </label>
+									<textarea id="reason" class="apply_leave_textarea" name="reason"> </textarea>
 								</div>
 								<div class="field_container submit_btn_container">
 									<button class="submit_btn">Submit</button>
@@ -101,6 +110,7 @@
 							</div>
 						</div>
 						
+						<input type="hidden" name="isLossOfPay" id="lossOfPay" value="no">
 						<input type="hidden" name="days" class="hidden_days">
 						
 					</form>
@@ -118,84 +128,157 @@
 
 	<script>
 	
+		const startDate = document.querySelector("#start_date");
+		const endDate = document.querySelector("#end_date");
+		const reason = document.querySelector(".apply_leave_textarea");
+		
+		const errorMessage = "<%= errorMessage %>";
+		const invalidRequest = <%= invalidRequest %>;
+		const invalidLeave = "<%= invalidLeave %>";
+		
+		const popUpContainer = document.querySelector(".pop_up_container");
+		const okayBtn = document.querySelector(".okay_btn");
+		
+		function isError(errorMessage) {
+			if (errorMessage != "null") {
+				popUpContainer.style.display = "block";
+				document.querySelector(".error_message").innerHTML = errorMessage;
+				reason.value = invalidRequest.reason;
+				selectLeave(invalidLeave);
+				okayBtn.focus();
+				document.getElementById("breadcrumbs_title").innerHTML = "Leave Application";
+				document.getElementById("breadcrumbs_path").innerHTML = "Dashboard > Apply Leave";
+  				history.replaceState(null, null, window.location.href + "?action=new");
+			}
+		}
+		
+		isError(errorMessage);
+		
+		okayBtn.addEventListener("click", () => {
+			popUpContainer.style.display = "none";
+			startDate.value = "";
+			endDate.value = "";
+			startDate.focus()
+			return;
+		})
+		
+		startDate.addEventListener('keydown', function (e) {
+			e.preventDefault();
+		  	});
+		endDate.addEventListener('keydown', function (e) {
+			e.preventDefault();
+		  	});
+	
 		const availableLeaves = <%= availableLeaves %>;
-		const remaining_leaves_field = document.querySelector(".remaining_leaves_field");
+		const remainingLeavesField = document.querySelector(".remaining_leaves_field");
 				
 		let count = 0;
 		availableLeaves.forEach((e) => {
-			count += e.availableLeaveDays;
+			if (e.leaveType !== "Loss of Pay")
+				count += e.availableLeaveDays;
 		})
 		
-		remaining_leaves_field.value = count;
+		remainingLeavesField.value = count;
 	
 		function selectedLeave(leave) {
-		    remaining_leaves_field.value = availableLeaves.find((e) => e.leaveType == leave).availableLeaveDays;
+			remainingLeavesField.value = availableLeaves.find((e) => e.leaveType == leave).availableLeaveDays;
 		}
-	 
-		const start_date = document.querySelector(".start_date");
-		const end_date = document.querySelector(".end_date");
-		
-		start_date.addEventListener("change",() => {
+	 		
+		startDate.addEventListener("change",() => {
 			
-		    const startDate = new Date(start_date.value);
-		    const minEndDate = new Date(startDate);
+		    const startDate1 = new Date(startDate.value);
+		    const minEndDate = new Date(startDate1);
 		    
-		    minEndDate.setDate(startDate.getDate());
+		    if (startDate1.getDay() === 0) {
+                alert("Sundays are not allowed.");
+                startDate.value = ""; 
+                return;
+            }
+		    
+		    minEndDate.setDate(startDate1.getDate());
 		    const minEndDateFormatted = minEndDate.toISOString().split("T")[0];
-		    end_date.min = minEndDateFormatted;
+		    endDate.min = minEndDateFormatted;
 			
 		})	
 		
-		end_date.addEventListener("change",() => {
+		endDate.addEventListener("change",() => {
 			
-		    const endDate = new Date(end_date.value);
-		    const maxStartDate = new Date(endDate);
+		    const endDate1 = new Date(endDate.value);
+		    const maxStartDate = new Date(endDate1);
 		    
-		    maxStartDate.setDate(endDate.getDate());
+		    if (endDate1.getDay() === 0) {
+                alert("Sundays are not allowed.");
+                endDate.value = ""; 
+                return;
+            }
+		    
+		    maxStartDate.setDate(endDate1.getDate());
 		    const maxStartDateFormatted = maxStartDate.toISOString().split("T")[0];
-		    start_date.max = maxStartDateFormatted;
+		    startDate.max = maxStartDateFormatted;
 			
 		})	
 		 
-		let submit_btn = document.querySelector(".submit_btn");
+		const submitBtn = document.querySelector(".submit_btn");
 		
-		submit_btn.addEventListener("click", () => {
+		submitBtn.addEventListener("click", () => {
 			
 			event.preventDefault();
 			
-			if (start_date.value == "") {
-	        	alert("Please select the start date");
-	        	start_date.focus();
-	        	return;
-	        }
+	        if (!checkEmpty(startDate.value, startDate, "Start date")) return;
+	        if (!checkEmpty(endDate.value, endDate, "End date")) return;
+							        
+	        const reasonPattern = /^[A-Za-z0-9\s\-:;.,]*$/;
 	        
-	        if (end_date.value == "") {
-	        	alert("Please select the end date");
-	        	end_date.focus();
+	        if (!checkPattern(reasonPattern, reason.value, reason, "Only alphanumeric characters and spaces are allowed")) 
 	        	return;
+			
+			const selectedLeave = document.getElementById("selectedLeave");
+	        if (selectedLeave.value == "") {
+	            alert("Please select a Leave type");
+	            return;
 	        }
 	        
 	        const date1 = new Date(start_date.value);
 	        const date2 = new Date(end_date.value);
-	        const differenceInMilliseconds = date2 - date1;
-	     	const differenceInDays = (differenceInMilliseconds / (1000 * 60 * 60 * 24)) + 1;
+	        
+	     	let differenceInDays = 0;
+	     	const currentDate = new Date(date1);
+	     	while (currentDate <= date2) {
+	     	    if (currentDate.getDay() !== 0) {
+	     	        differenceInDays++;
+	     	    }
+	     	    currentDate.setDate(currentDate.getDate() + 1);
+	     	}
+	     	
 	     	document.querySelector(".hidden_days").value = differenceInDays;
-						
-			const reason = document.querySelector(".apply_leave_textarea").value.trim();
+	     	
+	        const leaveBalance = availableLeaves.find((e) => e.leaveType == selectedLeave.value).availableLeaveDays;
 	        
-	        const reason_pattern = /^[A-Za-z0-9\s\-:;.]*$/;
-	        
-	        if (!reason_pattern.test(reason)) {
-	            alert("Only alphanumeric characters and spaces are allowed");
-	            reason.focus();
-		        return;
-		    }
-			
-			const selectedLeave = document.getElementById("selectedLeave");
-	        if (selectedLeave.value == "") {
-	            alert("Please select a leave");
-	            return;
+	        if (count === 0) {
+				let userConfirmation = confirm("You have no leaves. Would you like to continue with the loss-of-pay type?");
+	        	if (userConfirmation) 
+	        		document.getElementById("lossOfPay").value = "yes";
+	        	else {
+		        	endDate.focus();
+		        	return;
+	        	}
 	        }
+	        
+	        else if (differenceInDays > leaveBalance && count > differenceInDays) {
+	        	alert("Insufficient of " + selectedLeave.value + ". You currently have " + leaveBalance + " days remaining.");
+	        	endDate.focus();
+	        	return;
+	        }
+	        
+	        /* else if (count < differenceInDays) {
+	        	let userConfirmation = confirm("You are crossing your total leave balance. Would you like to continue with the loss-of-pay type?");
+	        	if (userConfirmation) 
+	        		document.getElementById("lossOfPay").value = "yes";
+	        	else {
+		        	endDate.focus();
+		        	return;
+	        	}
+	        } */
 	        
 	     	document.querySelector(".form").submit();
 	        

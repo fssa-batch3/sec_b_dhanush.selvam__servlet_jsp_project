@@ -26,29 +26,23 @@ public class LeaveServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String action = request.getParameter("action");
 		LeaveService leaveService = new LeaveService();
 		
-		if ("delete".equals(action)) {
-			        
-	        int id = Integer.parseInt(request.getParameter("id"));
-	
-	        try {
+		try {
+		
+			if ("delete".equals(action)) {
+				        
+		        int id = Integer.parseInt(request.getParameter("id"));
+		
 	        	leaveService.deleteLeave(id);
 	            response.sendRedirect(request.getContextPath() + "/leave");
-	        } catch (ServiceException | ValidationException e) {
-	            e.printStackTrace();
-	            response.getWriter().println(e.getMessage());
-	        }
-	    } 
+		    } 
+			
+			else {
 		
-		else {
-
-			try {
-	
 				List<Leave> leavesList = leaveService.getAllLeave();
 				int lastLeaveId = leaveService.getTableLastLeaveId();
 				
@@ -57,12 +51,12 @@ public class LeaveServlet extends HttpServlet {
 	
 				RequestDispatcher rd = request.getRequestDispatcher("/leave.jsp");
 				rd.forward(request, response);
-	
-			} catch (ServiceException e) {
-				e.printStackTrace();
-			}
+		
+			} 
 			
-		}
+		} catch (ServiceException | ValidationException e) {
+			e.printStackTrace();
+		} 
 
 	}
 
@@ -70,8 +64,7 @@ public class LeaveServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave();

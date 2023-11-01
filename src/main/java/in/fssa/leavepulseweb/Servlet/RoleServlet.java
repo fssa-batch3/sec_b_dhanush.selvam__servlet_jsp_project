@@ -26,49 +26,44 @@ public class RoleServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String action = request.getParameter("action");
         RoleService roleService = new RoleService();
+        
+        try {
 
-	    if ("delete".equals(action)) {
-	        
-	        int id = Integer.parseInt(request.getParameter("id"));
-
-	        try {
+		    if ("delete".equals(action)) {
+		        
+		        int id = Integer.parseInt(request.getParameter("id"));
+	
 	            roleService.deleteRole(id);
 	            response.sendRedirect(request.getContextPath() + "/role");
-	        } catch (ServiceException | ValidationException e) {
-	            e.printStackTrace();
-	            response.getWriter().println(e.getMessage());
-	        }
-	    } 
+		    } 
 	    
-	    else {
-	        
-	        try {
+		    else {
+		     
 	            List<Role> rolesList = roleService.getAllRole();
 	            int lastRoleId = roleService.getTableLastRoleId();
-
+	
 	            request.setAttribute("rolesList", rolesList);
 	            request.setAttribute("lastRoleId", lastRoleId);
-
+	
 	            RequestDispatcher rd = request.getRequestDispatcher("/role.jsp");
 	            rd.forward(request, response);
-	        } catch (ServiceException e) {
-	            e.printStackTrace();
-	        }
-	    }
-
+        	} 
+	    
+        } catch (ServiceException | ValidationException e) {
+			e.printStackTrace();
+        }
+		    
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 				
 		RoleService roleService = new RoleService();
 		

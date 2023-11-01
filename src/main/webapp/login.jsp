@@ -52,21 +52,21 @@ html, body {
             </div>
             <form class="form" action="login" method="post">
                 <div class="field_container">
-                    <input class="field email_field" type="email" autocomplete="off" placeholder="Email" name="email" autofocus>
+                    <input class="field email_field" tabindex=1 type="email" autocomplete="off" placeholder="Email" name="email" autofocus>
                 </div>
                 <div class="field_container">
-                    <input id="password_field" class="field" type="password" autocomplete="off" placeholder="Password" name="password">
+                    <input id="password_field" tabindex=2 class="field" type="password" autocomplete="off" placeholder="Password" name="password">
                 </div>
                 <div class="password_container">
                     <div class="show_password_container">
-                        <label> <input name="check" type="checkbox" id="checkbox"> Show Password </label>
+                        <label> <input tabindex=3 name="check" type="checkbox" id="checkbox"> Show Password </label>
                     </div>
                     <div class="forgot_password_container">
                         <a href="#"> Forgot Password </a>
                     </div>
                 </div>
                 <div>
-                    <button class="login_btn"> Login </button>
+                    <button class="login_btn" tabindex=4> Login </button>
                 </div>
                 
             </form>
@@ -108,7 +108,7 @@ html, body {
 		})
 		
 	    checkbox.addEventListener("click", function ()  {
-	        let type = password_field.getAttribute("type") == "password" ? "text" : "password";
+	        const type = passwordField.getAttribute("type") == "password" ? "text" : "password";
 	        passwordField.setAttribute("type",type);
 	    })
 	    
@@ -141,9 +141,9 @@ html, body {
 		    	return;
 		    }
 		    
-		    const password_pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
+		    const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
 
-		    if (!password_pattern.test(password)) {
+		    if (!passwordPattern.test(password)) {
 		        alert("Password doesn't match the pattern. The password must contain at least one capital letter, at least one small letter, at least one number and at least one special characters, minimum eight to maximum twenty four characters");
 		    	passwordField.value = "";
 		        passwordField.focus();

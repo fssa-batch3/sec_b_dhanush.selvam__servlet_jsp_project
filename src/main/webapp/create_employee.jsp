@@ -68,25 +68,25 @@
 	                        <div class="fields_container">
 	                            <div class="field_container">
 	                                <label for="first_name"> First Name </label>
-	                                <input name="first_name" autocomplete="off" class="apply_leave_inputs first_name" type="text" required autofocus>
+	                                <input name="first_name" tabindex=1 id="first_name" autocomplete="off" class="apply_leave_inputs" type="text" required autofocus>
 	                            </div>
 	                            <div class="field_container">
 	                                <label for="last_name"> Last Name </label>
-	                                <input name="last_name" autocomplete="off" class="apply_leave_inputs last_name" type="text" required>
+	                                <input name="last_name" tabindex=2 id="last_name" autocomplete="off" class="apply_leave_inputs" type="text" required>
 	                            </div>
 	                            <div class="field_container">
 	                                <label for="email"> Email </label>
-	                                <input name="email" autocomplete="off" class="apply_leave_inputs email" type="text" required>
+	                                <input name="email" tabindex=3 id="email" autocomplete="off" class="apply_leave_inputs" type="text" required>
 	                            </div>
 	                        </div>
 	                        <div class="fields_container">
 	                            <div class="field_container">
 	                                <label for="phone"> Phone Number </label>
-	                                <input name="phone" autocomplete="off" class="apply_leave_inputs phone" type="tel" required>
+	                                <input name="phone" tabindex=4 id="phone" autocomplete="off" class="apply_leave_inputs" type="tel" required>
 	                            </div>
 	                            <div class="field_container">
-	                                <label for="password"> Password </label>
-	                                <input name="password" id="password_field" class="apply_leave_inputs" type="password" required>
+	                                <label for="password_field"> Password </label>
+	                                <input name="password" tabindex=5 id="password_field" class="apply_leave_inputs" type="password" required>
 	                                <div class = "eye_container"> <i class="fa-solid fa-eye"></i> <i class="fa-solid fa-eye-slash"></i> </div> 
 	                            </div>
 	                            <div class="field_container">
@@ -109,7 +109,7 @@
 	                        <div class="fields_container">
 	                            <div class="field_container">
 	                                <label for="address"> Address </label>
-	                                <input name="address" autocomplete="off" required class="apply_leave_inputs address" type="text">
+	                                <input name="address" tabindex=6 id="address" autocomplete="off" required class="apply_leave_inputs" type="text">
 	                            </div>
 	                            <div class="field_container">
 	                                <label> Employee Id </label>
@@ -123,10 +123,10 @@
 	                        <div class="fields_container">
 	                            <div class="field_container">
 	                                <label for="joining_date"> Joining Date </label>
-	                                <input name="joining_date" required class="apply_leave_inputs" type="date" id="joining_date">
+	                                <input name="joining_date" tabindex=7 required class="apply_leave_inputs" type="date" id="joining_date">
 	                            </div>
 	                            <div class="submit_btn_container">
-                              		<button class="submit_btn" id="submit_btn"> Submit </button>
+                              		<button class="submit_btn" tabindex=8 id="submit_btn"> Submit </button>
                             	</div>
 	                            <div class="field_container"></div>
 	                        </div>
@@ -146,12 +146,12 @@
     
     <script>
     
-	    const firstNameField = document.querySelector(".first_name");
-	    const lastNameField = document.querySelector(".last_name");
-		const emailField = document.querySelector(".email");
-		const phoneField = document.querySelector(".phone") 
+	    const firstNameField = document.querySelector("#first_name");
+	    const lastNameField = document.querySelector("#last_name");
+		const emailField = document.querySelector("#email");
+		const phoneField = document.querySelector("#phone") 
 	    const passwordField = document.querySelector("#password_field");
-	    const addressField = document.querySelector(".address");
+	    const addressField = document.querySelector("#address");
 	    const joiningDateInput = document.querySelector('#joining_date');
 	    
 	    const errorMessage = "<%= errorMessage %>";
@@ -174,6 +174,9 @@
 				addressField.value = invalidEmployee.address;
 				joiningDateInput.value = invalidEmployee.joiningDate;
 				okayBtn.focus();
+				document.getElementById("breadcrumbs_title").innerHTML = "Create Employee";
+				document.getElementById("breadcrumbs_path").innerHTML = "Dashboard > New Employee";
+  				history.replaceState(null, null, window.location.href + "?action=new");
 			}
 		}
 		
@@ -232,116 +235,52 @@
 	    	e.preventDefault();
 	    	
 	    	const firstName = firstNameField.value.trim();
-		    
-		    if (firstName == "") {
-		    	alert("First name cannot be empty");
-		    	firstNameField.focus();
-		    	return;
-		    }
-		    
-		    const namePattern = /^[A-Za-z\s]{3,24}$/;
-		
-		    if (!namePattern.test(firstName)) {
-		        alert("Only letters are allowed in this field. Please remove any numbers or special characters.");
-		        firstNameField.value = "";
-		        firstNameField.focus();
-		        return;
-		    }
-		    
 			const lastName = lastNameField.value.trim();
-		    
-		    if (lastName == "") {
-		    	alert("Last name cannot be empty");
-		    	lastNameField.focus();
-		    	return;
-		    }
-		    		
-		    if (!namePattern.test(lastName)) {
-		        alert("Only letters are allowed in this field. Please remove any numbers or special characters.");
-		        lastNameField.value = "";
-		        lastNameField.focus();
-		        return;
-		    }
-	    	
 	    	const email = emailField.value.trim();
-		    
-		    if (email == "") {
-		    	alert("Email cannot be empty");
-		    	emailField.focus();
-		    	return;
-		    }
-		    
-		    const emailPattern = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-		
-		    if (!emailPattern.test(email)) {
-		        alert("Email doesn't match the pattern. Ex:abc@gmail.com");
-		        emailField.value = "";
-		        emailField.focus();
-		        return;
-		    }
-		    
 		    const phone = phoneField.value.trim(); 
-		    
-		    if (phone == "") {
-		    	alert("Phone No cannot be empty");
-		    	phoneField.focus();
-		    	return;
-		    }
-
-		    const phonePattern = /^[6-9]\d{9}$/;
-		
-		    if (!phonePattern.test(phone)) {
-		        alert("No letters and characters. Start with 6,7,8 and 9. Only 10 digits");
-		        phoneField.value = "";
-		        phoneField.focus();
-		        return;
-		    }
-		    
 		    const password = passwordField.value.trim();
-		    
-		    if (password == "") {
-		    	alert("Password cannot be empty");
-		    	passwordField.focus();
-		    	return;
-		    }
-		    
-		    const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
+	        const address = addressField.value.trim();
+		    const selectedRole = document.getElementById("selectedRole").value;
 
-		    if (!passwordPattern.test(password)) {
-		        alert("Password doesn't match the pattern. The password must contain at least one capital letter, at least one small letter, at least one number and at least one special characters, minimum eight to maximum twenty four characters");
-		        passwordField.value = "";
-		        passwordField.focus();
-		        return;
-		    }
-	    	
-		    let selectedRole = document.getElementById("selectedRole").value;
+		    const namePattern = /^[A-Za-z\s]*$/;
+		    const nameLengthPattern = /^[A-Za-z\s]{3,24}$/;
+		    const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+		    const phonePattern = /^[6-9]\d{9}$/;
+		    const passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
+	        const addressPattern = /^[A-Za-z0-9\s.,#-/]+$/;
+	        
+	        if (!checkEmpty(firstName, firstNameField, "First name")) return;
+	        if (!checkLength(nameLengthPattern, firstName, firstNameField, "First name")) return;
+	        if (!checkPattern(namePattern, firstName, firstNameField, "Only letters are allowed in the First name field. Please remove any numbers or special characters.")) 
+	        	return;
+	        
+	        if (!checkEmpty(lastName, lastNameField, "Last name")) return;
+	        if (!checkLength(nameLengthPattern, lastName, lastNameField, "Last name")) return;
+	        if (!checkPattern(namePattern, lastName, lastNameField, "Only letters are allowed in the Last name field. Please remove any numbers or special characters.")) 
+	        	return;
+	        
+	        if (!checkEmpty(email, emailField, "Email")) return;
+	        if (!checkPattern(emailPattern, email, emailField, "Email doesn't match the pattern. Ex:abc@gmail.com")) 
+	        	return;
+	        
+	        if (!checkEmpty(phone, phoneField, "Phone number")) return;
+	        if (!checkPattern(phonePattern, phone, phoneField, "No letters and characters. Start with 6,7,8 and 9. Only 10 digits")) 
+	        	return;
+	        
+	        if (!checkEmpty(password, passwordField, "Password")) return;
+	        if (!checkPattern(passwordPattern, password, passwordField, "Password doesn't match the pattern. The password must contain at least one capital letter, at least one small letter, at least one number and at least one special characters, minimum of eight and maximum of twenty four characters")) 
+	        	return;
+	        
 	        if (selectedRole == "") {
-	            alert("Please select a role before submitting the form.");
+	            alert("Please select a Role");
 	            return;
 	        }
 	        
-	        const address = addressField.value.trim();
-	        
-	        if (address == "") {
-		    	alert("Address cannot be empty");
-		    	addressField.focus();
-		    	return;
-		    }
-	        
-	        const addressPattern = /^[A-Za-z0-9\s.,#-/]+$/;
-	        
-	        if (!addressPattern.test(address)) {
-	            alert("Please enter a valid address. Only alphanumeric characters, spaces, periods, commas, hashtags, and hyphens are allowed.");
-	            addressField.value = "";
-	            addressField.focus();
-		        return;
-		    }
-	        
-	        if (joiningDateInput.value == "") {
-	        	alert("Please select the joining date");
-	        	joiningDateInput.focus();
+	        if (!checkEmpty(address, addressField, "Address")) return;
+	        if (!checkPattern(addressPattern, address, addressField, "Please enter a valid address. Only alphanumeric characters, spaces, periods, commas, hashtags, and hyphens are allowed.")) 
 	        	return;
-	        }
+	        
+	        if (!checkEmpty(joiningDateInput.value, joiningDateInput, "Joining date")) return;
 	       
 	        document.querySelector(".form").submit();
 	        

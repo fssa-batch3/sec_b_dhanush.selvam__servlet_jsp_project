@@ -170,7 +170,7 @@ input {
     outline: none;
 }
 
-.address_field_container, .comment_field_container {
+.address_field_container {
 	width: -webkit-fill-available;
 }
 
@@ -188,4 +188,12 @@ input {
 
 .hidden_status {
 	display: none;
+}
+
+#del_btn:focus {
+	background: #2d7474;
+}
+
+label {
+	width: fit-content;
 }
